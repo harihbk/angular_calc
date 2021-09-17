@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <mat-radio-group name="flavors">
+        <mat-radio-button value="formula" checked="true" (change)="changeRoute($event)">Formula</mat-radio-button>
+        <mat-radio-button value="values" (change)="changeRoute($event)">Allowance</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <router-outlet></router-outlet>
+</div>
+
+
+
+

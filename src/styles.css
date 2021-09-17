@@ -1,0 +1,56 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css";
+
+
+.ag-theme-balham .ag-icon-desc,
+.ag-theme-balham .ag-icon-asc,
+.ag-theme-balham .ag-icon-menu
+{
+    font-family: "Font Awesome 5 Free";
+    /* FontAwesome uses font-weight bold */
+    font-weight: bold;
+}
+
+.ag-theme-balham .ag-icon-desc::before
+{
+    content: '\f063';
+    color: white;
+}
+
+.ag-theme-balham .ag-icon-asc::before
+{
+    content: '\f062';
+    color: white;
+}
+
+.ag-theme-balham .ag-icon-menu::before
+{
+    content: '\f0c9';
+    color: white;
+}
+
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "open sans", sans-serif;
+    background-color: #f6f7fa !important;
+}
+
+.ag-root-wrapper-body.ag-layout-normal {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+}
