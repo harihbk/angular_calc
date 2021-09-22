@@ -1,6 +1,8 @@
-import { Component, OnInit, Optional, Inject } from '@angular/core';
+import { Component, OnInit, Optional, Inject, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { CommonService } from 'src/app/formula/services/common.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+
 
 @Component({
   selector: 'app-formula_section',
@@ -8,6 +10,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./formula_section.component.css']
 })
 export class Formula_sectionComponent implements OnInit {
+  @ViewChild('el', {static: false})element: ElementRef;
+
   formula_field : any = '';
   calculated_value : any = '';
   calc_button :any=[];
@@ -15,14 +19,22 @@ export class Formula_sectionComponent implements OnInit {
   userentered :any= {}
   rowdata: any;
   variablename: any;
+  position: number;
+  currentPosition: any;
+  syntaxerror: any;
+
+
+  
+
   constructor(
     public dialogRef: MatDialogRef<Formula_sectionComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private service   :CommonService,
+    private elementRef:ElementRef
   ) {
    
     this.rowdata = data;
-   
+     this.position = 3;
     this.formula_field = data.formula
     this.variablename = data.variablename;
     this.calc_button = [
@@ -86,6 +98,9 @@ export class Formula_sectionComponent implements OnInit {
       },{
         name : "Ceil" , value : "Ceil"
       }],
+      [{
+        name : "IF" , value : "IF( TRUE,0,0)"
+      }]
       // [{
       //   name : "Power" , value : "Power"
       // },{
@@ -140,10 +155,62 @@ export class Formula_sectionComponent implements OnInit {
   ngOnInit() {
   }
 
+
   onKeyUp(ev:any){
+  
     let setCalc = this.formula_field
-    this.formula_field =  `${setCalc}${ev}`
+
+    var insert = function(arr:any, index:any, item:any) {
+      return [
+          ...arr.slice(0, index),     // first half
+          item,                       // items to be inserted
+          ...arr.slice(index)         // second half
+      ];
+  };
+
+
+  let sents = insert(setCalc,this.currentPosition,ev).join('')
+  this.formula_field = sents
+ 
+ 
+  
   }
+
+  wrap(){
+    let startindex = this.currentPosition;
+   
+    let splitStr = Object.assign([], this.formula_field)
+    var c = 0;
+    var lastindex;
+    for(var i = startindex;i <= splitStr.length ; i++){
+      if(splitStr[i] == "("){
+        c++;
+        console.log("%c" + c, "color:red ;font-weight:bold;");
+      }  // ( end
+      if(splitStr[i] == ")"){
+        c--;
+        console.log("%c" + c, "color:green ;font-weight:bold;");
+        if(c == 0){
+          lastindex = i; 
+          break // lastindex
+        }
+      } // ) end
+    } // for loop end
+   
+    var Selected = this.formula_field.slice(startindex,lastindex+1);
+    
+    
+    let g = `if(${this.formula_field.slice(startindex,lastindex+1)} , 0 , 0)`;
+    this.formula_field = Selected ? replaceBetween(this.formula_field,startindex,lastindex+1, g) : this.formula_field;
+
+
+    function replaceBetween(origin:any, startIndex:any, endIndex:any, insertion:any) {
+      return origin.substring(0, startIndex) + insertion + origin.substring(endIndex);
+    }
+
+  }
+
+ 
 
   validateformula(){
     var formula = { 'formula' : this.formula_field , 'variable' : this.userentered }
@@ -156,6 +223,13 @@ export class Formula_sectionComponent implements OnInit {
     })
 
   }
+
+  myClickFunction(ev:any){
+    this.currentPosition = ev.target.selectionStart;
+  }
+  
+ 
+ //Round(if(if(BlindorRecess="Recess",Drop-DropAllowance-RecessAllowance,Drop-DropAllowance) , 0 , 0))
 
 
 }

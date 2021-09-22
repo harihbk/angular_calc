@@ -3,10 +3,11 @@
 
   <div class="container">
     <div class="row">
-
+      <button class="btn btn-info col-sm-1" (click)="wrap()">Wrap IF</button>
+     
       <div class="col-sm-12 m-2">
-        <input type="text" class="form-control formula_fields" id="name"
-        [(ngModel)]="formula_field" name="formula_field">
+        <input #el type="text" class="form-control formula_fields" id="name"
+        [(ngModel)]="formula_field" name="formula_field" (click)="myClickFunction($event)">
       </div>
     </div>
 
@@ -16,10 +17,10 @@
       <div class="col-sm-3 text-black mh-100 section">
             <h3 class="text-center">Functions</h3>
 
-            
+
             <!-- calculation grid -->
          <div class="row " *ngFor="let datas of calc_button;let i = index">
-          <button type="button" class="btn btn-secondary m-1"  *ngFor="let data of datas;" (click)="onKeyUp(data.value)">{{ data.name }}</button>
+          <button type="button" class="btn btn-secondary m-1 validate_form" id="validate_form"  *ngFor="let data of datas;" [value]="data.value" (click)="onKeyUp(data.value)">{{ data.name }}</button>
          </div>
            <!-- calculation grid -->
 
