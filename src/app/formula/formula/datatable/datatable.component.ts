@@ -49,10 +49,10 @@ export class DatatableComponent implements OnInit {
 
       this.columnDefs = [
 
-        { field: 'id', rowDrag: true, },
-        { field: 'email' , filter: 'agTextColumnFilter'  },
-        { field: 'first_name' },
-        { field: 'last_name' },
+      
+        { field: 'variablename' , filter: 'agTextColumnFilter'  },
+        { field: 'productid' },
+        { field: 'formula' },
         { field: 'Action',
         width: 110,
         cellRenderer: 'buttonRenderer',
@@ -73,13 +73,13 @@ export class DatatableComponent implements OnInit {
       };
       this.rowModelType = 'infinite';
       this.serverSideStoreType = 'partial';
-      this.paginationPageSize = 6;
-      this.cacheBlockSize = 6;
+      this.paginationPageSize = 10;
+      this.cacheBlockSize = 10;
 
       this.agGridOptions = {
 
         pagination: true,
-        paginationPageSize: 6,
+        paginationPageSize: 10,
         rowModelType: 'infinite',
         rowHeight: 40,
         columnDefs: [],
@@ -107,28 +107,21 @@ export class DatatableComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.sub = this.route
     .data
     .subscribe(response => {
       this.title = response
-
     });
   }
 
   onGridReady(params: any) {
-
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
    // this.gridApi.showNoRowsOverlay(); // show NoRowsOverlay
-
     this.gridApi.setDatasource(this.dataSource);
-
   }
 
   dataSource: IDatasource = {
-
-
     getRows: (params: IGetRowsParams) => {
       this.service.getUsers(this.gridApi.paginationGetCurrentPage()+1).subscribe(response => {
         console.log([this.gridApi.paginationGetPageSize(), this.gridApi.paginationGetCurrentPage()]);
@@ -142,7 +135,6 @@ export class DatatableComponent implements OnInit {
 
 
   openDialog() {
-
     const dialogRef = this.dialog.open(Formula_sectionComponent);
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -150,7 +142,11 @@ export class DatatableComponent implements OnInit {
   }
 
   onBtnClick1(e:any) {
-    const dialogRef = this.dialog.open(Formula_sectionComponent);
+    console.log(e)
+    const dialogRef = this.dialog.open(Formula_sectionComponent,{
+      width: '1500px',
+      data :e.rowData
+    });
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });

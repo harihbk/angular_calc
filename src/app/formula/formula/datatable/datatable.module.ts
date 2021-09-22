@@ -6,12 +6,14 @@ import { DatatableComponent } from './datatable.component';
 import { DatatableRoutes } from './datatable.routing';
 import {MatDialogModule} from '@angular/material/dialog';
 import { BtnCellrenderComponent } from "../datatable/component/btn-cellrender/btn-cellrender.component";
+
 @NgModule({
   imports: [
     CommonModule,
     DatatableRoutes,
     AgGridModule.withComponents([BtnCellrenderComponent]),
-    MatDialogModule
+    MatDialogModule,
+    
   ],
   entryComponents:[ BtnCellrenderComponent ],
   declarations: [DatatableComponent , BtnCellrenderComponent ]

@@ -1,0 +1,26 @@
+.section{
+    height: 100% !important;
+    background: #e6e6f3;
+}
+
+.btn:not(:disabled):not(.disabled) {
+    /* cursor: pointer; */
+    /* width: 29%; */
+    font-size: 13px;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+  }
+
+  .mat-card {
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: block;
+    position: relative;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.table{
+    width:100%
+}

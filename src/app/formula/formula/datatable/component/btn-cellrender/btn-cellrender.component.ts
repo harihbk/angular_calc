@@ -12,10 +12,11 @@ export class BtnCellrenderComponent implements ICellRendererAngularComp  {
   params: any;
   label: any;
 
-
+  
 
   agInit(params:any): void {
     this.params = params;
+   
     this.label = this.params.label || null;
   }
 
@@ -25,7 +26,7 @@ export class BtnCellrenderComponent implements ICellRendererAngularComp  {
 
   onClick($event:any) {
     if (this.params.onClick instanceof Function) {
-
+     
       const params = {
         event: $event,
         rowData: this.params.node.data
