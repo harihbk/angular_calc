@@ -1,0 +1,27 @@
+<div style="height: 100%; padding-top: 60px; box-sizing: border-box;">
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%; height: 93%;"
+      id="myGrid"
+      class="ag-theme-alpine"
+      [gridOptions]="agGridOptions"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [enableRangeSelection]="true"
+      [suppressAggFuncInHeader]="true"
+    [enableCellChangeFlash]="true"
+
+      [rowSelection]="rowSelection"
+      [sendToClipboard]="sendToClipboard"
+      [rowData]="rowData"
+      [enableCellTextSelection]="true"
+      (gridReady)="onGridReady($event)"
+      (pasteStart)="onPasteStart($event)"
+      (pasteEnd)="onPasteEnd($event)"
+      (cellValueChanged)="onCellValueChanged($event)"
+      (cellClicked)="CellClickedEvent($event)"
+    ></ag-grid-angular>
+</div>
+
+<button (click)="onAddRow()">Add Row</button>
+

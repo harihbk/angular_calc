@@ -10,6 +10,11 @@ const routes: Routes = [
     path : 'form',
     loadChildren:()=>import('./form/form.module').then(m=>m.FormModule)
    },
+   {
+    path : 'price',
+    loadChildren:()=>import('./pricelist/pricelist.module').then(m=>m.PricelistModule)
+   },
+
      
 ];
   

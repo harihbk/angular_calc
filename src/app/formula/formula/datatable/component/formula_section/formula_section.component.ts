@@ -22,6 +22,7 @@ export class Formula_sectionComponent implements OnInit {
   position: number;
   currentPosition: any;
   syntaxerror: any;
+  variables: any;
 
 
   
@@ -30,7 +31,8 @@ export class Formula_sectionComponent implements OnInit {
     public dialogRef: MatDialogRef<Formula_sectionComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private service   :CommonService,
-    private elementRef:ElementRef
+    private elementRef:ElementRef,
+   
   ) {
    
     this.rowdata = data;
@@ -153,13 +155,18 @@ export class Formula_sectionComponent implements OnInit {
    }
 
   ngOnInit() {
+     this.service.getUsers(1).subscribe(res=>{
+       this.variables = res.data
+     })
   }
 
 
+  /*
+   This function caret position inputs
+  */
   onKeyUp(ev:any){
   
     let setCalc = this.formula_field
-
     var insert = function(arr:any, index:any, item:any) {
       return [
           ...arr.slice(0, index),     // first half
@@ -167,14 +174,20 @@ export class Formula_sectionComponent implements OnInit {
           ...arr.slice(index)         // second half
       ];
   };
-
-
   let sents = insert(setCalc,this.currentPosition,ev).join('')
   this.formula_field = sents
  
- 
-  
   }
+
+   /*
+   This function caret position inputs
+  */
+
+
+
+  /*
+   This function Wrapper if confdition
+  */
 
   wrap(){
     let startindex = this.currentPosition;
@@ -210,7 +223,16 @@ export class Formula_sectionComponent implements OnInit {
 
   }
 
- 
+  /*
+   This function Wrapper if confdition
+  */
+
+
+
+
+   /*
+   validate formula
+   */
 
   validateformula(){
     var formula = { 'formula' : this.formula_field , 'variable' : this.userentered }
@@ -224,12 +246,24 @@ export class Formula_sectionComponent implements OnInit {
 
   }
 
+  /*
+   validate formula
+  */
+
+
+
+
+   /*
+   Set mouseclick position
+   */
   myClickFunction(ev:any){
     this.currentPosition = ev.target.selectionStart;
   }
+
+   /*
+   Set mouseclick position
+   */
   
  
- //Round(if(if(BlindorRecess="Recess",Drop-DropAllowance-RecessAllowance,Drop-DropAllowance) , 0 , 0))
-
 
 }
