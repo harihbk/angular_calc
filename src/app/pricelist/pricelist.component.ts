@@ -5,6 +5,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { RowNode } from 'ag-grid-community';
 
+
 @Component({
   selector: 'app-pricelist',
   templateUrl: './pricelist.component.html',
@@ -27,10 +28,12 @@ export class PricelistComponent implements OnInit {
   rowindex: any;
   column_setindex: number = 0;
   column_setindex_down: number = 0;
+
   constructor(
     private http: HttpClient
   ) { 
 
+   
 
     this.columnDefs = [
       {
@@ -156,85 +159,11 @@ export class PricelistComponent implements OnInit {
         this.column_setindex_down++;
       }
 
-    /**
+      /**
      * append each value to rows and column
-    * **/
+     * **/
 
    
-
-
-
-
-   // console.log(finalpush)
-
-//     var fg= finalpush.reduce((prev, next) => next.map((item, i) =>
-//     (prev[i] || []).concat(next[i])
-// ), []);
-
-  // console.log(fg);
-
-//     var cc = fg
-//     var checkcolumn:any = [];
-//       for(var n=0;n<cc.length;n++){
-//         colname =  `Column${n+1}`
-//        if(!checkcolumn.includes(colname)){
-//           checkcolumn.push(colname)
-//     this.gridApi.forEachNode(function (rowNode:RowNode) {
-//       var k = rowNode.rowIndex || 0
-//       rowNode.setDataValue(colname,cc[n][k]) 
-     
-// })
-//        }
-//       }
-  
-    // var inde = 2;
-    // for(var n=0;n<d.length;n++){
-    //    var columnname = `Column${inde}`
-    //    inde++;
-    //   for(var h = 0;h<d[n].length;h++){
-    //     if(h!=0){
-        
-   
-    //       console.log(d[n][h])
-    //     }
-        
-    //   }
-    // }
-
-
-    // this.gridApi.forEachNodeAfterFilterAndSort(function (rowNode:RowNode) {
-    //   rowNode.setDataValue("Column1","the new value") 
-    // })
-  
-
-
-
-    // this.gridApi.forEachNode(function(node:any) {
-    //   console.log(node)
-     
-    // });
-  //   this.gridColumnApi.api.forEachNode((rowNode:any, index:any) => {
-  //     console.log('node ' + rowNode.data + ' is in the grid');
-  // });
-
-    // var rowNode = this.gridColumnApi.api.getRowNode('Column1');
-    // var newPrice = Math.floor(Math.random() * 100000);
-    // rowNode.setDataValue('Column', newPrice);
-
-    // this.rowData.forEach((a:any,b:any)=>{
-    //   console.log(a)
-    // })
-   
-    // var focusedCell = this.gridApi.getColumnDefs();    
-   
-    // console.log(focusedCell)
-
-
-
-
-    //console.log(d)
-    console.log([this.columnindex ,this.rowindex ])
-    //console.log('Callback onPasteEnd:', params);
   }
 
   setHeaderNames() {
