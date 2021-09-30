@@ -28,6 +28,7 @@ export class CalendarComponent implements OnInit {
   private user: any;
   refreshToken: boolean = false;
   accessToken: boolean;
+  response: any;
 
   constructor(
     public http:HttpClient,
@@ -40,7 +41,8 @@ export class CalendarComponent implements OnInit {
    
     this.service.ListCalendarEvents().subscribe(
       (res:any) => {
-       console.log(res);
+        console.log(res.items);
+       this.response = res.items
       },
       error => console.log
   );

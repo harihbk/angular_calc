@@ -88,7 +88,6 @@ private tokenRequestParams: any = {
       let headers = new HttpHeaders()
       headers.set('Content-Type','application/x-www-form-urlencoded')
 
-  
     var body1 = {
       client_id : environment.Calendar_clientID,
       client_secret : environment.Calendar_ClientSecret,
@@ -99,6 +98,7 @@ private tokenRequestParams: any = {
 
     return this.http.post(`https://oauth2.googleapis.com/token`,body1, {headers:headers}).pipe(
       tap((res:any)=>{
+        
         this.SetAccessToken  = res.access_token;
         
       })  
@@ -110,10 +110,7 @@ private tokenRequestParams: any = {
   }
 
   ListCalendarEvents(){
-   return this.http.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`).pipe(
-            tap(data => console.log('All: ' + JSON.stringify(data))),
-            catchError(this.handleError)
-   )
+   return this.http.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`);
   }
 
 

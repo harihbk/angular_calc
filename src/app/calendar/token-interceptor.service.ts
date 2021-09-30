@@ -17,7 +17,12 @@ export class TokenInterceptorService implements HttpInterceptor {
      
 
   // Refresh token
-  this.service.UpdateRefreshToken()
+  this.service.UpdateRefreshToken().subscribe(res=>{
+
+  },err=>{
+    console.log(err);
+    
+  })
   // Refresh token
       
     const headers = new HttpHeaders({
