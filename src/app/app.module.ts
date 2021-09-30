@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import  { Formula_sectionComponent } from "../app/formula/formula/datatable/component/formula_section/formula_section.component";
 import { MaterialModule } from './sharedmodule/material.module';
@@ -13,6 +13,27 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatCardModule} from '@angular/material/card';
 // import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+// import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+// import { GoogleLoginProvider} from "angularx-social-login";
+
+
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import {
+  GoogleLoginProvider,
+  FacebookLoginProvider
+} from 'angularx-social-login';
+import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
+import { TokenInterceptorService } from './calendar/token-interceptor.service';
+
+
+let gapiClientConfig: NgGapiClientConfig = {
+  client_id: "421629888233-cdqm5rdeakdjvghies922jv0036tfcpj.apps.googleusercontent.com",
+  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+  scope: [
+      "https://www.googleapis.com/auth/calendar",
+      "https://www.googleapis.com/auth/calendar.events"
+  ].join(" ")
+};
 
 
 
@@ -34,9 +55,20 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
     MatCardModule,
     ReactiveFormsModule,
     FormlyBootstrapModule,
+    SocialLoginModule,
+    GoogleApiModule.forRoot({
+      provide: NG_GAPI_CONFIG,
+      useValue: gapiClientConfig
+    }),
   
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+  }
+  ],
   entryComponents: [Formula_sectionComponent],
   bootstrap: [AppComponent]
 })

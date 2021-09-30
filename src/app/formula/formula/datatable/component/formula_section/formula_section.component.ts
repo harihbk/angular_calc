@@ -165,7 +165,7 @@ export class Formula_sectionComponent implements OnInit {
    This function caret position inputs
   */
   onKeyUp(ev:any){
-  
+   
     let setCalc = this.formula_field
     var insert = function(arr:any, index:any, item:any) {
       return [
@@ -175,7 +175,9 @@ export class Formula_sectionComponent implements OnInit {
       ];
   };
   let sents = insert(setCalc,this.currentPosition,ev).join('')
+  this.currentPosition++
   this.formula_field = sents
+   
  
   }
 
