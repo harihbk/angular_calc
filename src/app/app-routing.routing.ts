@@ -18,6 +18,10 @@ const routes: Routes = [
    {
      path :'calendar',
      loadChildren:()=>import('./calendar/calendar.module').then(m=>m.CalendarModule)
+   },
+   {
+     path : 'calcmodule',
+     loadChildren:()=>import('./calcmodule/calcmodule.module').then(m=>m.CalcmoduleModule)
    }
 
      

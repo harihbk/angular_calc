@@ -12,7 +12,6 @@ import { BehaviorSubject, from, Observable, of, Subject, throwError } from 'rxjs
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { environment  } from 'src/environments/environment';
 
-
 const Refresh_Token = "refreshtoken";
 const Access_Token = "accesstoken";
 
@@ -22,7 +21,8 @@ const Access_Token = "accesstoken";
 export class CalendarService {
 
 
-  public _getCalendarEvents: Subject<any> = new BehaviorSubject<Object>(null);
+  public _getCalendarEvents$: Subject<any> = new BehaviorSubject<Object>(null);
+  private _data: BehaviorSubject<any> = new BehaviorSubject(null);
 
 constructor(
   public http:HttpClient,
@@ -32,7 +32,7 @@ constructor(
 private tokenRequestParams: any = {
   client_id: environment.Calendar_clientID,
   client_secret: environment.Calendar_ClientSecret,
-  redirect_uri: 'http://localhost:4200',
+  redirect_uri: environment.Redirect_url,
   grant_type: 'authorization_code'
 };
 
@@ -55,7 +55,9 @@ private tokenRequestParams: any = {
 
 
   CalendarLogin(){
+   
     this.googleAuth.getAuth().subscribe(res=>{
+     
       res.grantOfflineAccess().then(ress=>{
         this.fetchToken({code : ress.code})
       })
@@ -70,10 +72,16 @@ private tokenRequestParams: any = {
       ...params
     };
 
+    let headers = new HttpHeaders()
+   
+    headers.set('Accept','application/json')
+
     return new Promise((resolve,reject)=>{
       return this.http.post(`https://oauth2.googleapis.com/token`, requestParams).toPromise().then((res:any)=>{
-        this.SetAccessToken  = res.access_token;
-        this.SetRefreshToken = res.refresh_token;
+      console.log(res)
+      this.SetAccessToken  = res.access_token;
+        this.SetRefreshToken = res.refresh_token
+ 
         resolve(true)
       },err=>{
         reject(false)
@@ -97,38 +105,30 @@ private tokenRequestParams: any = {
 
     return this.http.post(`https://oauth2.googleapis.com/token`,body1, {headers:headers}).pipe(
       tap((res:any)=>{
+        
         this.SetAccessToken  = res.access_token;
-      })  
+        
+      }) 
     ).subscribe(res=>{
-     
+
     })
   }
-
-  get getListCalendarEvents(){
-    return this._getCalendarEvents.asObservable()
-  }
-
-  ListCalendarEvents(){
-   return this.http.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`).subscribe((res:any)=>{
-     console.log(res.items);
-     
-   return this._getCalendarEvents.next(res.items)
-   });
-  }
-
-
   InsertCalendarEvents(body:any){
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.GetAccessToken}`,
       'Content-Type': 'application/json'
     });
 
-
-
     return this.http.post(`https://www.googleapis.com/calendar/v3/calendars/primary/events`,body,{headers:headers});
     
   }
-
+  DeleteCalendarEvent(Event_ID:any){
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.GetAccessToken}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.delete(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${Event_ID}`,{headers:headers})
+  }
   UpdateCalendarEvents(body:any , Event_ID){
  
     const headers = new HttpHeaders({
@@ -136,20 +136,52 @@ private tokenRequestParams: any = {
       'Content-Type': 'application/json'
     });
 
+
+
     return this.http.put(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${Event_ID}`,body,{headers:headers});
 
     
   }
-  
 
-  getUserData(){
+
+  get getListCalendarEvents(){
+    return this._getCalendarEvents$.asObservable()
+  }
+
+    ListCalendarEvents(){
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${this.GetAccessToken}`,
+        'Content-Type': 'application/json'
+      });
+
+   return  this.http.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`, {headers:headers})
+   .pipe(
+   
+   tap(data=>{
+       this._getCalendarEvents$.next(data)
+    })
+   ).toPromise();
+  }
+
+  get data$(): Observable<any>
+  {
+      return this._data.asObservable();
+  }
+
+
+  getData(): Observable<any>
+  {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.GetAccessToken}`,
       'Content-Type': 'application/json'
     });
-    return this.http.get('https://content.googleapis.com/calendar/v3/calendars/primary/acl',{headers:headers})
+
+      return this.http.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`, {headers:headers}).pipe(
+          tap((response: any) => {
+              this._data.next(response);
+          })
+      );
   }
-  
 
 
 

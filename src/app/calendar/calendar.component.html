@@ -1,15 +1,35 @@
 <p>
-  calendar works!
+ Logged user {{ Logged_user }}
 </p>
 
 <button (click)="handleAuthClick()">handleAuthClick</button>
 <br>
 <br>
+<button (click)="InsertCalendarEvents()">InsertCalendarEvents</button>
+<br>
+<br>
+<button (click)="UpdateCalendarEvents()">UpdateCalendarEvents</button>
+<br>
+<br>
 
-<ng-container *ngFor="let item of response" class="form-control">
+
+
+
+<ng-container *ngFor="let item of response" class="form-control" >
  {{ item.summary  }}
  <br>
+ {{ item.start.dateTime  }} ----------  {{ item.start.timeZone  }} 
+ <br>
+ {{ item.end.dateTime  }} ----------  {{ item.end.timeZone  }} 
+ <br>
+
+
+
+ <br>
 </ng-container>
+
+
+
 
 
 

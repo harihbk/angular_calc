@@ -23,7 +23,11 @@ import {
   FacebookLoginProvider
 } from 'angularx-social-login';
 import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
-import { TokenInterceptorService } from './calendar/token-interceptor.service';
+import { TokenInterceptorService } from './calcmodule/token-interceptor.service';
+
+
+
+
 
 
 let gapiClientConfig: NgGapiClientConfig = {
@@ -60,8 +64,14 @@ let gapiClientConfig: NgGapiClientConfig = {
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig
     }),
-  
+   
+       BrowserModule,
+       
+       
   ],
+
+
+
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

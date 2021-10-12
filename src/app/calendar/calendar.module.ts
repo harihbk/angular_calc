@@ -11,11 +11,11 @@ import { CalendarRoutes } from './calendar.routing';
     CalendarRoutes
   ],
   providers:[
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true
-  }
+  //   {
+  //     provide: HTTP_INTERCEPTORS,
+  //     useClass: TokenInterceptorService,
+  //     multi: true
+  // }
   ],
   declarations: [CalendarComponent]
 })

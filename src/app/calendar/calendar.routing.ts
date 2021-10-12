@@ -1,10 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
 import { CalendarComponent } from './calendar.component';
-
+import { CalendarResolver } from '../calendar/calendar.resolver';
 const routes: Routes = [
   {
     path :'',
-    component:CalendarComponent
+    component:CalendarComponent,
+    resolve:{
+      data : CalendarResolver
+    }
   }
 ];
 
