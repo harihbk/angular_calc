@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList } from '@angular/core';
 import { scheduleData } from '../datasource';
 
 
@@ -10,7 +10,7 @@ import { MultiSelectComponent, ChangeEventArgs, MultiSelectChangeEventArgs, Drop
 import {
   ScheduleComponent, GroupModel, DayService, WeekService, WorkWeekService, MonthService, YearService, AgendaService,
   TimelineViewsService, TimelineMonthService, TimelineYearService, View, EventSettingsModel, Timezone, CurrentAction,
-  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, Schedule
+  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, Schedule, ActionEventArgs, ToolbarActionArgs
 } from '@syncfusion/ej2-angular-schedule';
 import { addClass, extend, removeClass, closest, remove, isNullOrUndefined, Internationalization, compile } from '@syncfusion/ej2-base';
 import { ChangeEventArgs as SwitchEventArgs, SwitchComponent } from '@syncfusion/ej2-angular-buttons';
@@ -24,6 +24,13 @@ import { CalendarService } from '../calcmodule/services/calendar.service';
 import { environment } from 'src/environments/environment';
 //this.service.GetAccessToken
 import { Ajax } from "@syncfusion/ej2-base";
+import { tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { classList } from '@syncfusion/ej2-base';
+import * as $ from 'jquery';
+import { Popup } from '@syncfusion/ej2-popups';
+import { createElement } from '@syncfusion/ej2-base';
+
 
 
 let createRequest: Function = (url: string, option: AjaxOption) => {
@@ -124,6 +131,10 @@ export class CalcmoduleComponent implements OnInit {
   @ViewChild('rowHeightSwitch') rowHeightSwitch: SwitchComponent;
   @ViewChild('tooltipSwitch') tooltipSwitch: SwitchComponent;
   @ViewChild('dragSwitch') dragSwitch: SwitchComponent;
+  @ViewChild('el') span: QueryList<any>;
+  public dateValue: Object = new Date();
+
+
   public showFileList = false;
   public multiple = false;
   public buttons: Record<string, any> = { browse: this.importTemplateFn({ text: 'Import' })[0] as HTMLElement };
@@ -163,6 +174,21 @@ export class CalcmoduleComponent implements OnInit {
     { text: 'Friday', value: 5 },
     { text: 'Saturday', value: 6 }
   ];
+
+
+  public groupDays: Record<string, any>[] = [
+    { text: 'Day', value: 0 },
+    { text: 'Week', value: 1 },
+    { text: 'WorkWeek', value: 2 },
+    { text: 'Month', value: 3 },
+    { text: 'Year', value: 4 },
+    { text: 'Agenda', value: 5 },
+   
+  ];
+
+
+
+
   public timezoneData: Record<string, any>[] = [
     { text: 'UTC -12:00', value: 'Etc/GMT+12' },
     { text: 'UTC -11:00', value: 'Etc/GMT+11' },
@@ -278,9 +304,10 @@ export class CalcmoduleComponent implements OnInit {
 
 
 
-  
+  public profilePopup: Popup;
 
-  public selectedDate: Date = new Date(2021, 10, 12);
+
+  public selectedDate: Date = new Date(2021, 10, 17);
   private calendarId = environment.Calendar_clientID;
   private publicKey =  environment.CalendarAPIKEY;
   
@@ -323,17 +350,92 @@ export class CalcmoduleComponent implements OnInit {
   modifieduserdata: any;
   temp: any = true;
   inc: number = 1;
+  currentevents: any=[];
 
 
 
   
 constructor(
   public service : CalendarService,
-  private cd: ChangeDetectorRef
+  private cd: ChangeDetectorRef,
+  public http:HttpClient,
+  
 ){
-
+ 
 }
 
+onClick(ev){
+  this.scheduleObj.selectedDate = ev.value
+  this.selectedDate = ev.value
+ console.log(ev.value)
+}
+
+ngAfterViewInit() {
+  setTimeout(function(){
+    //$(".e-btn-icon").click()
+   // alert($(".e-tbar-btn").attr('class'))
+
+  },1000)
+ 
+}
+
+
+onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
+ 
+  let scheduleElement: HTMLElement = document.getElementById('schedule') as HTMLElement;
+  let userIconEle = scheduleElement.querySelectorAll('.e-schedule-toolbar-container .e-schedule-toolbar');
+  userIconEle.forEach(function(a){
+     console.log(a.querySelector('.e-schedule-toolbar')) 
+  })
+  console.log(userIconEle)
+  if (args.requestType === 'toolbarItemRendering') {
+    
+      let userIconItem: any = {
+          align: 'Right', prefixIcon: 'user-icon', text: 'Nancy', cssClass: 'e-schedule-user-icon'
+      };
+      args.items.push(userIconItem);
+  }
+}
+
+
+onActionComplete(args: ActionEventArgs):void {
+  let scheduleElement: HTMLElement = document.getElementById('schedule') as HTMLElement;
+  if (args.requestType === 'toolBarItemRendered') {
+      let userIconEle: HTMLElement = scheduleElement.querySelector('.e-schedule-user-icon') as HTMLElement;
+      userIconEle.onclick = () => {
+          this.profilePopup.relateTo = userIconEle;
+          this.profilePopup.dataBind();
+          if (this.profilePopup.element.classList.contains('e-popup-close')) {
+              this.profilePopup.show();
+          } else {
+              this.profilePopup.show();
+          }
+      };
+  }
+
+  let userContentEle: HTMLElement = createElement('div', {
+      className: 'e-profile-wrapper'
+  });
+  scheduleElement.parentElement.appendChild(userContentEle);
+
+  let userIconEle: HTMLElement = scheduleElement.querySelector('.e-schedule-user-icon') as HTMLElement;
+  let getDOMString: (data: object) => NodeList = compile('<div class="profile-container"><div class="profile-image">' +
+      '</div><div class="content-wrap"><div class="name">Nancy</div>' +
+      '<div class="destination">Product Manager</div><div class="status">' +
+      '<div class="status-icon"></div>Online</div></div></div>');
+  let output: NodeList = getDOMString({});
+  this.profilePopup = new Popup(userContentEle, {
+      content: output[0] as HTMLElement,
+      relateTo: userIconEle,
+      position: { X: 'left', Y: 'bottom' },
+      collision: { X: 'flip', Y: 'flip' },
+      targetType: 'relative',
+      viewPortElement: scheduleElement,
+      width: 185,
+      height: 80
+  });
+  this.profilePopup.hide();
+}
 
 
 
@@ -413,12 +515,10 @@ onBegin(args: any): void {
       http.onreadystatechange = function(data:any) {//Call a function when the state changes.
           if(http.readyState == 4 && http.status == 200) {
        
-              // console.log(JSON.parse(http.responseText));
-              // schObj.eventSettings.dataSource = JSON.parse(http.responseText);
+               schObj.eventSettings.dataSource = JSON.parse(http.responseText);
           }
       }
-     
-      console.log(dat );
+   
       let putdata = {
       "end": {
         "dateTime": dat.EndTime
@@ -477,30 +577,6 @@ onBegin(args: any): void {
 onBound(args: any): void {
   if (this.temp) {
 
-
-    // let schObj = (document.querySelector(".e-schedule") as any)
-    //   .ej2_instances[0];
-
-    
-     
-      
-    //   var http = new XMLHttpRequest();
-    //   var url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
-    //   http.open('POST', url, true);
-    //   //Send the proper header information along with the request
-    //   http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
-    //   http.onreadystatechange = function(data:any) {//Call a function when the state changes.
-    //       if(http.readyState == 4 && http.status == 200) {
-    //         console.log(JSON.parse(http.responseText));
-    //         schObj.eventSettings.dataSource = JSON.parse(http.responseText);
-    //           // console.log(JSON.parse(http.responseText));
-    //           // schObj.eventSettings.dataSource = JSON.parse(http.responseText);
-    //       }
-    //   }
-   
-    //   http.send();
-  
-
     let schObj = (document.querySelector(".e-schedule") as any)
       .ej2_instances[0];
     const ajax = new Ajax(
@@ -553,7 +629,7 @@ ngOnInit(){
       e.result as Record<string, Record<string, any>[]>
     ).items;
 
-  
+
    
     const scheduleData: Record<string, any>[] = [];
     // if (items.length > 0) {
@@ -567,8 +643,22 @@ ngOnInit(){
             IsAllDay: false,
     };
   
+   
+    let currentViewDates: Date[] = this.scheduleObj.getCurrentViewDates() as Date[]; 
+    let startDate: Date = currentViewDates[0] as Date; 
+    let endDate: Date = currentViewDates[currentViewDates.length - 1] as Date; 
+    console.log(startDate); 
+    console.log(endDate); 
+
+  // this.service.getData().pipe( tap((res:any)=>{
+        
+  //   console.log(res);
+  //   e.result.push(dataSource)
+    
+  // }) ).subscribe(res=>{
+  //   e.result.push(dataSource)
+  // })
   
-    console.log(e);
   
 this.service.data$.subscribe(res=>{
   //console.log(res);
@@ -588,12 +678,27 @@ this.service.data$.subscribe(res=>{
           EndTime: new Date(end),
           IsAllDay: !event.start.dateTime,
         });
+        e.result.push({
+          Id: event.id,
+          Subject: event.summary,
+          StartTime: new Date(start),
+          EndTime: new Date(end),
+          IsAllDay: !event.start.dateTime,
+        })
       }
-  e.result=scheduleData
-  //e.result.push(dataSource)
+  //e.result=scheduleData
+ // e.result.push(dataSource)
 })
 
+if(this.currentevents.length>0){
+//   const returnedTarget = {...e.result,...this.currentevents.pop()}
+// e.result.push(returnedTarget)
 
+// let returnedTarget =this.currentevents.pop()
+// e.result.push(returnedTarget)
+// console.log(e.result);
+
+}
       // this.service.ListCalendarEvents().then((res:any)=>{
       //   for (const event of res.items) {
       //     let when: string = event.start.dateTime as string;
@@ -725,9 +830,11 @@ this.service.data$.subscribe(res=>{
     setInterval(() => { this.updateLiveTime(this.scheduleObj ? this.scheduleObj.timezone : 'UTC'); }, 1000);
   }
 
-  public onToolbarItemClicked(args: ClickEventArgs): void {
-   
-    switch (args.item.text) {
+ // public onToolbarItemClicked(args: ClickEventArgs): void {
+
+  public onToolbarItemClicked(args): void {
+   alert(args)
+    switch (args) {
       case 'Day':
         this.currentView = this.isTimelineView ? 'TimelineDay' : 'Day';
         break;
@@ -754,8 +861,48 @@ this.service.data$.subscribe(res=>{
         const recEventData: Record<string, any> = this.getEventData();
         this.scheduleObj.openEditor(recEventData, 'Add', true, 1);
         break;
+      case 'Today':
+        this.scheduleObj.selectedDate = new Date();
+        break;
     }
   }
+
+
+  public onToolbarItemClicked1(args): void {
+  
+    switch (args.target.value) {
+      case 'Day':
+        this.currentView = this.isTimelineView ? 'TimelineDay' : 'Day';
+        break;
+      case 'Week':
+        this.currentView = this.isTimelineView ? 'TimelineWeek' : 'Week';
+        break;
+      case 'WorkWeek':
+        this.currentView = this.isTimelineView ? 'TimelineWorkWeek' : 'WorkWeek';
+        break;
+      case 'Month':
+        this.currentView = this.isTimelineView ? 'TimelineMonth' : 'Month';
+        break;
+      case 'Year':
+        this.currentView = this.isTimelineView ? 'TimelineYear' : 'Year';
+        break;
+      case 'Agenda':
+        this.currentView = 'Agenda';
+        break;
+      case 'New Event':
+        const eventData: Record<string, any> = this.getEventData();
+        this.scheduleObj.openEditor(eventData, 'Add', true);
+        break;
+      case 'New Recurring Event':
+        const recEventData: Record<string, any> = this.getEventData();
+        this.scheduleObj.openEditor(recEventData, 'Add', true, 1);
+        break;
+      case 'Today':
+        this.scheduleObj.selectedDate = new Date();
+        break;
+    }
+  }
+
 
   private getEventData(): Record<string, any> {
     const date: Date = this.scheduleObj.selectedDate;
@@ -999,8 +1146,8 @@ this.service.data$.subscribe(res=>{
       console.log(addObj)
     
     // })
-  
-
+     this.currentevents.push(addObj)
+     
    // this.scheduleObj.addEvent()
       this.scheduleObj.addEvent(addObj);
       this.inc++
@@ -1120,12 +1267,12 @@ this.service.data$.subscribe(res=>{
   }
 
 
-  ngAfterViewInit(): void {
-  //  this.liveTimeUpdate = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Calcutta' });
-   
-  }
 }
 function token(token: any) {
+  throw new Error('Function not implemented.');
+}
+
+function detach(popupEle: HTMLElement) {
   throw new Error('Function not implemented.');
 }
 

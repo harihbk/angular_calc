@@ -117,11 +117,12 @@ export class DatatableComponent implements OnInit {
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-   // this.gridApi.showNoRowsOverlay(); // show NoRowsOverlay
+ 
     this.gridApi.setDatasource(this.dataSource);
   }
 
   dataSource: IDatasource = {
+   
     getRows: (params: IGetRowsParams) => {
       this.service.getUsers(this.gridApi.paginationGetCurrentPage()+1).subscribe(response => {
         console.log([this.gridApi.paginationGetPageSize(), this.gridApi.paginationGetCurrentPage()]);

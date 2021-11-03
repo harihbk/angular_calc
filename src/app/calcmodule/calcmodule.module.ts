@@ -34,6 +34,7 @@ import {  RecurrenceEditorAllModule } from '@syncfusion/ej2-angular-schedule';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids'; 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorService } from './token-interceptor.service';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 
 
 
@@ -63,6 +64,7 @@ import { TokenInterceptorService } from './token-interceptor.service';
       DropDownButtonAllModule, 
       SwitchAllModule, 
       ToastAllModule,
+      CalendarModule
   ],
   declarations: [CalcmoduleComponent],
   providers: [DayService, 

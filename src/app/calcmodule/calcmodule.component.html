@@ -35,14 +35,44 @@
       </div>
       <div class="overview-toolbar">
         <div style="height: 70px;width: calc(100% - 90px);">
-          <ejs-toolbar id="toolbar_options" height="70px" overflowMode="Scrollable" scrollStep="100"
+
+          <div class="row">
+
+     
+
+            <button class="today btn " id="addeventbtn"  (click)="onToolbarItemClicked('New Event')">New Event</button>
+            <button class="today btn " id="today"  (click)="onToolbarItemClicked('Today')">Today</button>
+             <select name="daygroup" id="daygroup"  (click)="onToolbarItemClicked1($event)">
+             <option value="Day">Day</option>
+             <option value="Week">Week</option>
+             <option value="WorkWeek">WorkWeek</option>
+             <option value="Month">Month</option>
+             <option value="Year">Year</option>
+             </select>
+          </div>
+          
+
+
+          <!-- <ejs-toolbar id="toolbar_options" height="70px" overflowMode="Scrollable" scrollStep="100"
             (created)="onToolbarCreated()" (clicked)="onToolbarItemClicked($event)">
             <e-items>
-              <e-item prefixIcon='e-icons e-plus' tooltipText='New Event' text='New Event'>
+              <e-item prefixIcon='e-icons e-plus' id="addeventbtn"  tooltipText='New Event' text='New Event'>
               </e-item>
+
+
+              <e-item prefixIcon='e-icons e-plus'  tooltipText='Today' text='Today'>
+              </e-item>
+
               <e-item prefixIcon='e-icons e-repeat' tooltipText='New Recurring Event' text='New Recurring Event'>
               </e-item>
-              <e-item type='Separator'></e-item>
+
+              
+                <ejs-dropdownlist id='weekFirstDay' [dataSource]='groupDays'
+                  (change)='onWeekDayChange($event)' [value]='0' [fields]='fields' popupHeight='150px'>
+                </ejs-dropdownlist>
+               -->
+
+              <!-- <e-item type='Separator'></e-item>
               <e-item prefixIcon='e-icons e-day' tooltipText='Day' text='Day'></e-item>
               <e-item prefixIcon='e-icons e-week' tooltipText='Week' text='Week'></e-item>
               <e-item prefixIcon='e-icons e-week' tooltipText='WorkWeek' text='WorkWeek'></e-item>
@@ -50,8 +80,8 @@
               </e-item>
               <e-item prefixIcon='e-icons e-month' tooltipText='Year' text='Year'></e-item>
               <e-item prefixIcon='e-icons e-agenda-date-range' tooltipText='Agenda' text='Agenda'>
-              </e-item>
-              <e-item tooltipText='Timeline Views'>
+              </e-item> -->
+              <!-- <e-item tooltipText='Timeline Views'>
                 <ng-template #template>
                   <div style="height: 46px; line-height: 23px;">
                     <div class="icon-child" style="text-align: center;">
@@ -61,9 +91,9 @@
                     <div class="text-child" style="font-size: 14px;">Timeline Views</div>
                   </div>
                 </ng-template>
-              </e-item>
-              <e-item type='Separator'></e-item>
-              <e-item tooltipText='Resource Grouping'>
+              </e-item> -->
+              <!-- <e-item type='Separator'></e-item> -->
+              <!-- <e-item tooltipText='Resource Grouping'>
                 <ng-template #template>
                   <div style="height: 46px; line-height: 23px;">
                     <div class="icon-child" style="text-align: center;">
@@ -73,8 +103,8 @@
                     <div class="text-child" style="font-size: 14px;">Grouping</div>
                   </div>
                 </ng-template>
-              </e-item>
-              <e-item tooltipText='Gridlines'>
+              </e-item> -->
+              <!-- <e-item tooltipText='Gridlines'>
                 <ng-template #template>
                   <div style="height: 46px; line-height: 23px;">
                     <div class="icon-child" style="text-align: center;">
@@ -84,8 +114,8 @@
                     <div class="text-child" style="font-size: 14px;">Gridlines</div>
                   </div>
                 </ng-template>
-              </e-item>
-              <e-item tooltipText='Row Auto Height'>
+              </e-item> -->
+              <!-- <e-item tooltipText='Row Auto Height'>
                 <ng-template #template>
                   <div style="height: 46px; line-height: 23px;">
                     <div class="icon-child" style="text-align: center;">
@@ -95,8 +125,8 @@
                     <div class="text-child" style="font-size: 14px;">Row Auto Height</div>
                   </div>
                 </ng-template>
-              </e-item>
-              <e-item tooltipText='Tooltip'>
+              </e-item> -->
+              <!-- <e-item tooltipText='Tooltip'>
                 <ng-template #template>
                   <div style="height: 46px; line-height: 23px;">
                     <div class="icon-child" style="text-align: center;">
@@ -106,8 +136,8 @@
                     <div class="text-child" style="font-size: 14px;">Tooltip</div>
                   </div>
                 </ng-template>
-              </e-item>
-              <e-item tooltipText='Allow Multi Drag'>
+              </e-item> -->
+              <!-- <e-item tooltipText='Allow Multi Drag'>
                 <ng-template #template>
                   <div style="height: 46px; line-height: 23px;">
                     <div class="icon-child" style="text-align: center;">
@@ -117,10 +147,18 @@
                     <div class="text-child" style="font-size: 14px;">Allow Multi Drag</div>
                   </div>
                 </ng-template>
-              </e-item>
-            </e-items>
-          </ejs-toolbar>
+              </e-item> -->
+            <!-- </e-items>
+            
+          </ejs-toolbar> -->
+
         </div>
+
+    
+
+
+        
+
         <div style="height:70px;width:90px;">
           <button ejs-button id="settingsBtn" iconCss="e-icons e-settings" cssClass="overview-toolbar-settings"
             iconPosition="Top" (click)="onSettingsClick($event)">Settings</button>
@@ -129,16 +167,19 @@
       <div class="overview-content">
         <div class="left-panel">
           <div class="overview-scheduler">
-            <ejs-schedule #scheduleObj cssClass='schedule-overview' height='100%' 
+<div class="row">
+  <div class="col-sm-3">
+    <ejs-calendar  [value]='dateValue' start='Year'  (change)="onClick($event)"></ejs-calendar>
+  </div>
+  <div class="col-sm-8">
+    <ejs-schedule #scheduleObj  id='schedule'  cssClass='schedule-overview' height='100%' 
               [(currentView)]="currentView" timezone='UTC' 
               [eventSettings]="eventSettings"
               (dataBinding)="onDataBinding($event)"
-              (actionBegin)="onBegin($event)" 
-             
+            
+              (actionBegin)='onActionBegin($event)'
+              (actionComplete)='onActionComplete($event)'
               >
-
-         
-
 
               <ng-template #dateHeaderTemplate let-data>
                 <div class="date-text">{{getDateHeaderText(data.date)}}</div>
@@ -234,6 +275,11 @@
                 </div>
               </ng-template>
             </ejs-schedule>
+  </div>
+</div>
+           
+
+           
             <ejs-contextmenu #menuObj cssClass='schedule-context-menu' target='.e-schedule' [items]='menuItems'
               (beforeOpen)='onContextMenuBeforeOpen($event)' (select)='onMenuItemSelect($event)'></ejs-contextmenu>
           </div>

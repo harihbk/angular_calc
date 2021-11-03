@@ -706,3 +706,15 @@
 .bootstrap-dark .schedule-overview .overview-header .overview-titlebar .title-bar-btn, .material-dark .schedule-overview .overview-header .overview-titlebar .title-bar-btn, .material .schedule-overview .overview-header .overview-titlebar .title-bar-btn {
   box-shadow: none;
 }
+
+
+#addeventbtn{
+  height: 27px !important;
+  width: 107px;
+  border: 1px solid black;
+  /* float: left; */
+  display: flex;
+  background-color: #cf2379;
+  border-color: #cf2379;
+}
+

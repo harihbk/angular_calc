@@ -15,6 +15,7 @@ import {MatCardModule} from '@angular/material/card';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 // import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 // import { GoogleLoginProvider} from "angularx-social-login";
+import {MatButtonModule} from '@angular/material/button';
 
 
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
@@ -66,7 +67,7 @@ let gapiClientConfig: NgGapiClientConfig = {
     }),
    
        BrowserModule,
-       
+       MatButtonModule
        
   ],
 
