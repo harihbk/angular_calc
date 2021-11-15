@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {
-  GoogleApiModule, 
-  GoogleApiService, 
-  GoogleAuthService, 
-  NgGapiClientConfig, 
+  GoogleApiModule,
+  GoogleApiService,
+  GoogleAuthService,
+  NgGapiClientConfig,
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from "ng-gapi";
@@ -55,17 +55,17 @@ private tokenRequestParams: any = {
 
 
   CalendarLogin(){
-   
+
     this.googleAuth.getAuth().subscribe(res=>{
-     
+
       res.grantOfflineAccess().then(ress=>{
         this.fetchToken({code : ress.code})
       })
      })
 
   }
-  
-    
+
+
   private fetchToken(params:any) {
     const requestParams = {
       ...this.tokenRequestParams,
@@ -73,7 +73,7 @@ private tokenRequestParams: any = {
     };
 
     let headers = new HttpHeaders()
-   
+
     headers.set('Accept','application/json')
 
     return new Promise((resolve,reject)=>{
@@ -81,15 +81,15 @@ private tokenRequestParams: any = {
       console.log(res)
       this.SetAccessToken  = res.access_token;
         this.SetRefreshToken = res.refresh_token
- 
+
         resolve(true)
       },err=>{
         reject(false)
       })
     })
- 
+
   }
-  
+
 
   UpdateRefreshToken(){
       let headers = new HttpHeaders()
@@ -105,10 +105,10 @@ private tokenRequestParams: any = {
 
     return this.http.post(`https://oauth2.googleapis.com/token`,body1, {headers:headers}).pipe(
       tap((res:any)=>{
-        
+
         this.SetAccessToken  = res.access_token;
-        
-      }) 
+
+      })
     ).subscribe(res=>{
 
     })
@@ -120,7 +120,7 @@ private tokenRequestParams: any = {
     });
 
     return this.http.post(`https://www.googleapis.com/calendar/v3/calendars/primary/events`,body,{headers:headers});
-    
+
   }
   DeleteCalendarEvent(Event_ID:any){
     const headers = new HttpHeaders({
@@ -130,7 +130,7 @@ private tokenRequestParams: any = {
     return this.http.delete(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${Event_ID}`,{headers:headers})
   }
   UpdateCalendarEvents(body:any , Event_ID){
- 
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.GetAccessToken}`,
       'Content-Type': 'application/json'
@@ -140,7 +140,7 @@ private tokenRequestParams: any = {
 
     return this.http.put(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${Event_ID}`,body,{headers:headers});
 
-    
+
   }
 
 
@@ -156,8 +156,10 @@ private tokenRequestParams: any = {
 
    return  this.http.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`, {headers:headers})
    .pipe(
-   
+
    tap(data=>{
+     console.log(data);
+
        this._getCalendarEvents$.next(data)
     })
    ).toPromise();

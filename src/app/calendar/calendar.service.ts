@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {
-  GoogleApiModule, 
-  GoogleApiService, 
-  GoogleAuthService, 
-  NgGapiClientConfig, 
+  GoogleApiModule,
+  GoogleApiService,
+  GoogleAuthService,
+  NgGapiClientConfig,
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from "ng-gapi";
@@ -62,26 +62,33 @@ private tokenRequestParams: any = {
      })
 
   }
-  
-    
+
+
   private fetchToken(params:any) {
     const requestParams = {
       ...this.tokenRequestParams,
       ...params
     };
 
+    console.log(requestParams);
+
+
     return new Promise((resolve,reject)=>{
       return this.http.post(`https://oauth2.googleapis.com/token`, requestParams).toPromise().then((res:any)=>{
-        this.SetAccessToken  = res.access_token;
+      console.log(res);
+
+      this.SetAccessToken  = res.access_token;
         this.SetRefreshToken = res.refresh_token;
         resolve(true)
       },err=>{
+        console.log(err);
+
         reject(false)
       })
     })
- 
+
   }
-  
+
 
   UpdateRefreshToken(){
       let headers = new HttpHeaders()
@@ -98,9 +105,9 @@ private tokenRequestParams: any = {
     return this.http.post(`https://oauth2.googleapis.com/token`,body1, {headers:headers}).pipe(
       tap((res:any)=>{
         this.SetAccessToken  = res.access_token;
-      })  
+      })
     ).subscribe(res=>{
-     
+
     })
   }
 
@@ -111,7 +118,7 @@ private tokenRequestParams: any = {
   ListCalendarEvents(){
    return this.http.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`).subscribe((res:any)=>{
      console.log(res.items);
-     
+
    return this._getCalendarEvents.next(res.items)
    });
   }
@@ -126,11 +133,11 @@ private tokenRequestParams: any = {
 
 
     return this.http.post(`https://www.googleapis.com/calendar/v3/calendars/primary/events`,body,{headers:headers});
-    
+
   }
 
   UpdateCalendarEvents(body:any , Event_ID){
- 
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.GetAccessToken}`,
       'Content-Type': 'application/json'
@@ -138,9 +145,9 @@ private tokenRequestParams: any = {
 
     return this.http.put(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${Event_ID}`,body,{headers:headers});
 
-    
+
   }
-  
+
 
   getUserData(){
     const headers = new HttpHeaders({
@@ -149,7 +156,7 @@ private tokenRequestParams: any = {
     });
     return this.http.get('https://content.googleapis.com/calendar/v3/calendars/primary/acl',{headers:headers})
   }
-  
+
 
 
 

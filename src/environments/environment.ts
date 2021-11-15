@@ -5,9 +5,9 @@
 export const environment = {
   production: false,
   APIURL    : 'https://curtainmatrix.co.uk/api/public/api',
-  Calendar_clientID : '91015722728-an8lu40u79ecj177dn3p23oa4oof2etj.apps.googleusercontent.com',
-  Calendar_ClientSecret : 'W5M7QZgHqgVg32LUXQUqvGOK',
-  CalendarAPIKEY        : 'AIzaSyCpo6dThMC6zviFLA-M7PSgNIGY7Bpybyg',
+  Calendar_clientID : '421629888233-cdqm5rdeakdjvghies922jv0036tfcpj.apps.googleusercontent.com',
+  Calendar_ClientSecret : '8rozNANkAYTYmRknYVJym9r4',
+  CalendarAPIKEY        : 'AIzaSyCO1MXI1PEXjpTVoF3zFUR3i1-BjZ4pw4k',
   Redirect_url           : 'http://localhost:4200'
 };
 

@@ -34,6 +34,7 @@ import { createElement } from '@syncfusion/ej2-base';
 
 
 let createRequest: Function = (url: string, option: AjaxOption) => {
+
   let xhttp: XMLHttpRequest = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
       if (this.readyState == 4) {
@@ -47,7 +48,7 @@ let createRequest: Function = (url: string, option: AjaxOption) => {
       }
   };
   xhttp.open("GET", url, true);
- 
+
   xhttp.setRequestHeader('Authorization', `Bearer ya29.a0ARrdaM-w5rTUoDyiuuMSHDJauHnW_fB-9UdRjjK2SueLNLfHWligkcNFUYV-z79l_LQETBuZnJdVxeb1D-XdtVBaUAoPUlZfiKKXy5HP0NvEYVYs2dz0x0O5r-1scvBJYclPk3XnA40v2KVTr2WlpvSbHMaaqg`);
   xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
   xhttp.send(option.data);
@@ -56,6 +57,7 @@ let createRequest: Function = (url: string, option: AjaxOption) => {
 
 
 let postcreateRequest: Function = (url: string, option: AjaxOption) => {
+
   let xhttp: XMLHttpRequest = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
       if (this.readyState == 4) {
@@ -69,7 +71,7 @@ let postcreateRequest: Function = (url: string, option: AjaxOption) => {
       }
   };
   xhttp.open("GET", url, true);
- 
+
   xhttp.setRequestHeader('Authorization', `Bearer ya29.a0ARrdaM94jSiCzC4WrW1C0go3GeQNW5gee13F8_2KDofheRc-jxdxBmDeBE0KSK4DfrP8y77TW6_mU0EaDscJte4GsLyApGPHjZ3MbZyYFUPZsWHibfGCi8iw-EOVtUNqiFq9bRKWllaOhkA6z7b9B9Xo78CYuA`);
   xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
   xhttp.send(option.data);
@@ -86,16 +88,16 @@ declare var moment: any;
 
 class CustomAdaptor extends ODataV4Adaptor {
   access_token: any;
-  
+
   constructor(token){
     super(token);
    this.access_token = token
   }
 
- 
- 
+
+
   beforeSend(dm: DataManager, request: XMLHttpRequest , settings) {
-    console.log(settings.type)
+
     dm.dataSource.headers = [
       { Authorization: 'Bearer '+this.access_token}
     ];
@@ -106,7 +108,7 @@ class CustomAdaptor extends ODataV4Adaptor {
     let original: Object[] = super.processResponse.apply(this, arguments);
     return original;
   }
-  
+
 
 }
 
@@ -183,7 +185,7 @@ export class CalcmoduleComponent implements OnInit {
     { text: 'Month', value: 3 },
     { text: 'Year', value: 4 },
     { text: 'Agenda', value: 5 },
-   
+
   ];
 
 
@@ -286,8 +288,8 @@ export class CalcmoduleComponent implements OnInit {
   ];
   apicalendarId: any;
   apipublicKey: any;
- 
-  
+
+
   // private calendarId = '5105trob9dasha31vuqek6qgp0@group.calendar.google.com';
   // private publicKey = 'AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg';
   // private dataManger: DataManager = new DataManager({
@@ -308,11 +310,25 @@ export class CalcmoduleComponent implements OnInit {
 
 
   public selectedDate: Date = new Date(2021, 10, 17);
-  private calendarId = environment.Calendar_clientID;
-  private publicKey =  environment.CalendarAPIKEY;
-  
+ // private calendarId ='harihbk95@gmail.com';
+ // private publicKey =  environment.CalendarAPIKEY;
 
-  private dataManger: DataManager = new DataManager({
+  public calendarId = "syncfusionjs2scheduler@gmail.com";
+  public publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
+
+  public dataManger = new DataManager({
+    url:
+      "https://www.googleapis.com/calendar/v3/calendars/primary/events" ,
+      headers: [
+        { 'Accept': 'application/json' },
+        { 'Content-Type': 'application/json' },
+        { 'Authorization': 'Bearer '+this.service.GetAccessToken }
+      ],
+    adaptor: new WebApiAdaptor(),
+    crossDomain: true
+  });
+
+  private dataManger123: DataManager = new DataManager({
    // url:`https://www.googleapis.com/calendar/v3/calendars/primary/events`,
     url: 'https://www.googleapis.com/calendar/v3/calendars/primary/events',
     crossDomain : true,
@@ -320,14 +336,14 @@ export class CalcmoduleComponent implements OnInit {
           adaptor: new WebApiAdaptor({
             batch:'events',
           }),
-        
+
      // adaptor: new RemoteSaveAdaptor(),
      // adaptor : new UrlAdaptor,
     //    adaptor: new CustomDataAdaptor({
     //    getData: function (option: AjaxOption) {
     //          createRequest(baseUrl + '/events', option);
     //      },
-    //  }), 
+    //  }),
       //   adaptor: new ODataV4Adaptor,
           headers: [
             { 'Accept': 'application/json' },
@@ -341,11 +357,8 @@ export class CalcmoduleComponent implements OnInit {
   // };
   public dataSource: Object[];
   public date: Date = new Date(2021, 10, 14);
-  public eventSettings: EventSettingsModel = { dataSource:[]
-  };
-
-  
- // public eventSettings: EventSettingsModel = { dataSource: this.dataManger };
+ // public eventSettings: EventSettingsModel = { dataSource:[]};
+  public eventSettings: EventSettingsModel = { dataSource: this.dataManger };
   userdata: any;
   modifieduserdata: any;
   temp: any = true;
@@ -354,14 +367,14 @@ export class CalcmoduleComponent implements OnInit {
 
 
 
-  
+
 constructor(
   public service : CalendarService,
   private cd: ChangeDetectorRef,
   public http:HttpClient,
-  
+
 ){
- 
+
 }
 
 onClick(ev){
@@ -376,20 +389,20 @@ ngAfterViewInit() {
    // alert($(".e-tbar-btn").attr('class'))
 
   },1000)
- 
+
 }
 
 
 onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
- 
+
   let scheduleElement: HTMLElement = document.getElementById('schedule') as HTMLElement;
   let userIconEle = scheduleElement.querySelectorAll('.e-schedule-toolbar-container .e-schedule-toolbar');
   userIconEle.forEach(function(a){
-     console.log(a.querySelector('.e-schedule-toolbar')) 
+     console.log(a.querySelector('.e-schedule-toolbar'))
   })
   console.log(userIconEle)
   if (args.requestType === 'toolbarItemRendering') {
-    
+
       let userIconItem: any = {
           align: 'Right', prefixIcon: 'user-icon', text: 'Nancy', cssClass: 'e-schedule-user-icon'
       };
@@ -439,7 +452,7 @@ onActionComplete(args: ActionEventArgs):void {
 
 
 
-onBegin(args: any): void {
+onBegi123n(args: any): void {
 
 
 
@@ -474,7 +487,7 @@ onBegin(args: any): void {
   }
 
    var params = JSON.stringify(this.modifieduserdata);
-  
+
     http.send(params);
 
 
@@ -487,15 +500,15 @@ onBegin(args: any): void {
     //   "https://www.googleapis.com/calendar/v3/calendars/primary/events",
     //   "POST",
     //   false,
- 
+
     // );
     // ajax.data = JSON.stringify(args.data[0]);
-   
+
     // ajax.onSuccess = (data: any) => {
     //   schObj.eventSettings.dataSource = JSON.parse(data);
     // };
-  
-   
+
+
     // ajax.send();
 
 
@@ -514,11 +527,11 @@ onBegin(args: any): void {
       http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
       http.onreadystatechange = function(data:any) {//Call a function when the state changes.
           if(http.readyState == 4 && http.status == 200) {
-       
+
                schObj.eventSettings.dataSource = JSON.parse(http.responseText);
           }
       }
-   
+
       let putdata = {
       "end": {
         "dateTime": dat.EndTime
@@ -539,7 +552,7 @@ onBegin(args: any): void {
 
     // let dat =args.data;
     // console.log(dat);
-    
+
     // let schObj = (document.querySelector(".e-schedule") as any)
     //   .ej2_instances[0];
     // const ajax = new Ajax(
@@ -598,7 +611,7 @@ ngOnInit(){
 
 
   abc() {
-   
+
 //  this.service.ListCalendarEvents().subscribe((res:any)=>{
 //   for (const event of res.items) {
 //     let when: string = event.start.dateTime as string;
@@ -622,7 +635,7 @@ ngOnInit(){
   }
 
 
-   
+
 
    onDataBinding(e: Record<string, any>): void {
     const items: Record<string, any>[] = (
@@ -630,11 +643,11 @@ ngOnInit(){
     ).items;
 
 
-   
+
     const scheduleData: Record<string, any>[] = [];
     // if (items.length > 0) {
-      
-      const date: Date = new Date(2021, 10, 14);
+
+      const date: Date = new Date(2021, 11, 15);
      var dataSource =  {
              Id:'12',
             Subject: 'nila',
@@ -642,53 +655,53 @@ ngOnInit(){
             EndTime: new Date(),
             IsAllDay: false,
     };
-  
-   
-    let currentViewDates: Date[] = this.scheduleObj.getCurrentViewDates() as Date[]; 
-    let startDate: Date = currentViewDates[0] as Date; 
-    let endDate: Date = currentViewDates[currentViewDates.length - 1] as Date; 
-    console.log(startDate); 
-    console.log(endDate); 
+
+
+    let currentViewDates: Date[] = this.scheduleObj.getCurrentViewDates() as Date[];
+    let startDate: Date = currentViewDates[0] as Date;
+    let endDate: Date = currentViewDates[currentViewDates.length - 1] as Date;
+    console.log(startDate);
+    console.log(endDate);
 
   // this.service.getData().pipe( tap((res:any)=>{
-        
+
   //   console.log(res);
-  //   e.result.push(dataSource)
-    
+  //
+
   // }) ).subscribe(res=>{
   //   e.result.push(dataSource)
   // })
-  
-  
-this.service.data$.subscribe(res=>{
-  //console.log(res);
-  for (const event of res.items) {
-        let when: string = event.start.dateTime as string;
-        let start: string = event.start.dateTime as string;
-        let end: string = event.end.dateTime as string;
-        if (!when) {
-          when = event.start.date as string;
-          start = event.start.date as string;
-          end = event.end.date as string;
-        }
-        scheduleData.push({
-          Id: event.id,
-          Subject: event.summary,
-          StartTime: new Date(start),
-          EndTime: new Date(end),
-          IsAllDay: !event.start.dateTime,
-        });
-        e.result.push({
-          Id: event.id,
-          Subject: event.summary,
-          StartTime: new Date(start),
-          EndTime: new Date(end),
-          IsAllDay: !event.start.dateTime,
-        })
-      }
-  //e.result=scheduleData
- // e.result.push(dataSource)
-})
+
+
+// this.service.data$.subscribe(res=>{
+
+//   for (const event of res.items) {
+//         let when: string = event.start.dateTime as string;
+//         let start: string = event.start.dateTime as string;
+//         let end: string = event.end.dateTime as string;
+//         if (!when) {
+//           when = event.start.date as string;
+//           start = event.start.date as string;
+//           end = event.end.date as string;
+//         }
+//         scheduleData.push({
+//           Id: event.id,
+//           Subject: event.summary,
+//           StartTime: new Date(start),
+//           EndTime: new Date(end),
+//           IsAllDay: !event.start.dateTime,
+//         });
+//         // e.result.push({
+//         //   Id: event.id,
+//         //   Subject: event.summary,
+//         //   StartTime: new Date(start),
+//         //   EndTime: new Date(end),
+//         //   IsAllDay: !event.start.dateTime,
+//         // })
+//       }
+//   //e.result=scheduleData
+//  // e.result.push(dataSource)
+// })
 
 if(this.currentevents.length>0){
 //   const returnedTarget = {...e.result,...this.currentevents.pop()}
@@ -718,38 +731,40 @@ if(this.currentevents.length>0){
       //     });
       //   }
       //   console.log(dataSource);
-        
+
       //   e.result.push(dataSource)
       //  }).then(res=>{
       //   console.log(e)
       //   e.result.push(dataSource)
       //  })
-      
+
        // e.result = scheduleData;
-      
 
 
-      // for (const event of items) {
-      //   let when: string = event.start.dateTime as string;
-      //   let start: string = event.start.dateTime as string;
-      //   let end: string = event.end.dateTime as string;
-      //   if (!when) {
-      //     when = event.start.date as string;
-      //     start = event.start.date as string;
-      //     end = event.end.date as string;
-      //   }
-      //   scheduleData.push({
-      //     Id: event.id,
-      //     Subject: event.summary,
-      //     StartTime: new Date(start),
-      //     EndTime: new Date(end),
-      //     IsAllDay: !event.start.dateTime,
-      //   });
-      // }
-    // }
-    // e.result = scheduleData;
+
+      for (const event of items) {
+        let when: string = event.start.dateTime as string;
+        let start: string = event.start.dateTime as string;
+        let end: string = event.end.dateTime as string;
+        if (!when) {
+          when = event.start.date as string;
+          start = event.start.date as string;
+          end = event.end.date as string;
+        }
+        console.log([new Date(start),new Date(end),event.summary,event.id]);
+
+        scheduleData.push({
+          Id: event.id,
+          Subject: event.summary,
+          StartTime: new Date(start),
+          EndTime: new Date(end),
+          IsAllDay: !event.start.dateTime,
+        });
+      }
+   // }
+   // e.result = scheduleData;
     // console.log(scheduleData);
-    
+
   }
 
   public ngAfterViewChecked(): void {
@@ -869,7 +884,7 @@ if(this.currentevents.length>0){
 
 
   public onToolbarItemClicked1(args): void {
-  
+
     switch (args.target.value) {
       case 'Day':
         this.currentView = this.isTimelineView ? 'TimelineDay' : 'Day';
@@ -1035,7 +1050,7 @@ if(this.currentevents.length>0){
 
   public onTimezoneChange(args: ChangeEventArgs): void {
     this.scheduleObj.timezone = args.value as string;
-   
+
     this.updateLiveTime(this.scheduleObj.timezone);
     document.querySelector('.schedule-overview #timezoneBtn').innerHTML =
       '<span class="e-btn-icon e-icons e-time-zone e-icon-left"></span>' + args.itemData.text;
@@ -1118,7 +1133,7 @@ if(this.currentevents.length>0){
   }
 
   public buttonClickActions(e: Event): void {
-    
+
     const quickPopup: HTMLElement = closest(e.target as HTMLElement, '.e-quick-popup-wrapper') as HTMLElement;
     const getSlotData: CallbackFunction = (): Record<string, any> => {
       let cellDetails: CellClickEventArgs = this.scheduleObj.getCellDetails(this.scheduleObj.getSelectedElements());
@@ -1137,21 +1152,21 @@ if(this.currentevents.length>0){
       addObj.CalendarId = ((quickPopup.querySelector('#eventType') as EJ2Instance).ej2_instances[0] as DropDownListComponent).value;
       return addObj;
     };
-  
+
     if ((e.target as HTMLElement).id === 'add') {
       const addObj: Record<string, any> = getSlotData();
       // console.log(getSlotData());
       // alert('sdf')
     // this.service.InsertCalendarEvents(addObj).subscribe(res=>{
       console.log(addObj)
-    
+
     // })
      this.currentevents.push(addObj)
-     
+
    // this.scheduleObj.addEvent()
       this.scheduleObj.addEvent(addObj);
       this.inc++
-      
+
     } else if ((e.target as HTMLElement).id === 'delete') {
       const eventDetails: Record<string, any> = this.scheduleObj.activeEventData.event as Record<string, any>;
       let currentAction: CurrentAction;
@@ -1209,7 +1224,7 @@ if(this.currentevents.length>0){
     if (this.selectedTarget.classList.contains('e-appointment')) {
       eventObj = this.scheduleObj.getEventDetails(this.selectedTarget) as { [key: string]: number };
     }
-   
+
     switch (selectedMenuItem) {
       case 'Today':
         this.scheduleObj.selectedDate = new Date();
