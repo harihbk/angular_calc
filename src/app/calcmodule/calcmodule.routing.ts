@@ -6,9 +6,9 @@ const routes: Routes = [
   {
     path : '',
     component : CalcmoduleComponent,
-    // resolve:{
-    //   data : CalendarResolver
-    // }
+    resolve:{
+      data : CalendarResolver
+    }
    },
 ];
 

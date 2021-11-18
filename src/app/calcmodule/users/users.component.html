@@ -1,0 +1,59 @@
+ <!-- <div id="multiuserview" class="gridtable">
+  <table >
+      <thead>
+          <tr>
+              <th  style="border: none;color: rgb(92, 91, 91);font-weight:100; display: hidden; font-size: 10px;">
+                  <p style="font-weight: 600;margin: 0;float: right;">GMT+5:30</p>
+              </th>
+              <ng-container *ngFor="let user of users" >
+
+                  <th *ngFor="let date of dynamicDate" [ngStyle]="{'background-color': user.tablecolor}" style="font-size: 10px;text-align:center;border:none;color:rgb(24, 3, 3);border-top-left-radius: 20px;border-top-right-radius: 20px;border-spacing: 15px;">
+                      <p width="1" style="color:rgb(27, 5, 5);">{{ user.name }}</p>
+                      <p  style="margin-top: -15px;margin-bottom: -5px;">{{ date.date |date:'d EE' }}</p>
+                      <span class="map_icons" ><i class="fas fa-map-marked-alt"></i></span>
+                  </th>
+
+              </ng-container>
+          </tr>
+      </thead>
+      <tbody>
+
+
+          <tr *ngFor="let slot of items">
+              <td style="border-left:none !important;border: none;" width="20" class="timeofdays" >
+                  <p id="weektime"> {{ slot }} </p>
+              </td>
+              <ng-container *ngFor=" let multi of users">
+                  <td *ngFor="let date of dynamicDate" style="padding: 0;" >
+                    123
+                  </td>
+              </ng-container>
+          </tr>
+
+
+
+
+      </tbody>
+  </table>
+</div>
+ -->
+
+ <ejs-schedule width="100%" height="550px" [selectedDate]="selectedDate" [views]="views"
+ [currentView]='currentView' [eventSettings]="eventSettings" [group]='group'
+ [showHeaderBar]='showHeaderBar'
+ (renderCell)="onRenderCell($event)"
+ >
+
+ <e-resources>
+  <e-resource field="DoctorId" title="Conference" name="Conferences"
+    [dataSource]="conferenceDataSource" [allowMultiple]="allowMultipleCategory"
+    textField='text' idField='id' colorField='color' workDaysField='workDays'>
+  </e-resource>
+</e-resources>
+
+ <ng-template #dateHeaderTemplate let-data [dataSource]="conferenceDataSource" >
+  <div class="date-text">{{getDateHeaderText(data.date)}} </div>
+
+</ng-template>
+
+</ejs-schedule>

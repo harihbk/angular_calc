@@ -22,8 +22,8 @@ export class CalendarResolver implements Resolve<boolean> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>{
     this.service.UpdateRefreshToken()
-    this.service.ListCalendarEvents()
-    return this.service.getData();
+   // this.service.ListCalendarEvents()
+    return of(true);
    // return of(true);
   }
 }

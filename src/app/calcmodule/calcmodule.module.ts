@@ -31,10 +31,11 @@ import { NumericTextBoxAllModule, TextBoxAllModule } from '@syncfusion/ej2-angul
 import {  RecurrenceEditorAllModule } from '@syncfusion/ej2-angular-schedule';
 
 
-import { GridAllModule } from '@syncfusion/ej2-angular-grids'; 
+import { GridAllModule } from '@syncfusion/ej2-angular-grids';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorService } from './token-interceptor.service';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { UsersComponent } from './users/users.component';
 
 
 
@@ -45,31 +46,31 @@ import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
     ScheduleAllModule,
     ButtonModule,
     ScheduleAllModule,
-    RecurrenceEditorAllModule,   
-    NumericTextBoxAllModule, 
-    TextBoxAllModule, 
-    DatePickerAllModule, 
-    TimePickerAllModule, 
-    DateTimePickerAllModule, 
-    CheckBoxAllModule,   
+    RecurrenceEditorAllModule,
+    NumericTextBoxAllModule,
+    TextBoxAllModule,
+    DatePickerAllModule,
+    TimePickerAllModule,
+    DateTimePickerAllModule,
+    CheckBoxAllModule,
     ToolbarAllModule,
     GridAllModule,
-     ContextMenuAllModule, 
+     ContextMenuAllModule,
      MaskedTextBoxModule,
-      UploaderAllModule, 
-      DropDownListAllModule, 
-      MultiSelectAllModule,   
-      TreeViewModule, 
-      ButtonAllModule, 
-      DropDownButtonAllModule, 
-      SwitchAllModule, 
+      UploaderAllModule,
+      DropDownListAllModule,
+      MultiSelectAllModule,
+      TreeViewModule,
+      ButtonAllModule,
+      DropDownButtonAllModule,
+      SwitchAllModule,
       ToastAllModule,
       CalendarModule
   ],
-  declarations: [CalcmoduleComponent],
-  providers: [DayService, 
-    WeekService, 
-    WorkWeekService, 
+  declarations: [CalcmoduleComponent,UsersComponent],
+  providers: [DayService,
+    WeekService,
+    WorkWeekService,
     MonthService,
     AgendaService,
     MonthAgendaService,

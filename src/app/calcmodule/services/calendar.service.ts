@@ -23,6 +23,9 @@ export class CalendarService {
 
   public _getCalendarEvents$: Subject<any> = new BehaviorSubject<Object>(null);
   private _data: BehaviorSubject<any> = new BehaviorSubject(null);
+  public schedularobj = new Subject()
+
+
 
 constructor(
   public http:HttpClient,

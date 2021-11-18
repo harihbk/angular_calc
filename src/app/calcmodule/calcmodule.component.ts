@@ -27,90 +27,12 @@ import { Ajax } from "@syncfusion/ej2-base";
 import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { classList } from '@syncfusion/ej2-base';
-import * as $ from 'jquery';
 import { Popup } from '@syncfusion/ej2-popups';
 import { createElement } from '@syncfusion/ej2-base';
-
-
-
-let createRequest: Function = (url: string, option: AjaxOption) => {
-
-  let xhttp: XMLHttpRequest = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-      if (this.readyState == 4) {
-          let request: Object = extend({}, option, { httpRequest: xhttp });
-          if ((xhttp.status >= 200 && xhttp.status <= 299) || xhttp.status === 304) {
-              let data: Object = JSON.parse(xhttp.responseText);
-              option.onSuccess(data, request);
-          } else {
-              option.onFailure(request);
-          }
-      }
-  };
-  xhttp.open("GET", url, true);
-
-  xhttp.setRequestHeader('Authorization', `Bearer ya29.a0ARrdaM-w5rTUoDyiuuMSHDJauHnW_fB-9UdRjjK2SueLNLfHWligkcNFUYV-z79l_LQETBuZnJdVxeb1D-XdtVBaUAoPUlZfiKKXy5HP0NvEYVYs2dz0x0O5r-1scvBJYclPk3XnA40v2KVTr2WlpvSbHMaaqg`);
-  xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-  xhttp.send(option.data);
-};
-
-
-
-let postcreateRequest: Function = (url: string, option: AjaxOption) => {
-
-  let xhttp: XMLHttpRequest = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-      if (this.readyState == 4) {
-          let request: Object = extend({}, option, { httpRequest: xhttp });
-          if ((xhttp.status >= 200 && xhttp.status <= 299) || xhttp.status === 304) {
-              let data: Object = JSON.parse(xhttp.responseText);
-              option.onSuccess(data, request);
-          } else {
-              option.onFailure(request);
-          }
-      }
-  };
-  xhttp.open("GET", url, true);
-
-  xhttp.setRequestHeader('Authorization', `Bearer ya29.a0ARrdaM94jSiCzC4WrW1C0go3GeQNW5gee13F8_2KDofheRc-jxdxBmDeBE0KSK4DfrP8y77TW6_mU0EaDscJte4GsLyApGPHjZ3MbZyYFUPZsWHibfGCi8iw-EOVtUNqiFq9bRKWllaOhkA6z7b9B9Xo78CYuA`);
-  xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-  xhttp.send(option.data);
-};
-
-
-
-
-
-let baseUrl: string = "https://www.googleapis.com/calendar/v3/calendars/primary";
+import { Subject } from 'rxjs';
 
 
 declare var moment: any;
-
-class CustomAdaptor extends ODataV4Adaptor {
-  access_token: any;
-
-  constructor(token){
-    super(token);
-   this.access_token = token
-  }
-
-
-
-  beforeSend(dm: DataManager, request: XMLHttpRequest , settings) {
-
-    dm.dataSource.headers = [
-      { Authorization: 'Bearer '+this.access_token}
-    ];
-   // let url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
-    // dm.dataSource.url = url;
-  }
-  processResponse(): Object {
-    let original: Object[] = super.processResponse.apply(this, arguments);
-    return original;
-  }
-
-
-}
 
 @Component({
   selector: 'app-calcmodule',
@@ -135,6 +57,7 @@ export class CalcmoduleComponent implements OnInit {
   @ViewChild('dragSwitch') dragSwitch: SwitchComponent;
   @ViewChild('el') span: QueryList<any>;
   public dateValue: Object = new Date();
+
 
 
   public showFileList = false;
@@ -164,6 +87,9 @@ export class CalcmoduleComponent implements OnInit {
   public fields: Record<string, any> = { text: 'text', value: 'value' };
   public calendarFields: Record<string, any> = { text: 'CalendarText', value: 'CalendarId' };
   public dayStartHourValue: Date = new Date(new Date().setHours(0, 0, 0));
+
+
+
   public dayEndHourValue: Date = new Date(new Date().setHours(23, 59, 59));
   public workStartHourValue: Date = new Date(new Date().setHours(9, 0, 0));
   public workEndHourValue: Date = new Date(new Date().setHours(18, 0, 0));
@@ -188,6 +114,9 @@ export class CalcmoduleComponent implements OnInit {
 
   ];
 
+  public show = true;
+
+  public user = [{name:"Theo  ",tablecolor:'#ff7a91'},{name:"Mat",tablecolor:'#7f7aff'},{name:"Raj",tablecolor:'#c3bc36'},{name:"Paul",tablecolor:'#cd7bea'},{name:"Selva",tablecolor:'#84ecb1'},{name:"David",tablecolor:'#e6928c'},{name:"Davibillad",tablecolor:'#e6928c'}];;
 
 
 
@@ -290,19 +219,6 @@ export class CalcmoduleComponent implements OnInit {
   apipublicKey: any;
 
 
-  // private calendarId = '5105trob9dasha31vuqek6qgp0@group.calendar.google.com';
-  // private publicKey = 'AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg';
-  // private dataManger: DataManager = new DataManager({
-  //   url:
-  //     'https://www.googleapis.com/calendar/v3/calendars/primary/events',
-  //   adaptor: new WebApiAdaptor(),
-  //   //adaptor:this.createAdaptor(),
-  //   crossDomain: true,
-  // });
-
-
-
-
 
 
 
@@ -312,9 +228,6 @@ export class CalcmoduleComponent implements OnInit {
   public selectedDate: Date = new Date(2021, 10, 17);
  // private calendarId ='harihbk95@gmail.com';
  // private publicKey =  environment.CalendarAPIKEY;
-
-  public calendarId = "syncfusionjs2scheduler@gmail.com";
-  public publicKey = "AIzaSyD76zjMDsL_jkenM5AAnNsORypS1Icuqxg";
 
   public dataManger = new DataManager({
     url:
@@ -328,36 +241,9 @@ export class CalcmoduleComponent implements OnInit {
     crossDomain: true
   });
 
-  private dataManger123: DataManager = new DataManager({
-   // url:`https://www.googleapis.com/calendar/v3/calendars/primary/events`,
-    url: 'https://www.googleapis.com/calendar/v3/calendars/primary/events',
-    crossDomain : true,
-       //  adaptor: new CustomAdaptor(this.service.GetAccessToken),
-          adaptor: new WebApiAdaptor({
-            batch:'events',
-          }),
 
-     // adaptor: new RemoteSaveAdaptor(),
-     // adaptor : new UrlAdaptor,
-    //    adaptor: new CustomDataAdaptor({
-    //    getData: function (option: AjaxOption) {
-    //          createRequest(baseUrl + '/events', option);
-    //      },
-    //  }),
-      //   adaptor: new ODataV4Adaptor,
-          headers: [
-            { 'Accept': 'application/json' },
-            { 'Content-Type': 'application/json' },
-            { 'Authorization': 'Bearer '+this.service.GetAccessToken }
-          ],
-
-  })
-  // public eventSettings: EventSettingsModel = {
-  //   dataSource: []
-  // };
   public dataSource: Object[];
   public date: Date = new Date(2021, 10, 14);
- // public eventSettings: EventSettingsModel = { dataSource:[]};
   public eventSettings: EventSettingsModel = { dataSource: this.dataManger };
   userdata: any;
   modifieduserdata: any;
@@ -374,7 +260,7 @@ constructor(
   public http:HttpClient,
 
 ){
-
+   console.log(  this.intl.formatDate(this.dayStartHourValue, { skeleton: 'Hm' }));
 }
 
 onClick(ev){
@@ -383,31 +269,251 @@ onClick(ev){
  console.log(ev.value)
 }
 
-ngAfterViewInit() {
-  setTimeout(function(){
-    //$(".e-btn-icon").click()
-   // alert($(".e-tbar-btn").attr('class'))
 
-  },1000)
-
-}
 
 
 onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
 
-  let scheduleElement: HTMLElement = document.getElementById('schedule') as HTMLElement;
-  let userIconEle = scheduleElement.querySelectorAll('.e-schedule-toolbar-container .e-schedule-toolbar');
-  userIconEle.forEach(function(a){
-     console.log(a.querySelector('.e-schedule-toolbar'))
-  })
-  console.log(userIconEle)
-  if (args.requestType === 'toolbarItemRendering') {
 
-      let userIconItem: any = {
-          align: 'Right', prefixIcon: 'user-icon', text: 'Nancy', cssClass: 'e-schedule-user-icon'
+  if (args.requestType === "eventCreate") {
+    args.cancel = true;
+    var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
+    var resource;
+    if (!isNullOrUndefined(app.RecurrenceRule)) {
+      resource = {
+        summary: app.Subject,
+        location: app.Location,
+        start: {
+          dateTime: app.StartTime,
+          timeZone: "UTC"
+        },
+        end: {
+          dateTime: app.EndTime,
+          timeZone: "UTC"
+        },
+        recurrence: [
+          "RRULE:" + app.RecurrenceRule,
+        ]
       };
-      args.items.push(userIconItem);
+    } else {
+      resource = {
+        summary: app.Subject,
+        location: app.Location,
+        start: {
+          dateTime: app.StartTime,
+          timeZone: "UTC"
+        },
+        end: {
+          dateTime: app.EndTime,
+          timeZone: "UTC"
+        }
+      };
+    }
+
+
+
+
+      let schObj = (document.querySelector(".e-schedule") as any)
+      .ej2_instances[0]
+      var http = new XMLHttpRequest();
+      var url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
+      http.open('POST', url, true);
+      //Send the proper header information along with the request
+      http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+      http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+        schObj.refreshEvents()
+
+      }
+      }
+      this.userdata =args.data[0];
+      console.log(this.userdata );
+      this.modifieduserdata = {
+      "end": {
+      "dateTime": this.userdata.EndTime
+      },
+      "start": {
+      "dateTime":  this.userdata.StartTime
+      },
+      "summary": this.userdata.Subject
+      }
+      var params = JSON.stringify(this.modifieduserdata);
+      http.send(params);
   }
+
+
+
+
+  if (args.requestType === "eventChange") {
+
+    args.cancel = true;
+    var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
+    if (!isNullOrUndefined(app.RecurrenceRule)) {
+      resource = {
+        id: app.Id,
+        summary: app.Subject,
+        location: app.Location,
+        start: {
+          dateTime: app.StartTime,
+          timeZone: "UTC"
+        },
+        end: {
+          dateTime: app.EndTime,
+          timeZone: "UTC"
+        },
+        recurrence: [
+          "RRULE:" + app.RecurrenceRule,
+        ]
+      };
+    } else {
+      resource = {
+        id: app.Id,
+        summary: app.Subject,
+        location: app.Location,
+        start: {
+          dateTime: app.StartTime,
+          timeZone: "UTC"
+        },
+        end: {
+          dateTime: app.EndTime,
+          timeZone: "UTC"
+        }
+      };
+
+
+
+
+
+
+      let schObj = (document.querySelector(".e-schedule") as any)
+      .ej2_instances[0]
+      var http = new XMLHttpRequest();
+      var url = `https://www.googleapis.com/calendar/v3/calendars/primary/events/${ resource.id }`;
+      http.open('UPDATE', url, true);
+      //Send the proper header information along with the request
+      http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+      http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+        schObj.refreshEvents()
+      }
+      }
+
+      var params = JSON.stringify(resource);
+      http.send(params);
+
+
+
+    }
+
+
+
+          let schObj = (document.querySelector(".e-schedule") as any)
+          .ej2_instances[0]
+      var http = new XMLHttpRequest();
+      let dat =args.data;
+      var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+      http.open('PUT', url, true);
+      //Send the proper header information along with the request
+      http.setRequestHeader('Accept',  'application/json');
+      http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+      http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+          if(http.readyState == 4 && http.status == 200) {
+            schObj.refreshEvents();
+          }
+      }
+
+
+      var params = JSON.stringify(resource);
+
+      http.send(params);
+
+  }
+
+
+
+
+
+
+  if (args.requestType === "eventRemove") {
+    args.cancel = true;
+    var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
+    if (isNullOrUndefined(app.occurrence)) {
+      let resource = {
+        id: app.Id,
+        summary: app.Subject,
+        location: app.Location,
+        start: {
+          dateTime: app.StartTime
+        },
+        end: {
+          dateTime: app.EndTime
+        }
+      };
+
+
+
+      let schObj = (document.querySelector(".e-schedule") as any)
+      .ej2_instances[0]
+  var http = new XMLHttpRequest();
+  let dat =args.data;
+  var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+  http.open('DELETE', url, true);
+  //Send the proper header information along with the request
+  http.setRequestHeader('Accept',  'application/json');
+  http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+  http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 204) {
+        schObj.refreshEvents();
+      }
+  }
+  var params = JSON.stringify(resource);
+  http.send(params);
+
+
+    } else {
+      resource = {
+        recurringEventId: app.parent.Id,
+        originalStartTime: {
+          dateTime: app.occurrence.StartTime,
+          timeZone: "UTC"
+        },
+        start: {
+          dateTime: app.occurrence.StartTime,
+          timeZone: "UTC"
+        },
+        end: {
+          dateTime: app.occurrence.EndTime,
+          timeZone: "UTC"
+        },
+        status: "cancelled"
+      };
+
+
+
+
+      let schObj = (document.querySelector(".e-schedule") as any)
+      .ej2_instances[0]
+  var http = new XMLHttpRequest();
+  let dat =args.data;
+  var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+  http.open('DELETE', url, true);
+  //Send the proper header information along with the request
+  http.setRequestHeader('Accept',  'application/json');
+  http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+  http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+        schObj.refreshEvents();
+      }
+  }
+  var params = JSON.stringify(resource);
+  http.send(params);
+
+    }
+  }
+
+
+
+
 }
 
 
@@ -452,188 +558,9 @@ onActionComplete(args: ActionEventArgs):void {
 
 
 
-onBegi123n(args: any): void {
-
-
-
-
-  let headers = new Headers();
-  if (args.requestType === "eventCreate") {
-
-    let schObj = (document.querySelector(".e-schedule") as any)
-       .ej2_instances[0]
-    var http = new XMLHttpRequest();
-    var url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
-    http.open('POST', url, true);
-    //Send the proper header information along with the request
-    http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
-    http.onreadystatechange = function(data:any) {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-            // console.log(JSON.parse(http.responseText));
-            console.log(schObj.eventSettings.dataSource)
-            // schObj.eventSettings.dataSource = JSON.parse(http.responseText);
-        }
-    }
-    this.userdata =args.data[0];
-   console.log(this.userdata );
-   this.modifieduserdata = {
-    "end": {
-      "dateTime": this.userdata.EndTime
-    },
-    "start": {
-      "dateTime":  this.userdata.StartTime
-    },
-    "summary": this.userdata.Subject
-  }
-
-   var params = JSON.stringify(this.modifieduserdata);
-
-    http.send(params);
-
-
-
-
-
-    // let schObj = (document.querySelector(".e-schedule") as any)
-    //   .ej2_instances[0];
-    // const ajax = new Ajax(
-    //   "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-    //   "POST",
-    //   false,
-
-    // );
-    // ajax.data = JSON.stringify(args.data[0]);
-
-    // ajax.onSuccess = (data: any) => {
-    //   schObj.eventSettings.dataSource = JSON.parse(data);
-    // };
-
-
-    // ajax.send();
-
-
-
-  } else if (args.requestType === "eventChange") {
-
-
-          let schObj = (document.querySelector(".e-schedule") as any)
-          .ej2_instances[0]
-      var http = new XMLHttpRequest();
-     let dat =args.data;
-      var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${dat.Id}`;
-      http.open('PUT', url, true);
-      //Send the proper header information along with the request
-      http.setRequestHeader('Accept',  'application/json');
-      http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
-      http.onreadystatechange = function(data:any) {//Call a function when the state changes.
-          if(http.readyState == 4 && http.status == 200) {
-
-               schObj.eventSettings.dataSource = JSON.parse(http.responseText);
-          }
-      }
-
-      let putdata = {
-      "end": {
-        "dateTime": dat.EndTime
-      },
-      "start": {
-        "dateTime":  dat.StartTime
-      },
-      "summary": dat.Subject
-      }
-
-      var params = JSON.stringify(putdata);
-
-      http.send(params);
-
-      this.workWeek.refresh();
-      this.resources.refresh();
-
-
-    // let dat =args.data;
-    // console.log(dat);
-
-    // let schObj = (document.querySelector(".e-schedule") as any)
-    //   .ej2_instances[0];
-    // const ajax = new Ajax(
-    //   `https://www.googleapis.com/calendar/v3/calendars/primary/events/${dat.Id}`,
-    //   "put",
-    //   false
-    // );
-    // ajax.httpRequest.setRequestHeader('Authorization','sdf')
-    // ajax.data = JSON.stringify(args.data);
-    // ajax.onSuccess = (data: any) => {
-    //   schObj.eventSettings.dataSource = JSON.parse(data);
-    // };
-    // ajax.send();
-
-
-
-  } else if (args.requestType === "eventRemove") {
-    let schObj = (document.querySelector(".e-schedule") as any)
-      .ej2_instances[0];
-    const ajax = new Ajax(
-      "http://localhost:54738/Home/Delete",
-      "POST",
-      false
-    );
-    ajax.data = JSON.stringify(args.data[0]);
-    ajax.onSuccess = (data: any) => {
-      schObj.eventSettings.dataSource = JSON.parse(data);
-    };
-    ajax.send();
-  }
-}
-
-
-
-onBound(args: any): void {
-  if (this.temp) {
-
-    let schObj = (document.querySelector(".e-schedule") as any)
-      .ej2_instances[0];
-    const ajax = new Ajax(
-      "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-      "GET",
-      false
-    );
-    ajax.onSuccess = (data: any) => {
-      schObj.eventSettings.dataSource = JSON.parse(data);
-    };
-    ajax.send();
-    this.temp = false;
-  }
-}
-
 ngOnInit(){
 
 }
-
-
-  abc() {
-
-//  this.service.ListCalendarEvents().subscribe((res:any)=>{
-//   for (const event of res.items) {
-//     let when: string = event.start.dateTime as string;
-//     let start: string = event.start.dateTime as string;
-//     let end: string = event.end.dateTime as string;
-//     if (!when) {
-//       when = event.start.date as string;
-//       start = event.start.date as string;
-//       end = event.end.date as string;
-//     }
-//     scheduleData.push({
-//       Id: event.id,
-//       Subject: event.summary,
-//       StartTime: new Date(start),
-//       EndTime: new Date(end),
-//       IsAllDay: !event.start.dateTime,
-//     });
-//   }
-//   this.eventSettings.dataSource = scheduleData
-//  })
-  }
-
 
 
 
@@ -663,84 +590,6 @@ ngOnInit(){
     console.log(startDate);
     console.log(endDate);
 
-  // this.service.getData().pipe( tap((res:any)=>{
-
-  //   console.log(res);
-  //
-
-  // }) ).subscribe(res=>{
-  //   e.result.push(dataSource)
-  // })
-
-
-// this.service.data$.subscribe(res=>{
-
-//   for (const event of res.items) {
-//         let when: string = event.start.dateTime as string;
-//         let start: string = event.start.dateTime as string;
-//         let end: string = event.end.dateTime as string;
-//         if (!when) {
-//           when = event.start.date as string;
-//           start = event.start.date as string;
-//           end = event.end.date as string;
-//         }
-//         scheduleData.push({
-//           Id: event.id,
-//           Subject: event.summary,
-//           StartTime: new Date(start),
-//           EndTime: new Date(end),
-//           IsAllDay: !event.start.dateTime,
-//         });
-//         // e.result.push({
-//         //   Id: event.id,
-//         //   Subject: event.summary,
-//         //   StartTime: new Date(start),
-//         //   EndTime: new Date(end),
-//         //   IsAllDay: !event.start.dateTime,
-//         // })
-//       }
-//   //e.result=scheduleData
-//  // e.result.push(dataSource)
-// })
-
-if(this.currentevents.length>0){
-//   const returnedTarget = {...e.result,...this.currentevents.pop()}
-// e.result.push(returnedTarget)
-
-// let returnedTarget =this.currentevents.pop()
-// e.result.push(returnedTarget)
-// console.log(e.result);
-
-}
-      // this.service.ListCalendarEvents().then((res:any)=>{
-      //   for (const event of res.items) {
-      //     let when: string = event.start.dateTime as string;
-      //     let start: string = event.start.dateTime as string;
-      //     let end: string = event.end.dateTime as string;
-      //     if (!when) {
-      //       when = event.start.date as string;
-      //       start = event.start.date as string;
-      //       end = event.end.date as string;
-      //     }
-      //     scheduleData.push({
-      //       Id: event.id,
-      //       Subject: event.summary,
-      //       StartTime: new Date(start),
-      //       EndTime: new Date(end),
-      //       IsAllDay: !event.start.dateTime,
-      //     });
-      //   }
-      //   console.log(dataSource);
-
-      //   e.result.push(dataSource)
-      //  }).then(res=>{
-      //   console.log(e)
-      //   e.result.push(dataSource)
-      //  })
-
-       // e.result = scheduleData;
-
-
 
       for (const event of items) {
         let when: string = event.start.dateTime as string;
@@ -751,7 +600,6 @@ if(this.currentevents.length>0){
           start = event.start.date as string;
           end = event.end.date as string;
         }
-        console.log([new Date(start),new Date(end),event.summary,event.id]);
 
         scheduleData.push({
           Id: event.id,
@@ -762,8 +610,13 @@ if(this.currentevents.length>0){
         });
       }
    // }
-   // e.result = scheduleData;
+    e.result = scheduleData;
     // console.log(scheduleData);
+
+    console.log([this.scheduleObj.startHour,this.scheduleObj.endHour]);
+
+
+    this.service.schedularobj.next(this.scheduleObj)
 
   }
 
@@ -782,6 +635,7 @@ if(this.currentevents.length>0){
   }
 
   public generateEvents(): Record<string, any>[] {
+
     const eventData: Record<string, any>[] = [];
     const eventSubjects: string[] = [
       'Bering Sea Gold', 'Technology', 'Maintenance', 'Meeting', 'Travelling', 'Annual Conference', 'Birthday Celebration',
@@ -838,6 +692,8 @@ if(this.currentevents.length>0){
       event.StartTime = timezone.convert(event.StartTime, utcTimezone, currentTimezone);
       event.EndTime = timezone.convert(event.EndTime, utcTimezone, currentTimezone);
     }
+
+
     return overviewEvents;
   }
 
@@ -999,7 +855,8 @@ if(this.currentevents.length>0){
     } else {
       addClass([settingsPanel], 'hide');
     }
-    this.scheduleObj.refreshEvents();
+
+
   }
 
   public getWeatherImage(value: Date): string {
@@ -1057,31 +914,41 @@ if(this.currentevents.length>0){
   }
 
   public onDayStartHourChange(args: TimeEventArgs): void {
+
     this.scheduleObj.startHour = this.intl.formatDate(args.value, { skeleton: 'Hm' });
+    console.log(this.scheduleObj.startHour);
+
+
   }
 
   public onDayEndHourChange(args: TimeEventArgs): void {
     this.scheduleObj.endHour = this.intl.formatDate(args.value, { skeleton: 'Hm' });
+
   }
 
   public onWorkStartHourChange(args: TimeEventArgs): void {
     this.scheduleObj.workHours.start = this.intl.formatDate(args.value, { skeleton: 'Hm' });
+
   }
 
   public onWorkEndHourChange(args: TimeEventArgs): void {
     this.scheduleObj.workHours.end = this.intl.formatDate(args.value, { skeleton: 'Hm' });
+
   }
 
   public onTimescaleDurationChange(args: ChangeEventArgs): void {
     this.scheduleObj.timeScale.interval = args.value as number;
+
   }
 
   public onTimescaleIntervalChange(args: ChangeEventArgs): void {
     this.scheduleObj.timeScale.slotCount = args.value as number;
+
   }
 
   public onTimeFormatChange(args: ChangeEventArgs): void {
     this.scheduleObj.timeFormat = args.value as string;
+
   }
 
   public onWeekNumberChange(args: ChangeEventArgs): void {
@@ -1187,6 +1054,7 @@ if(this.currentevents.length>0){
     this.scheduleObj.closeQuickInfoPopup();
   }
 
+
   public onContextMenuBeforeOpen(args: BeforeOpenCloseMenuEventArgs): void {
     const newEventElement: HTMLElement = document.querySelector('.e-new-event') as HTMLElement;
     if (newEventElement) {
@@ -1280,6 +1148,14 @@ if(this.currentevents.length>0){
       this.scheduleObj.exportToICalendar();
     }
   }
+
+
+
+  customview(ev){
+
+    this.show = !this.show
+  }
+
 
 
 }
