@@ -4,7 +4,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
   {
-    path : '', 
+    path : '',
     loadChildren:()=>import('./formula/formula/formula.module').then(m=>m.FormulaModule)
    },
    {
@@ -22,11 +22,19 @@ const routes: Routes = [
    {
      path : 'calcmodule',
      loadChildren:()=>import('./calcmodule/calcmodule.module').then(m=>m.CalcmoduleModule)
-   }
+   },
+   {
+     path : 'cal',
+     loadChildren:()=>import('./cal/cal.module').then(m=>m.CalModule)
+   },
+   {
+    path : 'cl',
+    loadChildren:()=>import('./c/c.module').then(m=>m.CModule)
+  }
 
-     
+
 ];
-  
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

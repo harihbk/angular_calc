@@ -1,13 +1,16 @@
 import { ColumnsToolPanelModule } from '@ag-grid-enterprise/all-modules';
 import { HttpClient } from '@angular/common/http';
-import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 
+
+
+
+
 import {
-  GoogleApiModule, 
-  GoogleApiService, 
-  GoogleAuthService, 
-  NgGapiClientConfig, 
+  GoogleApiModule,
+  GoogleApiService,
+  GoogleAuthService,
+  NgGapiClientConfig,
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from "ng-gapi";
@@ -35,14 +38,15 @@ export class CalendarComponent implements OnInit {
   constructor(
     public http:HttpClient,
     private googleAuth: GoogleAuthService,
-    private service : CalendarService
-   
+    private service : CalendarService,
+
+
   ) {
     this.getUserData();
    }
 
   ngOnInit() {
-   
+
   //   this.service.ListCalendarEvents().subscribe(
   //     (res:any) => {
   //       console.log(res.items);
@@ -52,7 +56,7 @@ export class CalendarComponent implements OnInit {
   // );
   }
 
-  
+
 
    handleAuthClick() {
     this.service.CalendarLogin()
@@ -73,7 +77,7 @@ InsertCalendarEvents(){
 
   this.service.InsertCalendarEvents(body).subscribe(res=>{
     console.log(res);
-    
+
   })
 }
 
@@ -93,7 +97,7 @@ UpdateCalendarEvents(){
 
   this.service.UpdateCalendarEvents(body,Event_id).subscribe(res=>{
     console.log(res);
-    
+
   })
 
 }
@@ -102,6 +106,15 @@ getUserData(){
   this.service.getUserData().subscribe((res:any)=>{
    this.Logged_user = res.items[0].scope.value;
   })
+}
+
+
+
+
+
+ click(){
+
+
 }
 
 

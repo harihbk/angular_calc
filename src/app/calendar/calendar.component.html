@@ -18,9 +18,9 @@
 <ng-container *ngFor="let item of response" class="form-control" >
  {{ item.summary  }}
  <br>
- {{ item.start.dateTime  }} ----------  {{ item.start.timeZone  }} 
+ {{ item.start.dateTime  }} ----------  {{ item.start.timeZone  }}
  <br>
- {{ item.end.dateTime  }} ----------  {{ item.end.timeZone  }} 
+ {{ item.end.dateTime  }} ----------  {{ item.end.timeZone  }}
  <br>
 
 
@@ -29,6 +29,8 @@
 </ng-container>
 
 
+
+<button (click)="click()">json</button>
 
 
 
