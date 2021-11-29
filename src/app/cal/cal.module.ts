@@ -25,6 +25,7 @@ import { NumericTextBoxAllModule, TextBoxAllModule } from '@syncfusion/ej2-angul
 import { ScheduleAllModule, RecurrenceEditorAllModule } from '@syncfusion/ej2-angular-schedule';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { BrowserModule } from '@angular/platform-browser';
           ButtonAllModule,
           DropDownButtonAllModule,
            SwitchAllModule,
-            ToastAllModule
+            ToastAllModule,
+            CalendarModule
   ],
   declarations: [CalComponent]
 })

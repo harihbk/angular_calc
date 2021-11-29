@@ -1,35 +1,61 @@
 <div class="col-lg-12 control-section">
   <div class="content-wrapper">
     <div class="schedule-overview">
-
       <div class="overview-toolbar">
-        <div style="height: 70px;width: calc(100% - 90px);">
-
-          <div class="row">
-            <button class="today btn " id="addeventbtn"  (click)="onToolbarItemClicked1('New Event')">New Event</button>
-            <button class="today btn " id="today"  (click)="onToolbarItemClicked1('New Recurring Event')">New Recurring Event</button>
-            <select name="daygroup" id="daygroup" (change)="onToolbarItemClicked2($event)">
-            <option value="Day">Day</option>
-            <option value="Week" selected>Week</option>
-            <option value="WorkWeek">WorkWeek</option>
-            <option value="Month">Month</option>
-            <option value="Year">Year</option>
+        <div>
+          <div class="row innrt_list">
+            <button
+              class="today btn"
+              id="addeventbtn"
+              (click)="onToolbarItemClicked1('New Event')"
+            >
+              New Event
+            </button>
+            <button
+              class="today btn"
+              id="today"
+              (click)="onToolbarItemClicked1('New Recurring Event')"
+            >
+              New Recurring Event
+            </button>
+            <select
+              name="daygroup"
+              id="daygroup"
+              (change)="onToolbarItemClicked2($event)"
+            >
+              <option value="Day">Day</option>
+              <option value="Week" selected>Week</option>
+              <option value="WorkWeek">WorkWeek</option>
+              <option value="Month">Month</option>
+              <option value="Year">Year</option>
             </select>
 
-            <select name="multiusers" id="multiusers" (change)="onGroupingChange1($event)">
+            <select
+              name="multiusers"
+              id="multiusers"
+              (change)="onGroupingChange1($event)"
+            >
               <option value=" ">Select View</option>
               <option value="Week">Multi Appointment</option>
               <option value="Day">User</option>
             </select>
-
+            <div class="setting_btn">
+              <div class="inner_seacrh_bar">
+                <input type="search" />
+              </div>
+              <button
+                ejs-button
+                id="settingsBtn"
+                iconCss="e-icons e-settings"
+                cssClass="overview-toolbar-settings"
+                iconPosition="Top"
+                (click)="onSettingsClick($event)"
+              >
+              <i class="fa fa-cog" aria-hidden="true"></i>
+              </button>
+              <span><i class="fa fa-print" aria-hidden="true"></i></span>
+            </div>
           </div>
-
-
-
-
-
-
-
 
           <!-- <ejs-toolbar id="toolbar_options" height="70px" overflowMode="Scrollable" scrollStep="100"
             (created)="onToolbarCreated()" (clicked)="onToolbarItemClicked($event)">
@@ -139,49 +165,70 @@
 
 
           </ejs-toolbar> -->
-
-
         </div>
-        <div style="height:70px;width:90px;">
-          <button ejs-button id="settingsBtn" iconCss="e-icons e-settings" cssClass="overview-toolbar-settings"
-            iconPosition="Top" (click)="onSettingsClick($event)">Settings</button>
-        </div>
+
+     
       </div>
+
       <div class="overview-content">
-        <div class="left-panel">
-          <div class="overview-scheduler">
-            <ejs-schedule #scheduleObj cssClass='schedule-overview' height='100%' [group]='group'
-              [(currentView)]="currentView" timezone='UTC' [eventSettings]="eventSettings">
-              <ng-template #dateHeaderTemplate let-data>
+        <div class="row">
+          <div class="col-sm-2 p-0 calander_pickers">
+            <ejs-calendar
+              [value]="dateValue"
+              start="Year"
+              (change)="onClick($event)"
+            ></ejs-calendar>
+          </div>
+          <div class="col-sm-10  calander_height_without p-0">
+            <div class="left-panel">
+              <div class="overview-scheduler">
+                <ejs-schedule
+                  #scheduleObj
+                  cssClass="schedule-overview"
+                  height="100%"
+                  [group]="group"
+                  [(currentView)]="currentView"
+                  timezone="UTC"
+                  [eventSettings]="eventSettings"
+                >
+                  <ng-template #dateHeaderTemplate let-data>
+                    <div class="date-text" *ngIf="singleResourceDay">
+                      {{ getDateHeaderText(data.date) }}
+                    </div>
+                    <div
+                      [innerHTML]="getWeatherImage(data.date)"
+                      *ngIf="singleResourceDay"
+                    ></div>
+                  </ng-template>
+                  <e-views>
+                    <e-view option="Day"></e-view>
+                    <e-view option="Week"></e-view>
+                    <e-view option="WorkWeek"></e-view>
+                    <e-view option="Month"></e-view>
+                    <e-view option="Year"></e-view>
+                    <e-view option="Agenda"></e-view>
+                    <e-view option="TimelineDay"></e-view>
+                    <e-view option="TimelineWeek"></e-view>
+                    <e-view option="TimelineWorkWeek"></e-view>
+                    <e-view option="TimelineMonth"></e-view>
+                    <e-view option="TimelineYear"></e-view>
+                  </e-views>
 
-                <div class="date-text" *ngIf="singleResourceDay">{{getDateHeaderText(data.date)}}</div>
-                <div [innerHTML]="getWeatherImage(data.date)" *ngIf="singleResourceDay"></div>
+                  <e-resources>
+                    <e-resource
+                      field="CalendarId"
+                      title="Calendars"
+                      [dataSource]="resourceDataSource"
+                      [allowMultiple]="allowMultiple"
+                      name="Calendars"
+                      textField="CalendarText"
+                      idField="CalendarId"
+                      colorField="CalendarColor"
+                    >
+                    </e-resource>
+                  </e-resources>
 
-              </ng-template>
-              <e-views>
-                <e-view option="Day"></e-view>
-                <e-view option="Week"></e-view>
-                <e-view option="WorkWeek"></e-view>
-                <e-view option="Month"></e-view>
-                <e-view option="Year"></e-view>
-                <e-view option="Agenda"></e-view>
-                <e-view option="TimelineDay"></e-view>
-                <e-view option="TimelineWeek"></e-view>
-                <e-view option="TimelineWorkWeek"></e-view>
-                <e-view option="TimelineMonth"></e-view>
-                <e-view option="TimelineYear"></e-view>
-              </e-views>
-
-
-              <e-resources>
-                <e-resource field='CalendarId' title='Calendars' [dataSource]='resourceDataSource'
-
-                   [allowMultiple]='allowMultiple' name='Calendars' textField='CalendarText'
-                  idField='CalendarId' colorField='CalendarColor'>
-                </e-resource>
-              </e-resources>
-
-              <!-- <e-resources>
+                  <!-- <e-resources>
                 <e-resource field='CalendarId' title='Calendars' [dataSource]='resourceDataSource'
                   [query]='resourceQuery'
                    [allowMultiple]='allowMultiple' name='Calendars' textField='CalendarText'
@@ -189,237 +236,353 @@
                 </e-resource>
               </e-resources> -->
 
-
-              <!-- Header template -->
-              <ng-template #quickInfoTemplatesHeader let-data>
-                <div class="quick-info-header">
-                  <div class="quick-info-header-content" [ngStyle]="getHeaderStyles(data)">
-                    <div class="quick-info-title">{{getHeaderTitle(data)}}</div>
-                    <div class="duration-text">{{getHeaderDetails(data)}}</div>
-                  </div>
-                </div>
-              </ng-template>
-
-
-              <!-- Content Template -->
-              <ng-template #quickInfoTemplatesContent let-data>
-                <ng-container [ngTemplateOutlet]="data.elementType == 'cell' ? cellContent : eventContent"
-                  [ngTemplateOutletContext]="{data:data}"></ng-container>
-
-
-
-              </ng-template>
-
-
-
-              <ng-template #cellContent let-data="data">
-                <div class="quick-info-content">
-                  <div class="e-cell-content">
-                    <div class="content-area">
-                      <ejs-textbox #titleObj id="title" placeholder="Title"></ejs-textbox>
+                  <!-- Header template -->
+                  <ng-template #quickInfoTemplatesHeader let-data>
+                    <div class="quick-info-header">
+                      <div
+                        class="quick-info-header-content"
+                        [ngStyle]="getHeaderStyles(data)"
+                      >
+                        <div class="quick-info-title">
+                          {{ getHeaderTitle(data) }}
+                        </div>
+                        <div class="duration-text">
+                          {{ getHeaderDetails(data) }}
+                        </div>
+                      </div>
                     </div>
-                    <div class="content-area">
-                      <ejs-dropdownlist id='eventType' #eventTypeObj [dataSource]='resourceDataSource'
-                        [fields]='calendarFields' placeholder='Choose Type' [value]='calendarsValue[0]'
-                        popupHeight="150pc">
-                      </ejs-dropdownlist>
+                  </ng-template>
+
+                  <!-- Content Template -->
+                  <ng-template #quickInfoTemplatesContent let-data>
+                    <ng-container
+                      [ngTemplateOutlet]="
+                        data.elementType == 'cell' ? cellContent : eventContent
+                      "
+                      [ngTemplateOutletContext]="{ data: data }"
+                    ></ng-container>
+                  </ng-template>
+
+                  <ng-template #cellContent let-data="data">
+                    <div class="quick-info-content">
+                      <div class="e-cell-content">
+                        <div class="content-area">
+                          <ejs-textbox
+                            #titleObj
+                            id="title"
+                            placeholder="Title"
+                          ></ejs-textbox>
+                        </div>
+                        <div class="content-area">
+                          <ejs-dropdownlist
+                            id="eventType"
+                            #eventTypeObj
+                            [dataSource]="resourceDataSource"
+                            [fields]="calendarFields"
+                            placeholder="Choose Type"
+                            [value]="calendarsValue[0]"
+                            popupHeight="150pc"
+                          >
+                          </ejs-dropdownlist>
+                        </div>
+                        <div class="content-area">
+                          <ejs-textbox
+                            #notesObj
+                            id="notes"
+                            placeholder="Notes"
+                          ></ejs-textbox>
+                        </div>
+                      </div>
                     </div>
-                    <div class="content-area">
-                      <ejs-textbox #notesObj id="notes" placeholder="Notes"></ejs-textbox>
+                  </ng-template>
+
+                  <ng-template #eventContent let-data="data">
+                    <div class="quick-info-content">
+                      <div class="event-content">
+                        <div class="meeting-type-wrap">
+                          <label>Subject</label>:
+                          <span>{{ data.Subject }}</span>
+                        </div>
+                        <div class="meeting-subject-wrap">
+                          <label>Type</label>:
+                          <span>{{ getEventType(data) }}</span>
+                        </div>
+                        <div class="notes-wrap">
+                          <label>Notes</label>:
+                          <span>{{ data.Description }}</span>
+                        </div>
+                      </div>
                     </div>
+                  </ng-template>
 
-
-
-
-                  </div>
-                </div>
-              </ng-template>
-
-
-
-
-              <ng-template #eventContent let-data="data">
-                <div class="quick-info-content">
-                  <div class="event-content">
-                    <div class="meeting-type-wrap">
-                      <label>Subject</label>:
-                      <span>{{data.Subject}}</span>
+                  <!-- Footer Template -->
+                  <ng-template #quickInfoTemplatesFooter let-data>
+                    <ng-container
+                      [ngTemplateOutlet]="
+                        data.elementType == 'cell' ? cellFooter : eventFooter
+                      "
+                      [ngTemplateOutletContext]="{ data: data }"
+                    ></ng-container>
+                  </ng-template>
+                  <ng-template #cellFooter let-data="data">
+                    <div class="e-cell-footer">
+                      <button
+                        ejs-button
+                        id="more-details"
+                        cssClass="e-flat"
+                        (click)="buttonClickActions($event)"
+                      >
+                        More Details
+                      </button>
+                      <button
+                        ejs-button
+                        id="add"
+                        cssClass="e-flat"
+                        [isPrimary]="true"
+                        (click)="buttonClickActions($event)"
+                      >
+                        Add
+                      </button>
                     </div>
-                    <div class="meeting-subject-wrap">
-                      <label>Type</label>:
-                      <span>{{getEventType(data)}}</span>
+                  </ng-template>
+                  <ng-template #eventFooter let-data="data">
+                    <div class="e-event-footer">
+                      <button
+                        ejs-button
+                        id="delete"
+                        cssClass="e-flat"
+                        (click)="buttonClickActions($event)"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        ejs-button
+                        id="more-details"
+                        cssClass="e-flat"
+                        [isPrimary]="true"
+                        (click)="buttonClickActions($event)"
+                      >
+                        More Details
+                      </button>
                     </div>
-                    <div class="notes-wrap">
-                      <label>Notes</label>:
-                      <span>{{data.Description}}</span>
-                    </div>
-                  </div>
-                </div>
-              </ng-template>
-
-
-
-
-              <!-- Footer Template -->
-              <ng-template #quickInfoTemplatesFooter let-data>
-                <ng-container [ngTemplateOutlet]="data.elementType == 'cell' ? cellFooter : eventFooter"
-                  [ngTemplateOutletContext]="{data:data}"></ng-container>
-              </ng-template>
-              <ng-template #cellFooter let-data="data">
-                <div class="e-cell-footer">
-                  <button ejs-button id="more-details" cssClass="e-flat" (click)="buttonClickActions($event)">More
-                    Details</button>
-                  <button ejs-button id="add" cssClass="e-flat" [isPrimary]="true"
-                    (click)="buttonClickActions($event)">Add</button>
-                </div>
-              </ng-template>
-              <ng-template #eventFooter let-data="data">
-                <div class="e-event-footer">
-                  <button ejs-button id="delete" cssClass="e-flat" (click)="buttonClickActions($event)">Delete</button>
-                  <button ejs-button id="more-details" cssClass="e-flat" [isPrimary]="true"
-                    (click)="buttonClickActions($event)">More Details</button>
-                </div>
-              </ng-template>
-            </ejs-schedule>
-            <ejs-contextmenu #menuObj cssClass='schedule-context-menu' target='.e-schedule' [items]='menuItems'
-              (beforeOpen)='onContextMenuBeforeOpen($event)' (select)='onMenuItemSelect($event)'></ejs-contextmenu>
+                  </ng-template>
+                </ejs-schedule>
+                <ejs-contextmenu
+                  #menuObj
+                  cssClass="schedule-context-menu"
+                  target=".e-schedule"
+                  [items]="menuItems"
+                  (beforeOpen)="onContextMenuBeforeOpen($event)"
+                  (select)="onMenuItemSelect($event)"
+                ></ejs-contextmenu>
+              </div>
+            </div>
           </div>
         </div>
-
-
-
-
-
-
-
-
 
         <div class="right-panel hide">
           <div class="control-panel e-css">
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">First Day of Week</label>
+                <label style="line-height: 34px; margin: 0"
+                  >First Day of Week</label
+                >
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id='weekFirstDay' [dataSource]='weekDays'
-                  (change)='onWeekDayChange($event)' [value]='firstDayOfWeek' [fields]='fields' popupHeight='150px'>
+                <ejs-dropdownlist
+                  id="weekFirstDay"
+                  [dataSource]="weekDays"
+                  (change)="onWeekDayChange($event)"
+                  [value]="firstDayOfWeek"
+                  [fields]="fields"
+                  popupHeight="150px"
+                >
                 </ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Work week</label>
+                <label style="line-height: 34px; margin: 0">Work week</label>
               </div>
               <div class="col-right">
-                <ejs-multiselect #workWeekDaysObj id='workWeekDays' [dataSource]='weekDays'
-                  [showClearButton]='false' [showDropDownIcon]='true' [mode]='checkboxMode' [fields]='fields'
-                  popupHeight='150px' [value]='workDays' (change)='onWorkWeekDayChange($event)'></ejs-multiselect>
+                <ejs-multiselect
+                  #workWeekDaysObj
+                  id="workWeekDays"
+                  [dataSource]="weekDays"
+                  [showClearButton]="false"
+                  [showDropDownIcon]="true"
+                  [mode]="checkboxMode"
+                  [fields]="fields"
+                  popupHeight="150px"
+                  [value]="workDays"
+                  (change)="onWorkWeekDayChange($event)"
+                ></ejs-multiselect>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Resources</label>
+                <label style="line-height: 34px; margin: 0">Resources</label>
               </div>
               <div class="col-right">
-                <ejs-multiselect #resouresObj id='resources' [dataSource]='resourceDataSource'
-                  [mode]='checkboxMode' [fields]='calendarFields' popupHeight='150px' [showClearButton]='false'
-                  [showDropDownIcon]='true' [value]='calendarsValue' (change)='onResourceChange($event)'>
+                <ejs-multiselect
+                  #resouresObj
+                  id="resources"
+                  [dataSource]="resourceDataSource"
+                  [mode]="checkboxMode"
+                  [fields]="calendarFields"
+                  popupHeight="150px"
+                  [showClearButton]="false"
+                  [showDropDownIcon]="true"
+                  [value]="calendarsValue"
+                  (change)="onResourceChange($event)"
+                >
                 </ejs-multiselect>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Timezone</label>
+                <label style="line-height: 34px; margin: 0">Timezone</label>
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id='timezone' [dataSource]='timezoneData'
-                  (change)='onTimezoneChange($event)' value='Etc/GMT' [fields]='fields' popupHeight='150px'>
+                <ejs-dropdownlist
+                  id="timezone"
+                  [dataSource]="timezoneData"
+                  (change)="onTimezoneChange($event)"
+                  value="Etc/GMT"
+                  [fields]="fields"
+                  popupHeight="150px"
+                >
                 </ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Day Start Hour</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Day Start Hour</label
+                >
               </div>
               <div class="col-right">
-                <ejs-timepicker id='dayStartHour' showClearButton='false' [value]='dayStartHourValue'
-                  (change)='onDayStartHourChange($event)'>
+                <ejs-timepicker
+                  id="dayStartHour"
+                  showClearButton="false"
+                  [value]="dayStartHourValue"
+                  (change)="onDayStartHourChange($event)"
+                >
                 </ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Day End Hour</label>
+                <label style="line-height: 34px; margin: 0">Day End Hour</label>
               </div>
               <div class="col-right">
-                <ejs-timepicker id='dayEndHour' showClearButton='false' [value]='dayEndHourValue'
-                  (change)='onDayEndHourChange($event)'>
+                <ejs-timepicker
+                  id="dayEndHour"
+                  showClearButton="false"
+                  [value]="dayEndHourValue"
+                  (change)="onDayEndHourChange($event)"
+                >
                 </ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Work Start Hour</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Work Start Hour</label
+                >
               </div>
               <div class="col-right">
-                <ejs-timepicker id='workHourStart' showClearButton='false' [value]='workStartHourValue'
-                  (change)='onWorkStartHourChange($event)'>
+                <ejs-timepicker
+                  id="workHourStart"
+                  showClearButton="false"
+                  [value]="workStartHourValue"
+                  (change)="onWorkStartHourChange($event)"
+                >
                 </ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Work End Hour</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Work End Hour</label
+                >
               </div>
               <div class="col-right">
-                <ejs-timepicker id='workHourEnd' showClearButton='false' [value]='workEndHourValue'
-                  (change)='onWorkEndHourChange($event)'></ejs-timepicker>
+                <ejs-timepicker
+                  id="workHourEnd"
+                  showClearButton="false"
+                  [value]="workEndHourValue"
+                  (change)="onWorkEndHourChange($event)"
+                ></ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Slot Duration</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Slot Duration</label
+                >
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id='slotDuration' [dataSource]='timeSlotDuration'
-                  [fields]='timeSlotFields' (change)='onTimescaleDurationChange($event)' [value]='timeSlotDurationValue'
-                  popupHeight='150px'></ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="slotDuration"
+                  [dataSource]="timeSlotDuration"
+                  [fields]="timeSlotFields"
+                  (change)="onTimescaleDurationChange($event)"
+                  [value]="timeSlotDurationValue"
+                  popupHeight="150px"
+                ></ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Slot Interval</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Slot Interval</label
+                >
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id='slotInterval' [dataSource]='timeSlotCount'
-                  (change)='onTimescaleIntervalChange($event)' [value]='timeSlotCountValue' popupHeight='150px'>
+                <ejs-dropdownlist
+                  id="slotInterval"
+                  [dataSource]="timeSlotCount"
+                  (change)="onTimescaleIntervalChange($event)"
+                  [value]="timeSlotCountValue"
+                  popupHeight="150px"
+                >
                 </ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Time Format</label>
+                <label style="line-height: 34px; margin: 0">Time Format</label>
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id='timeFormat' [dataSource]='timeFormatData'
-                  (change)='onTimeFormatChange($event)' [fields]='timeSlotFields' [value]='timeFormatValue'
-                  popupHeight='150px'></ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="timeFormat"
+                  [dataSource]="timeFormatData"
+                  (change)="onTimeFormatChange($event)"
+                  [fields]="timeSlotFields"
+                  [value]="timeFormatValue"
+                  popupHeight="150px"
+                ></ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Week Numbers</label>
+                <label style="line-height: 34px; margin: 0">Week Numbers</label>
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id='weekNumber' [dataSource]='weekNumberData'
-                  (change)='onWeekNumberChange($event)' [fields]='timeSlotFields' [value]='weekNumberValue'
-                  popupHeight='150px'></ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="weekNumber"
+                  [dataSource]="weekNumberData"
+                  (change)="onWeekNumberChange($event)"
+                  [fields]="timeSlotFields"
+                  [value]="weekNumberValue"
+                  popupHeight="150px"
+                ></ejs-dropdownlist>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
-
+  </div>
+</div>

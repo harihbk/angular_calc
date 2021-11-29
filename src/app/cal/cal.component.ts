@@ -77,6 +77,8 @@ export class CalComponent  implements OnInit{
   public dayEndHourValue: Date = new Date(new Date().setHours(23, 59, 59));
   public workStartHourValue: Date = new Date(new Date().setHours(9, 0, 0));
   public workEndHourValue: Date = new Date(new Date().setHours(18, 0, 0));
+  public dateValue: Object = new Date();
+
   public weekDays: Record<string, any>[] = [
     { text: 'Sunday', value: 0 },
     { text: 'Monday', value: 1 },
@@ -181,6 +183,7 @@ export class CalComponent  implements OnInit{
       ]
     }
   ];
+  selectedDate: any;
 
   constructor() {
 
@@ -423,6 +426,9 @@ export class CalComponent  implements OnInit{
     }
   }
 
+  
+
+
   public onAllowMultiDrag(args: SwitchEventArgs): void {
     this.scheduleObj.allowMultiDrag = args.checked;
   }
@@ -589,6 +595,13 @@ export class CalComponent  implements OnInit{
 
   public getHeaderTitle(data: Record<string, any>): string {
     return (data.elementType === 'cell') ? 'Add Appointment' : 'Appointment Details';
+  }
+
+  public onClick(ev){
+  
+    this.scheduleObj.selectedDate = ev.value
+    this.selectedDate = ev.value
+   console.log(ev.value)
   }
 
   public getHeaderDetails(data: { [key: string]: Date }): string {
