@@ -1245,7 +1245,7 @@ padding-bottom: 5px;
   padding-right: 10px
 }
 
-/* 
+/*
 .headss{
   height: 84px;
   background-color: white;
@@ -1275,4 +1275,37 @@ padding-bottom: 5px;
 }
 .schedule-overview ~ .overview-toolbar .innrt_list .setting_btn #settingsBtn{
   display: block;
+}
+
+.e-popup.e-popup-open.e-dialog{
+  width: 500px !important;
+  height : 500px !important;
+  max-height: 500px !important;
+  margin-right: 438px !important;
+  }
+
+  .e-icons{
+
+    font-size: 26px;
+}
+.e-search:before{
+    content:'\e993';
+}
+.e-upload:before{
+    content: '\e725';
+}
+.e-font:before{
+    content: '\e34c';
+}
+
+.circle-add:after{
+  content : '\e22c';
+}
+
+.mat-dialog-container{
+  z-index: 0;
+}
+
+.cdk-overlay-pane{
+  margin-left: 452px;
 }

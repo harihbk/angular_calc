@@ -26,6 +26,7 @@ import { ScheduleAllModule, RecurrenceEditorAllModule } from '@syncfusion/ej2-an
 import { BrowserModule } from '@angular/platform-browser';
 
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { CustomjobComponent } from './customjob/customjob.component';
 
 @NgModule({
   imports: [
@@ -52,6 +53,6 @@ import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
             ToastAllModule,
             CalendarModule
   ],
-  declarations: [CalComponent]
+  declarations: [CalComponent,CustomjobComponent]
 })
 export class CalModule { }
