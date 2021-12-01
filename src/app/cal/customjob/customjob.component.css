@@ -1,0 +1,18 @@
+
+#scrlxaxis table tr:first-child{
+  background-color: #fdfdfd;
+}
+#scrlxaxis tr td a{
+  padding:5px;
+}
+#scrlxaxis table{
+border: 1px solid #eaeaea;
+}
+#scrlxaxis table tr:first-child th{
+color:black;
+font-weight: 600;
+}
+#scrlxaxis table tr td a{
+  color: #224a7b;
+  text-decoration: underline;
+}

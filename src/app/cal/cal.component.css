@@ -1360,8 +1360,17 @@ border-top:none;
   content : '\e22c';
 }
 
-.mat-dialog-container{
+/* .mat-dialog-container{
   z-index: 0;
+}
+
+.cdk-overlay-pane{
+  margin-left: 452px;
+} */
+
+
+.e-dlg-center-center{
+  justify-content: flex-start;
 }
 .circle-add{
   position: absolute;

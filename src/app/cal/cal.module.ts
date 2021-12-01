@@ -27,6 +27,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { CustomjobComponent } from './customjob/customjob.component';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { CustomjobComponent } from './customjob/customjob.component';
           DropDownButtonAllModule,
            SwitchAllModule,
             ToastAllModule,
-            CalendarModule
+            CalendarModule,
+            DialogModule
   ],
   declarations: [CalComponent,CustomjobComponent]
 })
