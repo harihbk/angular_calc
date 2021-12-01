@@ -260,7 +260,7 @@ constructor(
   public http:HttpClient,
 
 ){
-   console.log(  this.intl.formatDate(this.dayStartHourValue, { skeleton: 'Hm' }));
+   console.log(this.eventSettings);
 }
 
 onClick(ev){

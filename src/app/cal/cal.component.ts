@@ -5,16 +5,25 @@ import { SelectedEventArgs, TextBoxComponent } from '@syncfusion/ej2-angular-inp
 import {
   ScheduleComponent, GroupModel, DayService, WeekService, WorkWeekService, MonthService, YearService, AgendaService,
   TimelineViewsService, TimelineMonthService, TimelineYearService, View, EventSettingsModel, Timezone, CurrentAction,
-  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction
+  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, PopupOpenEventArgs, ActionEventArgs, ToolbarActionArgs
 } from '@syncfusion/ej2-angular-schedule';
 import { addClass, extend, removeClass, closest, remove, isNullOrUndefined, Internationalization, compile } from '@syncfusion/ej2-base';
 import { ChangeEventArgs as SwitchEventArgs, SwitchComponent } from '@syncfusion/ej2-angular-buttons';
-import { MultiSelectComponent, ChangeEventArgs, MultiSelectChangeEventArgs, DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
-import { DataManager, Predicate, Query } from '@syncfusion/ej2-data';
+import { MultiSelectComponent, ChangeEventArgs, MultiSelectChangeEventArgs, DropDownListComponent, DropDownList } from '@syncfusion/ej2-angular-dropdowns';
+import { DataManager, Predicate, Query, WebApiAdaptor } from '@syncfusion/ej2-data';
 import {
   ClickEventArgs, ContextMenuComponent, MenuItemModel, BeforeOpenCloseMenuEventArgs, MenuEventArgs
 } from '@syncfusion/ej2-angular-navigations';
 import { ChangeEventArgs as TimeEventArgs } from '@syncfusion/ej2-calendars';
+import { createElement } from '@syncfusion/ej2-base';
+import { CalendarService } from './services/calendar.service';
+import { HttpClient } from '@angular/common/http';
+import { Popup } from '@syncfusion/ej2-popups';
+import { CustomjobComponent } from './customjob/customjob.component';
+import { MatDialog } from '@angular/material/dialog';
+
+
+
 declare var moment: any;
 
 /**
@@ -78,7 +87,7 @@ export class CalComponent  implements OnInit{
   public workStartHourValue: Date = new Date(new Date().setHours(9, 0, 0));
   public workEndHourValue: Date = new Date(new Date().setHours(18, 0, 0));
   public dateValue: Object = new Date();
-
+  public profilePopup: Popup;
   public weekDays: Record<string, any>[] = [
     { text: 'Sunday', value: 0 },
     { text: 'Monday', value: 1 },
@@ -159,7 +168,6 @@ export class CalComponent  implements OnInit{
     { Name: 'First Four-Day Week', Value: 'FirstFourDayWeek' }
   ];
   public weekNumberValue = 'Off';
-  public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
   @ViewChild('menuObj') public menuObj: ContextMenuComponent;
   public selectedTarget: Element;
   public menuItems: MenuItemModel[] = [
@@ -185,9 +193,383 @@ export class CalComponent  implements OnInit{
   ];
   selectedDate: any;
 
-  constructor() {
+
+
+  public dataManger = new DataManager({
+    url:
+      "https://www.googleapis.com/calendar/v3/calendars/primary/events" ,
+      headers: [
+        { 'Accept': 'application/json' },
+        { 'Content-Type': 'application/json' },
+        { 'Authorization': 'Bearer '+this.service.GetAccessToken }
+      ],
+    adaptor: new WebApiAdaptor(),
+    crossDomain: true
+  });
+
+
+  userdata: any;
+  modifieduserdata: { end: { dateTime: any; }; start: { dateTime: any; }; summary: any; };
+  public dataSource: Object[];
+ public eventSettings: EventSettingsModel = {
+    dataSource: this.dataManger};
+//  public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
+
+
+
+  constructor(
+    public service : CalendarService,
+    public http:HttpClient,
+    public dialog: MatDialog
+  ) {
+
 
   }
+
+
+
+  onDataBinding(e: Record<string, any>): void {
+    const items: Record<string, any>[] = (
+      e.result as Record<string, Record<string, any>[]>
+    ).items;
+
+
+
+    const scheduleData: Record<string, any>[] = [];
+
+
+    let currentViewDates: Date[] = this.scheduleObj.getCurrentViewDates() as Date[];
+    let startDate: Date = currentViewDates[0] as Date;
+    let endDate: Date = currentViewDates[currentViewDates.length - 1] as Date;
+    var aa = 0;
+      for (const event of items) {
+        let when: string = event.start.dateTime as string;
+        let start: string = event.start.dateTime as string;
+        let end: string = event.end.dateTime as string;
+        if (!when) {
+          when = event.start.date as string;
+          start = event.start.date as string;
+          end = event.end.date as string;
+        }
+        scheduleData.push({
+          Id: event.id,
+          Subject: event.summary,
+          StartTime: new Date(start),
+          EndTime: new Date(end),
+          IsAllDay: !event.start.dateTime,
+          CalendarId: (aa % 4) + 1
+        });
+        aa++;
+      }
+
+
+
+
+
+
+
+    e.result = scheduleData;
+  }
+
+
+  onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
+
+
+
+
+    if (args.requestType === "eventCreate") {
+      args.cancel = true;
+      var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
+      var resource;
+      if (!isNullOrUndefined(app.RecurrenceRule)) {
+
+        console.log(app.RecurrenceRule);
+
+
+        resource = {
+          summary: app.Subject,
+          location: app.Location,
+          start: {
+            dateTime: app.StartTime,
+            timeZone: "UTC"
+          },
+          end: {
+            dateTime: app.EndTime,
+            timeZone: "UTC"
+          },
+          recurrence: [
+            "RRULE:" + app.RecurrenceRule,
+          ]
+        };
+      } else {
+        resource = {
+          summary: app.Subject,
+          location: app.Location,
+          start: {
+            dateTime: app.StartTime,
+            timeZone: "UTC"
+          },
+          end: {
+            dateTime: app.EndTime,
+            timeZone: "UTC"
+          }
+        };
+      }
+
+
+
+
+        let schObj = (document.querySelector(".e-schedule") as any)
+        .ej2_instances[0]
+        var http = new XMLHttpRequest();
+        var url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
+        http.open('POST', url, true);
+        //Send the proper header information along with the request
+        http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+        http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          schObj.refreshEvents()
+
+        }
+        }
+        this.userdata =args.data[0];
+        console.log(this.userdata );
+        this.modifieduserdata = {
+        "end": {
+        "dateTime": this.userdata.EndTime
+        },
+        "start": {
+        "dateTime":  this.userdata.StartTime
+        },
+        "summary": this.userdata.Subject
+        }
+        var params = JSON.stringify(this.modifieduserdata);
+        http.send(params);
+    }
+
+
+
+
+    if (args.requestType === "eventChange") {
+
+      args.cancel = true;
+      var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
+      if (!isNullOrUndefined(app.RecurrenceRule)) {
+        resource = {
+          id: app.Id,
+          summary: app.Subject,
+          location: app.Location,
+          start: {
+            dateTime: app.StartTime,
+            timeZone: "UTC"
+          },
+          end: {
+            dateTime: app.EndTime,
+            timeZone: "UTC"
+          },
+          recurrence: [
+            "RRULE:" + app.RecurrenceRule,
+          ]
+        };
+      } else {
+        resource = {
+          id: app.Id,
+          summary: app.Subject,
+          location: app.Location,
+          start: {
+            dateTime: app.StartTime,
+            timeZone: "UTC"
+          },
+          end: {
+            dateTime: app.EndTime,
+            timeZone: "UTC"
+          }
+        };
+
+
+
+
+
+
+        let schObj = (document.querySelector(".e-schedule") as any)
+        .ej2_instances[0]
+        var http = new XMLHttpRequest();
+        var url = `https://www.googleapis.com/calendar/v3/calendars/primary/events/${ resource.id }`;
+        http.open('UPDATE', url, true);
+        //Send the proper header information along with the request
+        http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+        http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          schObj.refreshEvents()
+        }
+        }
+
+        var params = JSON.stringify(resource);
+        http.send(params);
+
+
+
+      }
+
+
+
+            let schObj = (document.querySelector(".e-schedule") as any)
+            .ej2_instances[0]
+        var http = new XMLHttpRequest();
+        let dat =args.data;
+        var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+        http.open('PUT', url, true);
+        //Send the proper header information along with the request
+        http.setRequestHeader('Accept',  'application/json');
+        http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+        http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+              schObj.refreshEvents();
+            }
+        }
+
+
+        var params = JSON.stringify(resource);
+
+        http.send(params);
+
+    }
+
+
+
+
+
+
+    if (args.requestType === "eventRemove") {
+      args.cancel = true;
+      var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
+      if (isNullOrUndefined(app.occurrence)) {
+        let resource = {
+          id: app.Id,
+          summary: app.Subject,
+          location: app.Location,
+          start: {
+            dateTime: app.StartTime
+          },
+          end: {
+            dateTime: app.EndTime
+          }
+        };
+
+
+
+        let schObj = (document.querySelector(".e-schedule") as any)
+        .ej2_instances[0]
+    var http = new XMLHttpRequest();
+    let dat =args.data;
+    var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+    http.open('DELETE', url, true);
+    //Send the proper header information along with the request
+    http.setRequestHeader('Accept',  'application/json');
+    http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+    http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 204) {
+          schObj.refreshEvents();
+        }
+    }
+    var params = JSON.stringify(resource);
+    http.send(params);
+
+
+      } else {
+        resource = {
+          recurringEventId: app.parent.Id,
+          originalStartTime: {
+            dateTime: app.occurrence.StartTime,
+            timeZone: "UTC"
+          },
+          start: {
+            dateTime: app.occurrence.StartTime,
+            timeZone: "UTC"
+          },
+          end: {
+            dateTime: app.occurrence.EndTime,
+            timeZone: "UTC"
+          },
+          status: "cancelled"
+        };
+
+
+
+
+        let schObj = (document.querySelector(".e-schedule") as any)
+        .ej2_instances[0]
+    var http = new XMLHttpRequest();
+    let dat =args.data;
+    var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+    http.open('DELETE', url, true);
+    //Send the proper header information along with the request
+    http.setRequestHeader('Accept',  'application/json');
+    http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+    http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          schObj.refreshEvents();
+        }
+    }
+    var params = JSON.stringify(resource);
+    http.send(params);
+
+      }
+    }
+
+
+
+
+  }
+
+
+
+  onActionComplete(args: ActionEventArgs):void {
+
+
+
+
+    let scheduleElement: HTMLElement = document.getElementById('schedule') as HTMLElement;
+    if (args.requestType === 'toolBarItemRendered') {
+        let userIconEle: HTMLElement = scheduleElement.querySelector('.e-schedule-user-icon') as HTMLElement;
+        userIconEle.onclick = () => {
+            this.profilePopup.relateTo = userIconEle;
+            this.profilePopup.dataBind();
+            if (this.profilePopup.element.classList.contains('e-popup-close')) {
+                this.profilePopup.show();
+            } else {
+                this.profilePopup.show();
+            }
+        };
+    }
+
+    let userContentEle: HTMLElement = createElement('div', {
+        className: 'e-profile-wrapper'
+    });
+    scheduleElement.parentElement.appendChild(userContentEle);
+
+    let userIconEle: HTMLElement = scheduleElement.querySelector('.e-schedule-user-icon') as HTMLElement;
+    let getDOMString: (data: object) => NodeList = compile('<div class="profile-container"><div class="profile-image">' +
+        '</div><div class="content-wrap"><div class="name">Nancy</div>' +
+        '<div class="destination">Product Manager</div><div class="status">' +
+        '<div class="status-icon"></div>Online</div></div></div>');
+    let output: NodeList = getDOMString({});
+    this.profilePopup = new Popup(userContentEle, {
+        content: output[0] as HTMLElement,
+        relateTo: userIconEle,
+        position: { X: 'left', Y: 'bottom' },
+        collision: { X: 'flip', Y: 'flip' },
+        targetType: 'relative',
+        viewPortElement: scheduleElement,
+        width: 185,
+        height: 80
+    });
+    this.profilePopup.hide();
+  }
+
+
+
+
   ngOnInit(): void {
 
   }
@@ -217,6 +599,9 @@ export class CalComponent  implements OnInit{
     const weekDate: Date = new Date(new Date().setDate(new Date().getDate() - new Date().getDay()));
     let startDate: Date = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate(), 10, 0);
     let endDate: Date = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate(), 11, 30);
+
+
+
     eventData.push({
       Id: 1,
       Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
@@ -230,6 +615,8 @@ export class CalComponent  implements OnInit{
       CalendarId: 1
     });
     for (let a = 0, id = 2; a < 500; a++) {
+
+
       const month: number = Math.floor(Math.random() * (11 - 0 + 1) + 0);
       const date: number = Math.floor(Math.random() * (28 - 1 + 1) + 1);
       const hour: number = Math.floor(Math.random() * (23 - 0 + 1) + 0);
@@ -250,8 +637,17 @@ export class CalComponent  implements OnInit{
         IsReadonly: endDate < new Date(),
         CalendarId: (a % 4) + 1
       });
+
+
       id++;
     }
+
+
+
+
+
+
+
     if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
       Timezone.prototype.offset = (date: Date, zone: string): number => moment.tz.zone(zone).utcOffset(date.getTime());
     }
@@ -426,7 +822,7 @@ export class CalComponent  implements OnInit{
     }
   }
 
-  
+
 
 
   public onAllowMultiDrag(args: SwitchEventArgs): void {
@@ -574,9 +970,11 @@ export class CalComponent  implements OnInit{
   }
 
   public getResourceData(data: Record<string, any>): Record<string, any> {
+
     const resources: ResourcesModel = this.scheduleObj.getResourceCollections()[0];
     const resourceData: Record<string, any> = (resources.dataSource as Record<string, any>[]).filter((resource: Record<string, any>) =>
       resource.CalendarId === data.CalendarId)[0] as Record<string, any>;
+
     return resourceData;
   }
 
@@ -598,7 +996,7 @@ export class CalComponent  implements OnInit{
   }
 
   public onClick(ev){
-  
+
     this.scheduleObj.selectedDate = ev.value
     this.selectedDate = ev.value
    console.log(ev.value)
@@ -618,6 +1016,172 @@ export class CalComponent  implements OnInit{
     }
     return calendarText;
   }
+
+  onPopupOpen(args: PopupOpenEventArgs) {
+
+    if (args.type === 'Editor') {
+      if (!args.element.querySelector('.custom-field-row')) {
+      var _parentdiv = document.createElement("div");
+      _parentdiv.className = "row col-sm-12 custom-field-row";
+
+      var _childdiv = document.createElement("div");
+      _childdiv.className = "col-sm-6";
+
+
+      let formElements: HTMLElement = <HTMLElement>args.element.querySelector('.e-dialog-parent');
+      formElements.parentNode.insertBefore(_childdiv, formElements);
+      _childdiv.appendChild(formElements);
+
+      _childdiv.parentNode.insertBefore(_parentdiv,_childdiv)
+      _parentdiv.appendChild(_childdiv);
+
+
+
+
+
+     var arr = [
+       {name : 'Quantity' , label : 'Quantity'},
+       {name : 'Product' , label : 'Product'},
+       {name : 'Windows' , label : 'Windows'},
+       {name : 'Order' , label : 'Order'},
+       {name : 'Quantity' , label : 'Quantity'},
+      ];
+
+      let formElement: HTMLElement = <HTMLElement>args.element.querySelector('.e-schedule-form');
+      // var parentdiv = document.createElement("div");
+      //  parentdiv.className = "row col-sm-12";
+
+      var childdiv =  document.createElement("div");
+      childdiv.className = "col-sm-6";
+
+       // job fields
+       var job = document.createElement('div');
+       job.setAttribute('class','addjob');
+
+
+       var fields_container = document.createElement("div");
+       fields_container.className = "e-dynamic-container";
+       // create child div
+       var wrap_container = document.createElement("div");
+       wrap_container.className = "e-float-input e-control-wrapper e-multi-line-input";
+
+
+
+
+
+       // create input fields div
+
+       var x = document.createElement("INPUT");
+         x.setAttribute("type", "text");
+         x.setAttribute("class", "e-input");
+         x.setAttribute("name", 'job');
+
+         wrap_container.appendChild(x)
+
+         var span = document.createElement("span");
+         span.setAttribute('class','e-float-line');
+         wrap_container.appendChild(span);
+
+         var icon = document.createElement("span");
+         icon.setAttribute('class','e-icons circle-add');
+         icon.onclick = this.openDialog.bind(this)
+         wrap_container.appendChild(icon);
+
+         var label = document.createElement("label");
+         label.setAttribute('class',`e-float-text e-label-top job`)
+         label.textContent = "job";
+
+         wrap_container.appendChild(label)
+         fields_container.appendChild(wrap_container);
+         job.appendChild(fields_container)
+
+
+
+
+
+
+
+       // job fields
+
+
+      //  job.innerHTML = `
+      //  <button ejs-button cssClass="e-flat" content="Button"></button>
+      //  <div class="e-dynamic-container">
+      //  <div class="e-float-input e-control-wrapper e-multi-line-input">
+      //  <input type="text" class="e-input" name="job" ><span class="e-float-line"></span>
+      //  <label class="e-float-text e-label-top job" >Job</label></div></div>
+
+      //   <div class="e-dynamic-container">
+      //  <div class="e-float-input e-control-wrapper e-multi-line-input">
+      //  <input type="text" class="e-input" name="description"><span class="e-float-line"></span>
+      //  <label class="e-float-text e-label-top description">Description</label></div></div>`;
+       childdiv.appendChild(job);
+
+
+
+
+      // user Defined fields
+      var title = document.createElement('div');
+      title.setAttribute('class','userdefinedfield p-3');
+      title.textContent = "User defined fields"
+
+      childdiv.appendChild(title);
+
+      arr.map((a,b)=>{
+      // create parent div
+      var fields_container = document.createElement("div");
+      fields_container.className = "e-dynamic-container";
+      // create child div
+      var wrap_container = document.createElement("div");
+      wrap_container.className = "e-float-input e-control-wrapper e-multi-line-input";
+
+      // create input fields div
+
+      var x = document.createElement("INPUT");
+        x.setAttribute("type", "text");
+        x.setAttribute("class", "e-input");
+        x.setAttribute("name", ` ${a.name}`);
+        wrap_container.appendChild(x)
+
+        var span = document.createElement("span");
+        span.setAttribute('class','e-float-line');
+        wrap_container.appendChild(span);
+
+        var label = document.createElement("label");
+        label.setAttribute('class',`e-float-text e-label-top ${a.label}`)
+        label.textContent = a.name;
+
+        wrap_container.appendChild(label)
+        fields_container.appendChild(wrap_container);
+        childdiv.appendChild(fields_container)
+
+
+        _parentdiv.appendChild(childdiv);
+
+    })
+  }
+    }
+
+
+
+
+  }
+
+openDialog(): void {
+
+  const dialogRef = this.dialog.open(CustomjobComponent, {
+    width: '500px',
+    height: '500px',
+
+    id:'child',
+    disableClose: false,
+    data: {
+      animal: 'panda',
+    },
+  });
+
+}
+
 
   public buttonClickActions(e: Event): void {
     const quickPopup: HTMLElement = closest(e.target as HTMLElement, '.e-quick-popup-wrapper') as HTMLElement;

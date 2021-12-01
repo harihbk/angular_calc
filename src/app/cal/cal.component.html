@@ -50,6 +50,7 @@
                 cssClass="overview-toolbar-settings"
                 iconPosition="Top"
                 (click)="onSettingsClick($event)"
+
               >
               <i class="fa fa-cog" aria-hidden="true"></i>
               </button>
@@ -167,7 +168,7 @@
           </ejs-toolbar> -->
         </div>
 
-     
+
       </div>
 
       <div class="overview-content">
@@ -274,7 +275,24 @@
           <div class="col-sm-10  calander_height_without p-0">
             <div class="left-panel">
               <div class="overview-scheduler">
+
                 <ejs-schedule
+                #scheduleObj
+                id="schedule"
+                cssClass="schedule-overview"
+                height="100%"
+                [group]="group"
+                [(currentView)]="currentView"
+                timezone="UTC"
+                [eventSettings]="eventSettings"
+                (dataBinding)="onDataBinding($event)"
+                (actionBegin)="onActionBegin($event)"
+                (actionComplete)="onActionComplete($event)"
+                (popupOpen)="onPopupOpen($event)"
+              >
+
+
+                <!-- <ejs-schedule
                   #scheduleObj
                   cssClass="schedule-overview"
                   height="100%"
@@ -282,7 +300,10 @@
                   [(currentView)]="currentView"
                   timezone="UTC"
                   [eventSettings]="eventSettings"
-                >
+                  (popupOpen)="onPopupOpen($event)"
+                  (actionBegin)="onActionBegin($event)"
+
+                > -->
                   <ng-template #dateHeaderTemplate let-data>
                     <div class="date-text" *ngIf="singleResourceDay">
                       {{ getDateHeaderText(data.date) }}
