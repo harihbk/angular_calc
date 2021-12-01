@@ -1,5 +1,5 @@
 
-import { Component, ViewEncapsulation, Inject, ViewChild, AfterViewChecked, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, ViewChild, AfterViewChecked, OnInit, ElementRef } from '@angular/core';
 import { ItemModel } from '@syncfusion/ej2-angular-splitbuttons';
 import { SelectedEventArgs, TextBoxComponent } from '@syncfusion/ej2-angular-inputs';
 import {
@@ -21,11 +21,12 @@ import { HttpClient } from '@angular/common/http';
 import { Popup } from '@syncfusion/ej2-popups';
 import { CustomjobComponent } from './customjob/customjob.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { EmitType } from '@syncfusion/ej2-base';
 
 
 declare var moment: any;
-
+declare var $: any;
 /**
  * Sample for overview
  */
@@ -51,6 +52,13 @@ export class CalComponent  implements OnInit{
   @ViewChild('rowHeightSwitch') rowHeightSwitch: SwitchComponent;
   @ViewChild('tooltipSwitch') tooltipSwitch: SwitchComponent;
   @ViewChild('dragSwitch') dragSwitch: SwitchComponent;
+  @ViewChild('ejDialog') ejDialog: DialogComponent;
+  @ViewChild('container', { read: ElementRef }) container: ElementRef;
+
+  public targetElement: HTMLElement;
+
+
+
   public showFileList = false;
   public multiple = false;
   public buttons: Record<string, any> = { browse: this.importTemplateFn({ text: 'Import' })[0] as HTMLElement };
@@ -211,9 +219,8 @@ export class CalComponent  implements OnInit{
   userdata: any;
   modifieduserdata: { end: { dateTime: any; }; start: { dateTime: any; }; summary: any; };
   public dataSource: Object[];
- public eventSettings: EventSettingsModel = {
-    dataSource: this.dataManger};
-//  public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
+// public eventSettings: EventSettingsModel = {  dataSource: this.dataManger};
+  public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
 
 
 
@@ -273,7 +280,8 @@ export class CalComponent  implements OnInit{
 
 
   onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
-
+    var apps = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
+ console.log(apps.RecurrenceRule);
 
 
 
@@ -567,11 +575,33 @@ export class CalComponent  implements OnInit{
     this.profilePopup.hide();
   }
 
+  public hideDialog: EmitType<object> = () => {
+    this.ejDialog.hide();
+}
 
+  public popupbutton: Object = [
+    {
+        'click': this.hideDialog.bind(this),
+        // Accessing button component properties by buttonModel property
+          buttonModel:{
+          content:'Dismiss',
+          //Enables the primary button
+          isPrimary: true
+        }
+    }
+];
 
+  ngOnInit() {
+    this.initilaizeTarget();
 
-  ngOnInit(): void {
+  //  $("#modal").modal('show');
 
+  }
+
+  ngAfterViewInit(): void {
+    // $(document).ready(function() {
+    //   alert('I am Called From jQuery');
+    // });
   }
 
   public ngAfterViewChecked(): void {
@@ -602,6 +632,8 @@ export class CalComponent  implements OnInit{
 
 
 
+
+
     eventData.push({
       Id: 1,
       Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
@@ -614,6 +646,9 @@ export class CalComponent  implements OnInit{
       IsReadonly: false,
       CalendarId: 1
     });
+
+console.log(eventData);
+
     for (let a = 0, id = 2; a < 500; a++) {
 
 
@@ -642,7 +677,21 @@ export class CalComponent  implements OnInit{
       id++;
     }
 
-
+    eventData.push({
+      CalendarId: 1,
+      Description: "Add notes",
+      EndTime: new Date('2021-11-30T03:00:00+05:30'),
+      EndTimezone: null,
+      Id: 502,
+      IsAllDay: false,
+      Location: undefined,
+      RecurrenceException: null,
+      RecurrenceID: null,
+      RecurrenceRule: null,
+      StartTime: new Date('2021-11-29T02:00:00+05:30'),
+      StartTimezone: null,
+      Subject: "hi hari"
+    });
 
 
 
@@ -1069,6 +1118,7 @@ export class CalComponent  implements OnInit{
 
 
 
+
        // create input fields div
 
        var x = document.createElement("INPUT");
@@ -1084,7 +1134,12 @@ export class CalComponent  implements OnInit{
 
          var icon = document.createElement("span");
          icon.setAttribute('class','e-icons circle-add');
-         icon.onclick = this.openDialog.bind(this)
+         icon.onclick = this.openDialog.bind(this);
+          // icon.onclick = function(){
+
+
+          // }
+
          wrap_container.appendChild(icon);
 
          var label = document.createElement("label");
@@ -1158,7 +1213,17 @@ export class CalComponent  implements OnInit{
 
         _parentdiv.appendChild(childdiv);
 
+
+
+
+
     })
+
+    var popup = document.createElement('div');
+    popup.setAttribute('class',"popupwindow");
+
+
+
   }
     }
 
@@ -1167,20 +1232,19 @@ export class CalComponent  implements OnInit{
 
   }
 
-openDialog(): void {
 
-  const dialogRef = this.dialog.open(CustomjobComponent, {
-    width: '500px',
-    height: '500px',
+  public visible: Boolean = false;
 
-    id:'child',
-    disableClose: false,
-    data: {
-      animal: 'panda',
-    },
-  });
+  // popup
+  public initilaizeTarget: EmitType<object> = () => {
+    this.targetElement = this.container.nativeElement.parentElement;
+  }
 
+  public openDialog = function(event: any): void {
+    // Call the show method to open the Dialog
+    this.ejDialog.show();
 }
+  // popup
 
 
   public buttonClickActions(e: Event): void {

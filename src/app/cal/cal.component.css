@@ -1420,10 +1420,10 @@ input:focus {
 }
 
 .e-popup.e-popup-open.e-dialog{
-  width: 500px !important;
+  width: 1000px !important;
   height : 500px !important;
   max-height: 500px !important;
-  margin-right: 438px !important;
+
   }
 
   .e-icons{
@@ -1444,10 +1444,20 @@ input:focus {
   content : '\e22c';
 }
 
-.mat-dialog-container{
+/* .mat-dialog-container{
   z-index: 0;
 }
 
 .cdk-overlay-pane{
   margin-left: 452px;
+} */
+
+
+.e-dlg-center-center{
+  justify-content: flex-start;
+}
+.circle-add{
+  position: absolute;
+  right: 0;
+  top: 0;
 }
