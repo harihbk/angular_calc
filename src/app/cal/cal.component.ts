@@ -1087,6 +1087,8 @@ export class CalComponent  implements OnInit{
          icon.onclick = this.openDialog.bind(this)
          wrap_container.appendChild(icon);
 
+
+
          var label = document.createElement("label");
          label.setAttribute('class',`e-float-text e-label-top job`)
          label.textContent = "job";
