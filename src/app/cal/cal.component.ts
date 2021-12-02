@@ -1198,6 +1198,8 @@ console.log(eventData);
 
          wrap_container.appendChild(icon);
 
+
+
          var label = document.createElement("label");
          label.setAttribute('class',`e-float-text e-label-top job`)
          label.textContent = "job";
