@@ -1086,6 +1086,7 @@ console.log(eventData);
 
 
   onPopupOpen(args: PopupOpenEventArgs) {
+
     if (args.type === 'Editor') {
       let startElement: HTMLInputElement = args.element.querySelector('#StartTime') as HTMLInputElement;
       if (!startElement.classList.contains('e-datetimepicker')) {
@@ -1095,13 +1096,16 @@ console.log(eventData);
       if (!endElement.classList.contains('e-datetimepicker')) {
           new DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
       }
+
       let recurElement: HTMLElement = args.element.querySelector('#RecurrenceEditor');
+
       if (!recurElement.classList.contains('e-recurrenceeditor')) {
           let recurrObject: RecurrenceEditor = new RecurrenceEditor({
           });
           recurrObject.appendTo(recurElement);
           (this.scheduleObj.eventWindow as any).recurrenceEditor = recurrObject;
       }
+
       document.getElementById('RecurrenceEditor').style.display = (this.scheduleObj.currentAction == "EditOccurrence") ? 'none' : 'block';
 
 
