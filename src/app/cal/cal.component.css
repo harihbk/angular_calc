@@ -1368,10 +1368,10 @@ border-top:none;
   margin-left: 452px;
 } */
 
-
+/* 
 .e-dlg-center-center{
   justify-content: flex-start;
-}
+} */
 .circle-add{
   position: absolute;
   right: 0;
@@ -1401,6 +1401,71 @@ border-top:none;
   padding: 0;
 }
 .e-popup.e-popup-open.e-dialog{
-  max-width: 100%;
-  width: auto !important;
+  width: 70% !important;
 }
+
+#contactandjobs table th{
+padding: 10px;
+background-color: #dddddd;
+}
+#contactandjobs table tr:hover{
+  background-color: #f1efef;
+}
+#contactandjobs table t{
+  transition: 0.2s all;
+}
+#contactandjobs table{
+  width: 100%;
+}
+#contactandjobs table td{
+  padding: 10px;
+  }
+  #contactandjobs{
+    padding: 0;
+  }
+  .list_cals .e-dialog .e-dlg-content{
+    padding: 10px;
+  }
+  .list_cals .e-footer-content .e-btn{
+    background-color: white;
+    border: 1px solid;
+    transition: 0.5s all;
+  }
+  .list_cals .e-footer-content .e-btn:hover{
+    background-color: #e3165b;
+    border: 1px solid;
+    color: white !important;
+  }
+  .list_cals .e-dlg-header{
+    font-size: 16px;
+    color: #e3165b !important;
+    font-weight: 700;
+  }
+  .e-dialog .e-dlg-header-content{
+    padding: 10px;
+  }
+  .e-dialog .e-dlg-content{
+    padding: 10px;
+  }
+  #contacttwo{
+    margin: 0;
+    font-size: 16px;
+    color: #e3165b !important;
+    padding: 10px;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+  #contacttwo + hr{
+    display: none;
+  }
+  .userdefinedfield{
+    font-size: 16px;
+    font-weight: 500;
+    color: #e3165b;
+    margin-top: 46px;
+    padding-bottom: 15px;
+  }
+  .wrapperclass{
+    max-height: 255px;
+    overflow: auto;
+  }

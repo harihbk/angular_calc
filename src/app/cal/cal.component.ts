@@ -1157,21 +1157,6 @@ console.log(eventData);
 
 
 
-
-       // job fields
-
-
-      //  job.innerHTML = `
-      //  <button ejs-button cssClass="e-flat" content="Button"></button>
-      //  <div class="e-dynamic-container">
-      //  <div class="e-float-input e-control-wrapper e-multi-line-input">
-      //  <input type="text" class="e-input" name="job" ><span class="e-float-line"></span>
-      //  <label class="e-float-text e-label-top job" >Job</label></div></div>
-
-      //   <div class="e-dynamic-container">
-      //  <div class="e-float-input e-control-wrapper e-multi-line-input">
-      //  <input type="text" class="e-input" name="description"><span class="e-float-line"></span>
-      //  <label class="e-float-text e-label-top description">Description</label></div></div>`;
        childdiv.appendChild(job);
 
 
@@ -1179,10 +1164,13 @@ console.log(eventData);
 
       // user Defined fields
       var title = document.createElement('div');
-      title.setAttribute('class','userdefinedfield p-3');
+      title.setAttribute('class','userdefinedfield');
       title.textContent = "User defined fields"
 
       childdiv.appendChild(title);
+
+var wrapper = document.createElement("div");
+wrapper.setAttribute('class','wrapperclass');
 
       arr.map((a,b)=>{
       // create parent div
@@ -1210,21 +1198,17 @@ console.log(eventData);
 
         wrap_container.appendChild(label)
         fields_container.appendChild(wrap_container);
-        childdiv.appendChild(fields_container)
-
-
+           wrapper.appendChild(fields_container);
+        childdiv.appendChild(wrapper)
         _parentdiv.appendChild(childdiv);
-
-
-
-
-
     })
+    
+   
 
-    var popup = document.createElement('div');
-    popup.setAttribute('class',"popupwindow");
-
-
+    var form_seconddiv = document.createElement("div");
+    form_seconddiv.className = "secondclass";
+    form_seconddiv.innerHTML = ``;
+    formElement.appendChild(form_seconddiv);
 
   }
     }
