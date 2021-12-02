@@ -285,14 +285,17 @@
                 [(currentView)]="currentView"
                 timezone="UTC"
                 [eventSettings]="eventSettings"
-                (dataBinding)="onDataBinding($event)"
-                (actionBegin)="onActionBegin($event)"
-                (actionComplete)="onActionComplete($event)"
-                (popupOpen)="onPopupOpen($event)"
+                (popupOpen)='onPopupOpen($event)'
               >
 
 
-                <!-- <ejs-schedule
+                <!--
+                   (dataBinding)="onDataBinding($event)"
+                (actionBegin)="onActionBegin($event)"
+                (actionComplete)="onActionComplete($event)"
+                (popupOpen)="onPopupOpen($event)"
+
+                  <ejs-schedule
                   #scheduleObj
                   cssClass="schedule-overview"
                   height="100%"
@@ -365,6 +368,107 @@
                       </div>
                     </div>
                   </ng-template>
+
+
+
+
+  <!-- <tr>
+                                <td class="e-textlabel">Status</td>
+                                <td colspan="4">
+                                    <ejs-dropdownlist id='Status' class="e-field" data-name="Status" placeholder='Choose Status'
+                                        [dataSource]='StatusData' [fields]='statusFields' value='{{data.Status}}'>
+                                    </ejs-dropdownlist>
+                                </td>
+                            </tr> -->
+
+
+
+                    <!-- new event template-->
+        <ng-template #editorTemplate let-data>
+                  <div class="col-sm-12">
+                    <div class="row">
+                          <div class="col-sm-6">
+                             <div class="custom-event-editor">
+
+                                  <div class="summary">
+                                    <label for="e-textlabel">Summary</label>
+                                    <input id="Subject" class="e-field e-input" type="text" value="{{data.Subject}}"
+                                                              name="Subject" style="width: 100%" />
+                                  </div>
+
+
+                                  <div class="starttime">
+                                    <label for="e-textlabel">From</label>
+                                    <input id="StartTime" class="e-field" type="text" name="StartTime" />
+                                  </div>
+
+                                  <div class="endtime">
+                                    <label for="e-textlabel">To</label>
+                                    <input id="EndTime" class="e-field" type="text" name="EndTime" />
+                                  </div>
+
+                                  <div class="RecurrenceEditor">
+                                    <div id='RecurrenceEditor'></div>
+                                  </div>
+
+                                  <div class="endtime">
+                                    <label for="e-textlabel">Owner</label>
+                                    <input type="text" id="OwnerId" name="OwnerId" class="e-field" style="width: 100%" />
+                                  </div>
+
+                             </div>
+
+
+
+                          </div>  <!--col-sm-6-->
+
+                          <div class="col-sm-6">
+                            <table  class="custom-event-editor" width="100%" cellpadding="5">
+                              <tbody>
+                                  <tr>
+                                      <td class="e-textlabel">Job</td>
+                                      <td colspan="4">
+                                          <input id="Job" class="e-field e-input" type="text"
+                                              name="job" style="width: 100%" />
+                                              <span class="e-icons circle-add" (click)="openDialog()"></span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="e-textlabel">Description</td>
+                                    <td colspan="4">
+                                        <input id="Job" class="e-field e-input" type="text"
+                                            name="description" style="width: 100%" />
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <h4>Custom Fields</h4>
+
+                            <table  class="custom-event-editor" width="100%" cellpadding="5">
+                              <tbody>
+                                <tr *ngFor="let customfield of customfields">
+                                    <td class="e-textlabel">{{ customfield.label }}</td>
+                                    <td colspan="4">
+                                        <input id="Job" class="e-field e-input" type="text"
+                                            name="{{ customfield.name }}" style="width: 100%" />
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                    </div><!--row-->
+                </div>
+      </ng-template>
+          <!-- new event template-->`
+
+
+
+
+
+
+
 
                   <!-- Content Template -->
                   <ng-template #quickInfoTemplatesContent let-data>
@@ -711,4 +815,4 @@
     </ng-template>
 
   </ejs-dialog>
-  </div>
+</div>

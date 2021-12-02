@@ -5,16 +5,16 @@ import { SelectedEventArgs, TextBoxComponent } from '@syncfusion/ej2-angular-inp
 import {
   ScheduleComponent, GroupModel, DayService, WeekService, WorkWeekService, MonthService, YearService, AgendaService,
   TimelineViewsService, TimelineMonthService, TimelineYearService, View, EventSettingsModel, Timezone, CurrentAction,
-  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, PopupOpenEventArgs, ActionEventArgs, ToolbarActionArgs
+  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, PopupOpenEventArgs, ActionEventArgs, ToolbarActionArgs, RecurrenceEditor
 } from '@syncfusion/ej2-angular-schedule';
 import { addClass, extend, removeClass, closest, remove, isNullOrUndefined, Internationalization, compile } from '@syncfusion/ej2-base';
 import { ChangeEventArgs as SwitchEventArgs, SwitchComponent } from '@syncfusion/ej2-angular-buttons';
-import { MultiSelectComponent, ChangeEventArgs, MultiSelectChangeEventArgs, DropDownListComponent, DropDownList } from '@syncfusion/ej2-angular-dropdowns';
+import { MultiSelectComponent, ChangeEventArgs, MultiSelectChangeEventArgs, DropDownListComponent, DropDownList, MultiSelect } from '@syncfusion/ej2-angular-dropdowns';
 import { DataManager, Predicate, Query, WebApiAdaptor } from '@syncfusion/ej2-data';
 import {
   ClickEventArgs, ContextMenuComponent, MenuItemModel, BeforeOpenCloseMenuEventArgs, MenuEventArgs
 } from '@syncfusion/ej2-angular-navigations';
-import { ChangeEventArgs as TimeEventArgs } from '@syncfusion/ej2-calendars';
+import { ChangeEventArgs as TimeEventArgs, DateTimePicker } from '@syncfusion/ej2-calendars';
 import { createElement } from '@syncfusion/ej2-base';
 import { CalendarService } from './services/calendar.service';
 import { HttpClient } from '@angular/common/http';
@@ -203,6 +203,19 @@ export class CalComponent  implements OnInit{
 
 
 
+  public customfields = [
+    {name : 'Quantity' , label : 'Quantity'},
+    {name : 'Product' , label : 'Product'},
+    {name : 'Windows' , label : 'Windows'},
+    {name : 'Order' , label : 'Order'},
+    {name : 'Quantity' , label : 'Quantity'},
+   ];
+
+
+  public dateParser(data: string) {
+    return new Date(data);
+  }
+
   public dataManger = new DataManager({
     url:
       "https://www.googleapis.com/calendar/v3/calendars/primary/events" ,
@@ -280,6 +293,10 @@ export class CalComponent  implements OnInit{
 
 
   onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
+
+
+    console.log(args.data);
+
     var apps = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
  console.log(apps.RecurrenceRule);
 
@@ -533,6 +550,7 @@ export class CalComponent  implements OnInit{
 
 
   onActionComplete(args: ActionEventArgs):void {
+
 
 
 
@@ -1066,7 +1084,49 @@ console.log(eventData);
     return calendarText;
   }
 
+
   onPopupOpen(args: PopupOpenEventArgs) {
+
+    if (args.type === 'Editor') {
+      let startElement: HTMLInputElement = args.element.querySelector('#StartTime') as HTMLInputElement;
+      if (!startElement.classList.contains('e-datetimepicker')) {
+          new DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
+      }
+      let endElement: HTMLInputElement = args.element.querySelector('#EndTime') as HTMLInputElement;
+      if (!endElement.classList.contains('e-datetimepicker')) {
+          new DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
+      }
+
+      let recurElement: HTMLElement = args.element.querySelector('#RecurrenceEditor');
+
+      if (!recurElement.classList.contains('e-recurrenceeditor')) {
+          let recurrObject: RecurrenceEditor = new RecurrenceEditor({
+          });
+          recurrObject.appendTo(recurElement);
+          (this.scheduleObj.eventWindow as any).recurrenceEditor = recurrObject;
+      }
+
+      document.getElementById('RecurrenceEditor').style.display = (this.scheduleObj.currentAction == "EditOccurrence") ? 'none' : 'block';
+
+
+
+
+      let processElement: HTMLInputElement= args.element.querySelector('#OwnerId');
+      if (!processElement.classList.contains('e-multiselect')) {
+          let multiSelectObject: MultiSelect = new MultiSelect({
+              placeholder: 'Choose a owner',
+              fields: { text: 'CalendarText', value: 'CalendarId'},
+              dataSource: <any>this.resourceDataSource,
+              value: <string[]>((args.data.OwnerId instanceof Array) ? args.data.OwnerId : [args.data.OwnerId])
+          });
+          multiSelectObject.appendTo(processElement);
+      }
+
+
+    }
+  }
+
+  onPopupOpen123(args: PopupOpenEventArgs) {
 
     if (args.type === 'Editor') {
       if (!args.element.querySelector('.custom-field-row')) {
@@ -1205,10 +1265,21 @@ wrapper.setAttribute('class','wrapperclass');
     
    
 
+
     var form_seconddiv = document.createElement("div");
     form_seconddiv.className = "secondclass";
-    form_seconddiv.innerHTML = ``;
+    form_seconddiv.innerHTML = `<div #container class='root-container'>
+    <ejs-dialog id='dialog' #ejDialog isModal='true' [visible]="visible" content='Congratulations! Login Success'  header='Success' [buttons]='popupbutton' [target]='targetElement' width='280px'>
+      <ng-template #content>
+
+  <app-customjob></app-customjob>
+
+      </ng-template>
+
+    </ejs-dialog>
+  </div>`;
     formElement.appendChild(form_seconddiv);
+
 
   }
     }
@@ -1226,7 +1297,7 @@ wrapper.setAttribute('class','wrapperclass');
     this.targetElement = this.container.nativeElement.parentElement;
   }
 
-  public openDialog = function(event: any): void {
+  public openDialog(){
     // Call the show method to open the Dialog
     this.ejDialog.show();
 }
