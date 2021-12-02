@@ -382,135 +382,86 @@
                             </tr> -->
 
 
-                  <ng-template #editorTemplate let-data>
 
+                    <!-- new event template-->
+        <ng-template #editorTemplate let-data>
+                  <div class="col-sm-12">
+                    <div class="row">
+                          <div class="col-sm-6">
+                             <div class="custom-event-editor">
 
-  <div class="col-sm-12">
-    <div class="row">
-          <div class="col-sm-6">
-                      <table  class="custom-event-editor" width="100%" cellpadding="5">
-                        <tbody>
-                            <tr>
-                                <td class="e-textlabel">Summary</td>
-                                <td colspan="4">
+                                  <div class="summary">
+                                    <label for="e-textlabel">Summary</label>
                                     <input id="Subject" class="e-field e-input" type="text" value="{{data.Subject}}"
-                                        name="Subject" style="width: 100%" />
-                                </td>
-                            </tr>
-                            <tr>
-                              <td class="e-textlabel">From</td>
-                                  <td colspan="4">
-                                      <input id="StartTime" class="e-field" type="text" name="StartTime" />
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td class="e-textlabel">To</td>
-                                  <td colspan="4">
-                                      <input id="EndTime" class="e-field" type="text" name="EndTime" />
-                                  </td>
-                              </tr>
-                            <tr>
-                              <td colspan="4">
-                                  <div id='RecurrenceEditor'></div>
-                              </td>
-                          </tr>
-                          <tr>
-                            <td class="e-textlabel">Owner</td>
-                            <td colspan="4">
-                                <input type="text" id="OwnerId" name="OwnerId" class="e-field" style="width: 100%" />
-                            </td>
-                        </tr>
-                            <tr>
-                                <td class="e-textlabel">Reason</td>
-                                <td colspan="4">
-                                    <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                                        value="{{data.Description}}"
-                                        style="width: 100%; height: 60px !important; resize: vertical"></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                                              name="Subject" style="width: 100%" />
+                                  </div>
 
 
-          <div class="notification">
-              <div id="modallinesix" class="city">
-                <div class="row">
-                    <div class="pl-0 col-lg-1 col-md-1 col-sm-1 col-1">
+                                  <div class="starttime">
+                                    <label for="e-textlabel">From</label>
+                                    <input id="StartTime" class="e-field" type="text" name="StartTime" />
+                                  </div>
 
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <div class="pl-0 col-lg-10 col-md-10 col-sm-10 col-10">
-                        <label>Notification</label>
-                    </div>
+                                  <div class="endtime">
+                                    <label for="e-textlabel">To</label>
+                                    <input id="EndTime" class="e-field" type="text" name="EndTime" />
+                                  </div>
+
+                                  <div class="RecurrenceEditor">
+                                    <div id='RecurrenceEditor'></div>
+                                  </div>
+
+                                  <div class="endtime">
+                                    <label for="e-textlabel">Owner</label>
+                                    <input type="text" id="OwnerId" name="OwnerId" class="e-field" style="width: 100%" />
+                                  </div>
+
+                             </div>
+
+
+
+                          </div>  <!--col-sm-6-->
+
+                          <div class="col-sm-6">
+                            <table  class="custom-event-editor" width="100%" cellpadding="5">
+                              <tbody>
+                                  <tr>
+                                      <td class="e-textlabel">Job</td>
+                                      <td colspan="4">
+                                          <input id="Job" class="e-field e-input" type="text"
+                                              name="job" style="width: 100%" />
+                                              <span class="e-icons circle-add" (click)="openDialog()"></span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="e-textlabel">Description</td>
+                                    <td colspan="4">
+                                        <input id="Job" class="e-field e-input" type="text"
+                                            name="description" style="width: 100%" />
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <h4>Custom Fields</h4>
+
+                            <table  class="custom-event-editor" width="100%" cellpadding="5">
+                              <tbody>
+                                <tr *ngFor="let customfield of customfields">
+                                    <td class="e-textlabel">{{ customfield.label }}</td>
+                                    <td colspan="4">
+                                        <input id="Job" class="e-field e-input" type="text"
+                                            name="{{ customfield.name }}" style="width: 100%" />
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                    </div><!--row-->
                 </div>
-              </div>
-
-              <div class="row">
-                    <div class="pl-0 col-lg-5 col-md-5 col-sm-5 col-5">
-                      <input type="radio" id="emailandsms" name="email" value="email">
-                      <label for="AllDay" id="AllDay" style="margin:5px;vertical-align: top;margin-right: 30px;">Email</label>
-                      <input type="radio" id="emailandsms" name="sms" value="sms">
-                      <label for="Repeat" id="sms" style="margin:5px;vertical-align: top;">SMS</label>
-                    </div>
-                    <div class="pl-0 col-lg-5 col-md-5 col-sm-5 col-5">
-                      <span class="">
-                        <input id="notifyinpbox" type="number" value="2">
-                          <span>
-                            <input id="notifyinpbox" type="number" value="15">
-                          </span>
-                        <button class="btn btn-primary" id="plus">
-
-                        </button>
-                      </span>
-                    </div>
-              </div>
-          </div>
-
-          </div>  <!--col-sm-6-->
-
-          <div class="col-sm-6">
-            <table  class="custom-event-editor" width="100%" cellpadding="5">
-              <tbody>
-                  <tr>
-                      <td class="e-textlabel">Job</td>
-                      <td colspan="4">
-                          <input id="Job" class="e-field e-input" type="text"
-                              name="job" style="width: 100%" />
-                              <span class="e-icons circle-add" (click)="openDialog()"></span>
-                      </td>
-                  </tr>
-                  <tr>
-                    <td class="e-textlabel">Description</td>
-                    <td colspan="4">
-                        <input id="Job" class="e-field e-input" type="text"
-                            name="description" style="width: 100%" />
-                    </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h4>Custom Fields</h4>
-
-            <table  class="custom-event-editor" width="100%" cellpadding="5">
-              <tbody>
-                <tr *ngFor="let customfield of customfields">
-                    <td class="e-textlabel">{{ customfield.label }}</td>
-                    <td colspan="4">
-                        <input id="Job" class="e-field e-input" type="text"
-                            name="{{ customfield.name }}" style="width: 100%" />
-                    </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-    </div><!--row-->
-</div>
-
-
-
-
-                </ng-template>
+      </ng-template>
+          <!-- new event template-->`
 
 
 
@@ -856,7 +807,7 @@
 
 
 <div #container class='root-container'>
-  <ejs-dialog id='dialog' #ejDialog isModal='true' [visible]="visible" content='Congratulations! Login Success'  header='Success' [buttons]='popupbutton' [target]='targetElement' width='280px'>
+  <ejs-dialog id='dialog' class="list_cals" #ejDialog isModal='true' [visible]="visible" content='Congratulations! Login Success'  header='Success' [buttons]='popupbutton' [target]='targetElement' width='280px'>
     <ng-template #content>
 
 <app-customjob></app-customjob>
