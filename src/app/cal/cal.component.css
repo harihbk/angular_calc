@@ -419,14 +419,14 @@ input:focus {
 .schedule-overview .e-schedule.e-device .date-text {
 	font-size: 12px;
 }
-.map_calac{
+/* .map_calac{
   width:40px;
   height: 40px;
   background-color: white;
   border-radius: 50%;
   color: black;
   margin: 0 auto;
-}
+} */
 .schedule-overview .e-schedule .weather-image {
 	width: 20px;
 	height: 20px;
@@ -730,12 +730,9 @@ input:focus {
 }
 
 .schedule-overview.e-schedule .weather-image {
-	width: 20px;
-	height: 20px;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	/* display: none; */
+    width: 25px;
+    object-fit: contain;
+    height: 25px;
 }
 
 .schedule-overview.e-schedule .weather-text {
@@ -1566,5 +1563,10 @@ input:focus {
 		-webkit-box-pack: justify;
 		-ms-flex-pack: justify;
 		justify-content: space-between;
+	}
+}
+@media  (max-width: 568px) {
+	.e-schedule .e-year-view .e-calendar-wrapper .e-month-calendar.e-calendar{
+		min-width: 100%;
 	}
 }
