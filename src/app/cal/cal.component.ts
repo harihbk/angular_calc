@@ -949,19 +949,19 @@ console.log(eventData);
   public getWeatherImage(value: Date): string {
     switch (value.getDay()) {
       case 0:
-        return '<img class="weather-image" src="./assets/schedule/images/weather-clear.svg"/><div class="weather-text">25°C</div>';
+        return '<img class="weather-image" src="./assets/map2.png"/><div class="weather-text">25°C</div>';
       case 1:
-        return '<img class="weather-image" src="./assets/schedule/images/weather-clouds.svg"/><div class="weather-text">18°C</div>';
+        return '<img class="weather-image" src="./assets/map2.png"/><div class="weather-text">18°C</div>';
       case 2:
-        return '<img class="weather-image" src="./assets/schedule/images/weather-rain.svg"/><div class="weather-text">10°C</div>';
+        return '<img class="weather-image" src="./assets/map2.png"/><div class="weather-text">10°C</div>';
       case 3:
-        return '<img class="weather-image" src="./assets/schedule/images/weather-clouds.svg"/><div class="weather-text">16°C</div>';
+        return '<img class="weather-image" src="./assets/map2.png"/><div class="weather-text">16°C</div>';
       case 4:
-        return '<img class="weather-image" src="./assets/schedule/images/weather-rain.svg"/><div class="weather-text">8°C</div>';
+        return '<img class="weather-image" src="./assets/map2.png"/><div class="weather-text">8°C</div>';
       case 5:
-        return '<img class="weather-image" src="./assets/schedule/images/weather-clear.svg"/><div class="weather-text">27°C</div>';
+        return '<img class="weather-image" src="./assets/map2.png"/><div class="weather-text">27°C</div>';
       case 6:
-        return '<img class="weather-image" src="./assets/schedule/images/weather-clouds.svg"/><div class="weather-text">17°C</div>';
+        return '<img class="weather-image" src="./assets/map2.png"/><div class="weather-text">17°C</div>';
       default:
         return null;
     }

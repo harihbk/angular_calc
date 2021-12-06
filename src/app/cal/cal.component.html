@@ -236,7 +236,9 @@
                     <div class="date-text" *ngIf="singleResourceDay">
                       {{ getDateHeaderText(data.date) }}
                     </div>
-                    <div [innerHTML]="getWeatherImage(data.date)" *ngIf="singleResourceDay"></div>
+                   
+                      <div [innerHTML]="getWeatherImage(data.date)" class="map_calac" *ngIf="singleResourceDay"></div>
+                    
                   </ng-template>
                   <e-views>
                     <e-view option="Day"></e-view>

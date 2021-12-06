@@ -419,13 +419,17 @@ input:focus {
 .schedule-overview .e-schedule.e-device .date-text {
 	font-size: 12px;
 }
-
+.map_calac{
+  width:40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  color: black;
+  margin: 0 auto;
+}
 .schedule-overview .e-schedule .weather-image {
 	width: 20px;
 	height: 20px;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: cover;
 }
 
 .schedule-overview .e-schedule .weather-text {
@@ -453,6 +457,7 @@ input:focus {
 	-ms-user-select: none;
 	user-select: none;
 }
+
 
 .schedule-overview .quick-info-header {
 	background-color: white;
@@ -1488,7 +1493,7 @@ input:focus {
 	color: white !important;
 }
 
-@media only screen and (max-width: 1024px) {
+@media  (max-width: 1024px) {
 	.calander_pickers {
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -1532,7 +1537,7 @@ input:focus {
 	}
 }
 
-@media only screen and (max-width: 768px) {
+@media  (max-width: 768px) {
 	.calander_pickers {
 		-webkit-box-orient: vertical;
 		-webkit-box-direction: normal;
