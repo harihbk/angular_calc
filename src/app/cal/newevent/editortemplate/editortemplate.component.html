@@ -1,116 +1,305 @@
 <div class="col-sm-12">
-
   <div class="row">
     <div class="col-sm-6">
-
-      <div class="summary">
-        <label for="e-textlabel">Summary</label>
-        <input id="Subject" class="e-field e-input" type="text"
-                                  name="Subject" style="width: 100%" />
-      </div>
-
-
-      <div class="starttime">
-        <label for="e-textlabel">From</label>
-        <input id="StartTime" class="e-field" type="text" name="StartTime" #startdate/>
-      </div>
-
-      <div class="endtime">
-        <label for="e-textlabel">To</label>
-        <input id="EndTime" class="e-field" type="text" name="EndTime" />
-      </div>
-
-
-      <div class="e-all-day-time-zone-row">
-        <div class="e-all-day-container">
-          <div class="e-float-input e-control-wrapper">AllDay
-            <input id="IsAllDay" class="e-field" type="text" name="IsAlDay" style="width: 100%"/>
-          </div>
+      <div class="custom-event-editor defult_heightedit">
+        <div class="summary">
+          <label for="e-textlabel">Summary</label>
+          <input
+            id="Subject"
+            class="e-field e-input"
+            type="text"
+            name="Subject"
+            style="width: 100%"
+          />
         </div>
-        <div id="TimezoneRow" class="e-time-zone-container">
-          <div class="e-float-input e-control-wrapper">Timezone
-            <input id="Timezone" class="e-field" type="text" name="Timezone" style="width: 100%"/>
+        <div class="row">
+          <div class="col-6">
+            <div class="starttime">
+              <label for="e-textlabel">From</label>
+              <input
+                id="StartTime"
+                class="e-field"
+                type="text"
+                name="StartTime"
+                #startdate
+              />
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="e-custom-row">
-        <div id="startZoneRow">
-          <div class="e-start-time-zone-container">
-            <div class="e-float-input e-control-wrapper">Start Timezone
-              <input id="StartTimezone" class="e-field" type="text" name="StartTimezone" style="width: 100%" />
+          <div class="col-6">
+            <div class="endtime">
+              <label for="e-textlabel">To</label>
+              <input id="EndTime" class="e-field" type="text" name="EndTime" />
             </div>
           </div>
         </div>
-        <div id="endZoneRow">
-          <div class="e-end-time-zone-container">
-            <div class="e-float-input e-control-wrapper">End Timezone
-              <input id="EndTimezone" class="e-field" type="text" name="EndTimezone" style="width: 100%" />
-            </div>
-          </div>
-        </div>
+<div class="row e-all-day-time-zone-row">
+  <div class="col-6">
+    <div class="e-all-day-container">
+      <div class="e-float-input e-control-wrapper">
+        <i class="fas fa-sync"></i>
+        AllDay
+        <input
+          id="IsAllDay"
+          class="e-field"
+          type="text"
+          name="IsAlDay"
+          style="width: 100%"
+        />
       </div>
+    </div>
+  </div>
+  <div class="col-6">
 
-
-
-
-
-      <div style="padding-bottom:15px;">
-        <label id="rule-label">Rule Output</label>
-        <div class="rule-output-container">
-            <div id="rule-output">Select Rule</div>
-        </div>
+    <div id="TimezoneRow" class="e-time-zone-container">
+      <div class="e-float-input e-control-wrapper">
+        Timezone
+        <input
+          id="Timezone"
+          class="e-field"
+          type="text"
+          name="Timezone"
+          style="width: 100%"
+        />
       </div>
-      <div id="RecurrenceEditor">
-      <ejs-recurrenceeditor (change)="onChange($event)"></ejs-recurrenceeditor>
-      </div>
-
+    </div>
+  </div>
 </div>
+ <div class="row e-custom-row d-none">
+   <div class="col-6">
+    <div id="startZoneRow">
+      <div class="e-start-time-zone-container">
+        <div class="e-float-input e-control-wrapper">
+          Start Timezone
+          <input
+            id="StartTimezone"
+            class="e-field"
+            type="text"
+            name="StartTimezone"
+            style="width: 100%"
+          />
+        </div>
+      </div>
+    </div>
+   </div>
+   <div class="col-6">
 
+    <div id="endZoneRow">
+      <div class="e-end-time-zone-container">
+        <div class="e-float-input e-control-wrapper">
+          End Timezone
+          <input
+            id="EndTimezone"
+            class="e-field"
+            type="text"
+            name="EndTimezone"
+            style="width: 100%"
+          />
+        </div>
+      </div>
+    </div>
+   </div>
+ </div>
+ 
 
-<div class="col-sm-6">
+        <div class="d-none" style="padding-bottom: 15px">
+          <label id="rule-label">Rule Output</label>
+          <div class="rule-output-container">
+            <div id="rule-output">Select Rule</div>
+          </div>
+        </div>
+        <div id="RecurrenceEditor">
+          <ejs-recurrenceeditor
+            (change)="onChange($event)"
+          ></ejs-recurrenceeditor>
+        </div>
 
+        <div class="row calcprivate">
+          <div class="col-6">
+            <div class="form-check">
+              <label
+                class="form-check-label"
+                for="defaultCheck1"
+              >
+                <i class="fas fa-user-lock"></i> Private
+              </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-check">
+              <label
+                class="form-check-label"
+                for="defaultCheck1"
+              >
+                Confirm
+              </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+              />
+            </div>
+          </div>
+        </div>
 
-  <table  class="custom-event-editor" width="100%" cellpadding="5">
-    <tbody>
-        <tr>
-            <td class="e-textlabel">Job</td>
-            <td colspan="4">
-                <input id="Job" class="e-field e-input" type="text"
-                    name="job" style="width: 100%" />
-                    <span class="e-icons circle-add"></span>
-            </td>
-        </tr>
-        <tr>
-          <td class="e-textlabel">Description</td>
-          <td colspan="4">
-              <input id="Job" class="e-field e-input" type="text"
-                  name="description" style="width: 100%" />
-          </td>
-      </tr>
-    </tbody>
-  </table>
+        <div class="row">
+          <div class="col-6">
+            <label
+              ><i class="fas fa-car"></i>Travel Time</label
+            >
+          </div>
+          <div class="col-6">
+            <select name="" id="">
+              <option value="">10 Mintues</option>
+              <option value="">20 Mintues</option>
+              <option value="">30 Mintues</option>
+              <option value="">40 Mintues</option>
+              <option value="">50 Mintues</option>
+            </select>
+          </div>
+        </div>
 
-  <h4>Custom Fields</h4>
+        <div class="row calnotfic">
+          <div class="col-6">
+            <label
+              ><i class="fas fa-bell"></i
+              >Notification</label
+            >
+            <div class="row">
+              <div class="col-6">
+                <div class="form-check">
+                  <label
+                    class="form-check-label"
+                    for="exampleRadios1"
+                  >
+                    Sms
+                  </label>
+                  <p>
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="exampleRadios"
+                      id="exampleRadios1"
+                      value="option1"
+                      checked
+                    />
+                  </p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check">
+                  <label
+                    class="form-check-label"
+                    for="exampleRadios1"
+                  >
+                    Email
+                  </label>
+                  <p>
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="exampleRadios"
+                      id="exampleRadios1"
+                      value="option1"
+                      checked
+                    />
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6"></div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <!-- <ejs-recurrenceeditor (change)="onChange($event)" value="FREQ=DAILY;INTERVAL=2;COUNT=8"></ejs-recurrenceeditor> -->
+            <div class="endtime">
+              <label for="e-textlabel"
+                ><i class="far fa-calendar-alt"></i
+                >Owner</label
+              >
+              <input
+                type="text"
+                id="OwnerId"
+                name="OwnerId"
+                class="e-field"
+                style="width: 100%"
+              />
+            </div>
+          </div>
+          <div
+            class="col-6"
+            style="display: flex; align-items: self-end"
+          >
+            <select name="" id="">
+              <option value="">Filter</option>
+              <option value="">Filter2</option>
+              <option value="">Filter3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <table  class="custom-event-editor" width="100%" cellpadding="5">
+    <div class="col-sm-6">
+      <div class="custom-event-editor">
+        <table  width="100%" cellpadding="5">
+          <tbody>
+            <tr>
+              <td style="position: relative; width: 30%;"class="e-textlabel">Add Job</td>
+              <td  style="position: relative; width: 70%;">
+                <input
+                  id="Job"
+                  class="e-field e-input"
+                  type="text"
+                  name="job"
+                  style="width: 100%"
+                />
+                <span class="e-icons circle-add"></span>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:30%;vertical-align: text-top;" class="e-textlabel">Description</td>
+              <td style="width:70%;" class="job_descripton">
+                <textarea
+                  name="description"
+                  id="Job"
+                  class="e-field e-input"
+                  cols="30"
+                  rows="4"
+                ></textarea>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+
+      <h4 class="userdefinedfield">Custom Fields</h4>
+<div class="custom-event-editor">
+  <table  width="100%" cellpadding="5">
     <tbody>
       <tr *ngFor="let customfield of customfields">
-          <td class="e-textlabel">{{ customfield.label }}</td>
-          <td colspan="4">
-              <input id="Job" class="e-field e-input" type="text"
-                  name="{{ customfield.name }}" style="width: 100%" />
-          </td>
+        <td style="width: 30%;" class="e-textlabel">{{ customfield.label }}</td>
+        <td style="width: 70%;">
+          <input
+            id="Job"
+            class="e-field e-input"
+            type="text"
+            name="{{ customfield.name }}"
+            style="width: 100%"
+          />
+        </td>
       </tr>
     </tbody>
   </table>
-
-
-
 </div>
 
-
+    </div>
   </div>
-
-
-
 </div>

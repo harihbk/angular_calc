@@ -1,0 +1,12 @@
+::ng-deep .cdk-overlay-pane{
+    height: auto !important;
+    width: 70% !important;
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%);
+  }
+  ::ng-deep .mat-dialog-container{
+    padding: 13px 0px !important;
+    border-radius: 12px !important;
+  }
