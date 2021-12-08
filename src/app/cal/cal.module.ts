@@ -28,6 +28,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { CustomjobComponent } from './customjob/customjob.component';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { NeweventComponent } from './newevent/newevent.component';
 
 @NgModule({
   imports: [

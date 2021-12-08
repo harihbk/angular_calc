@@ -11,6 +11,9 @@
             >
               New Event
             </button>
+
+
+
             <button
               class="today btn"
               id="today"
@@ -283,13 +286,18 @@
                 height="100%"
                 [group]="group"
                 [(currentView)]="currentView"
-                timezone="UTC"
+                timezone="Asia/Calcutta"
                 [eventSettings]="eventSettings"
                 (popupOpen)='onPopupOpen($event)'
+                (actionBegin)="onActionBegin($event)"
+                (dataBinding)="onDataBinding($event)"
+                (actionComplete)="onActionComplete($event)"
+
               >
 
 
                 <!--
+                   (popupOpen)='onPopupOpen($event)'
                    (dataBinding)="onDataBinding($event)"
                 (actionBegin)="onActionBegin($event)"
                 (actionComplete)="onActionComplete($event)"
@@ -344,6 +352,9 @@
                     </e-resource>
                   </e-resources>
 
+
+
+
                   <!-- <e-resources>
                 <e-resource field='CalendarId' title='Calendars' [dataSource]='resourceDataSource'
                   [query]='resourceQuery'
@@ -353,7 +364,7 @@
               </e-resources> -->
 
                   <!-- Header template -->
-                  <ng-template #quickInfoTemplatesHeader let-data>
+                  <!-- <ng-template #quickInfoTemplatesHeader let-data>
                     <div class="quick-info-header">
                       <div
                         class="quick-info-header-content"
@@ -367,7 +378,7 @@
                         </div>
                       </div>
                     </div>
-                  </ng-template>
+                  </ng-template> -->
 
 
 
@@ -407,9 +418,43 @@
                                     <input id="EndTime" class="e-field" type="text" name="EndTime" />
                                   </div>
 
+
+
+                                  <div class="e-all-day-time-zone-row">
+                                    <div class="e-all-day-container">
+                                      <div class="e-float-input e-control-wrapper">AllDay
+                                        <input id="IsAllDay" class="e-field" type="text" name="IsAlDay" style="width: 100%"/>
+                                      </div>
+                                    </div>
+                                    <div id="TimezoneRow" class="e-time-zone-container">
+                                      <div class="e-float-input e-control-wrapper">Timezone
+                                        <input id="Timezone" class="e-field" type="text" name="Timezone" style="width: 100%"/>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="e-custom-row">
+                                    <div id="startZoneRow">
+                                      <div class="e-start-time-zone-container">
+                                        <div class="e-float-input e-control-wrapper">Start Timezone
+                                          <input id="StartTimezone" class="e-field" type="text" name="StartTimezone" style="width: 100%" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div id="endZoneRow">
+                                      <div class="e-end-time-zone-container">
+                                        <div class="e-float-input e-control-wrapper">End Timezone
+                                          <input id="EndTimezone" class="e-field" type="text" name="EndTimezone" style="width: 100%" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
                                   <div class="RecurrenceEditor">
+
                                     <div id='RecurrenceEditor'></div>
                                   </div>
+              <!-- <ejs-recurrenceeditor (change)="onChange($event)" value="FREQ=DAILY;INTERVAL=2;COUNT=8"></ejs-recurrenceeditor> -->
+
 
                                   <div class="endtime">
                                     <label for="e-textlabel">Owner</label>

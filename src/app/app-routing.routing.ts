@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { NeweventComponent } from './cal/newevent/newevent.component';
 import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
@@ -28,8 +29,8 @@ const routes: Routes = [
      loadChildren:()=>import('./cal/cal.module').then(m=>m.CalModule)
    },
    {
-    path : 'cl',
-    loadChildren:()=>import('./c/c.module').then(m=>m.CModule)
+    path : 'popup',
+    loadChildren:()=>import('./cal/newevent/newevent.module').then(m=>m.CalModule)
   }
 
 

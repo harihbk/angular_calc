@@ -1,18 +1,18 @@
 
-import { Component, ViewEncapsulation, Inject, ViewChild, AfterViewChecked, OnInit, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, ViewChild, AfterViewChecked, OnInit, ElementRef, Injectable } from '@angular/core';
 import { ItemModel } from '@syncfusion/ej2-angular-splitbuttons';
 import { SelectedEventArgs, TextBoxComponent } from '@syncfusion/ej2-angular-inputs';
 import {
   ScheduleComponent, GroupModel, DayService, WeekService, WorkWeekService, MonthService, YearService, AgendaService,
   TimelineViewsService, TimelineMonthService, TimelineYearService, View, EventSettingsModel, Timezone, CurrentAction,
-  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, PopupOpenEventArgs, ActionEventArgs, ToolbarActionArgs, RecurrenceEditor
+  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, PopupOpenEventArgs, ActionEventArgs, ToolbarActionArgs, RecurrenceEditor, RecurrenceEditorChangeEventArgs, timezoneData
 } from '@syncfusion/ej2-angular-schedule';
 import { addClass, extend, removeClass, closest, remove, isNullOrUndefined, Internationalization, compile } from '@syncfusion/ej2-base';
-import { ChangeEventArgs as SwitchEventArgs, SwitchComponent } from '@syncfusion/ej2-angular-buttons';
-import { MultiSelectComponent, ChangeEventArgs, MultiSelectChangeEventArgs, DropDownListComponent, DropDownList, MultiSelect } from '@syncfusion/ej2-angular-dropdowns';
+import { ChangeEventArgs as SwitchEventArgs, CheckBox, SwitchComponent } from '@syncfusion/ej2-angular-buttons';
+import { MultiSelectComponent, ChangeEventArgs, MultiSelectChangeEventArgs, DropDownListComponent, DropDownList, MultiSelect, FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
 import { DataManager, Predicate, Query, WebApiAdaptor } from '@syncfusion/ej2-data';
 import {
-  ClickEventArgs, ContextMenuComponent, MenuItemModel, BeforeOpenCloseMenuEventArgs, MenuEventArgs
+  ClickEventArgs, ContextMenuComponent, MenuItemModel, BeforeOpenCloseMenuEventArgs, MenuEventArgs, TreeViewComponent
 } from '@syncfusion/ej2-angular-navigations';
 import { ChangeEventArgs as TimeEventArgs, DateTimePicker } from '@syncfusion/ej2-calendars';
 import { createElement } from '@syncfusion/ej2-base';
@@ -23,6 +23,10 @@ import { CustomjobComponent } from './customjob/customjob.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '@syncfusion/ej2-angular-popups';
 import { EmitType } from '@syncfusion/ej2-base';
+import { environment } from 'src/environments/environment';
+import { EventHandler } from "@syncfusion/ej2-base";
+import { classList } from '@syncfusion/ej2-base';
+import { EventemitterService } from './services/eventemitter.service';
 
 
 declare var moment: any;
@@ -30,6 +34,9 @@ declare var $: any;
 /**
  * Sample for overview
  */
+ @Injectable({
+  providedIn: 'root',
+})
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'app-cal',
@@ -54,9 +61,11 @@ export class CalComponent  implements OnInit{
   @ViewChild('dragSwitch') dragSwitch: SwitchComponent;
   @ViewChild('ejDialog') ejDialog: DialogComponent;
   @ViewChild('container', { read: ElementRef }) container: ElementRef;
+  @ViewChild('treeObj') treeObj: TreeViewComponent;
 
   public targetElement: HTMLElement;
 
+  public cursor;
 
 
   public showFileList = false;
@@ -136,6 +145,7 @@ export class CalComponent  implements OnInit{
     { text: 'UTC +14:00', value: 'Etc/GMT-14' }
   ];
   public timeSlotDuration: Record<string, any>[] = [
+    { Name: '0.5 hour', Value: 30 },
     { Name: '1 hour', Value: 60 },
     { Name: '1.5 hours', Value: 90 },
     { Name: '2 hours', Value: 120 },
@@ -218,12 +228,13 @@ export class CalComponent  implements OnInit{
 
   public dataManger = new DataManager({
     url:
-      "https://www.googleapis.com/calendar/v3/calendars/primary/events" ,
-      headers: [
-        { 'Accept': 'application/json' },
-        { 'Content-Type': 'application/json' },
-        { 'Authorization': 'Bearer '+this.service.GetAccessToken }
-      ],
+     // "https://www.googleapis.com/calendar/v3/calendars/primary/events" ,
+     `${environment.APIURL}/calendar/get`,
+      // headers: [
+      //    { 'Accept': 'application/json' },
+      //    { 'Content-Type': 'application/json' },
+      //    { 'Authorization': 'Bearer '+this.service.GetAccessToken }
+      //  ],
     adaptor: new WebApiAdaptor(),
     crossDomain: true
   });
@@ -232,16 +243,22 @@ export class CalComponent  implements OnInit{
   userdata: any;
   modifieduserdata: { end: { dateTime: any; }; start: { dateTime: any; }; summary: any; };
   public dataSource: Object[];
-// public eventSettings: EventSettingsModel = {  dataSource: this.dataManger};
-  public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
+ public eventSettings: EventSettingsModel = {  dataSource: this.dataManger};
+ // public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
 
 
 
   constructor(
     public service : CalendarService,
     public http:HttpClient,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public emitterservice : EventemitterService
   ) {
+
+    // this.emitterservice.subject.subscribe(res=>{
+    //  console.log(res);
+
+    // })
 
 
   }
@@ -250,10 +267,7 @@ export class CalComponent  implements OnInit{
 
   onDataBinding(e: Record<string, any>): void {
     const items: Record<string, any>[] = (
-      e.result as Record<string, Record<string, any>[]>
-    ).items;
-
-
+      e.result as Record<string, Record<string, any>[]>).result;
 
     const scheduleData: Record<string, any>[] = [];
 
@@ -262,31 +276,75 @@ export class CalComponent  implements OnInit{
     let startDate: Date = currentViewDates[0] as Date;
     let endDate: Date = currentViewDates[currentViewDates.length - 1] as Date;
     var aa = 0;
+
+    console.log(items);
+
+
+    // scheduleData.push({
+    //   Id: 1,
+    //   Subject: 'harin',
+    //   StartTime: '2021-12-06T03:00:00+00:00',
+    //   EndTime: '2021-12-06T04:00:00+00:00',
+    //   IsAllDay:false,
+    //   RecurrenceRule :'FREQ=MONTHLY;BYMONTHDAY=1;INTERVAL=1;COUNT=5',
+    //  //RecurrenceRule : 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;'
+
+    // });
+
+    // scheduleData.push({
+    //   Id: 5,
+    //   Subject: 'Team Fun hari',
+    //   Location: 'Office',
+    //   StartTime: "2021-12-06T09:00:00+00:00",
+    //   EndTime: "2021-12-06T09:30:00+00:00",
+    //   IsAllDay: false,
+    // //  RecurrenceRule: 'FREQ=MONTHLY;BYDAY=MO,TU;BYSETPOS=1;INTERVAL=1;UNTIL=20220204T080803Z;',
+    //   RecurrenceRule: "FREQ=MONTHLY;BYDAY=MO;BYSETPOS=1;INTERVAL=1;UNTIL=20220204T092349Z;",
+    //   CategoryColor: '#00bdae'
+    // });
+
+
       for (const event of items) {
-        let when: string = event.start.dateTime as string;
-        let start: string = event.start.dateTime as string;
-        let end: string = event.end.dateTime as string;
-        if (!when) {
-          when = event.start.date as string;
-          start = event.start.date as string;
-          end = event.end.date as string;
+
+        let when: string = event?.start?.dateTime as string;
+        let start: string = event?.start?.dateTime as string;
+        let end: string = event?.end?.dateTime as string;
+
+        // if (!when) {
+
+        //   when = event.start.date as string;
+        //   start = event.start.date as string;
+        //   end = event.end.date as string;
+        // }
+        if(event?.recurrence?.length > 0){
+
+          scheduleData.push({
+            Id: event.id,
+            Subject: event.summary,
+            StartTime: new Date(start),
+            EndTime: new Date(end),
+            IsAllDay: !event?.start?.dateTime,
+            RecurrenceRule :event?.recurrence[0].substring(6),
+
+            CalendarId: (aa % 4) + 1
+          });
+        } else {
+          scheduleData.push({
+            Id: event.id,
+            Subject: event.summary,
+            StartTime: new Date(start),
+            EndTime: new Date(end),
+            IsAllDay: !event?.start?.dateTime,
+
+            CalendarId: (aa % 4) + 1
+          });
         }
-        scheduleData.push({
-          Id: event.id,
-          Subject: event.summary,
-          StartTime: new Date(start),
-          EndTime: new Date(end),
-          IsAllDay: !event.start.dateTime,
-          CalendarId: (aa % 4) + 1
-        });
+
+
         aa++;
       }
 
-
-
-
-
-
+    console.log(scheduleData);
 
     e.result = scheduleData;
   }
@@ -294,15 +352,19 @@ export class CalComponent  implements OnInit{
 
   onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
 
+   // let recObject: RecurrenceEditor = new RecurrenceEditor();
+//FREQ=WEEKLY;BYDAY=MO,TU;INTERVAL=1;
 
-    console.log(args.data);
+   // var apps = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
 
-    var apps = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
- console.log(apps.RecurrenceRule);
+    //  let dates: number[] = recObject.getRecurrenceDates(new Date(), 'FREQ=DAILY;INTERVAL=1', '20211203T114224Z,20211212T114224Z', 4, new Date());
+    //  //console.log(args.data[0].StartTime);
+    // console.log(dates);
 
 
 
     if (args.requestType === "eventCreate") {
+
       args.cancel = true;
       var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
       var resource;
@@ -316,38 +378,44 @@ export class CalComponent  implements OnInit{
           location: app.Location,
           start: {
             dateTime: app.StartTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           },
           end: {
             dateTime: app.EndTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           },
           recurrence: [
             "RRULE:" + app.RecurrenceRule,
           ]
         };
       } else {
+
+        console.log(app.StartTime);
+
         resource = {
           summary: app.Subject,
           location: app.Location,
           start: {
             dateTime: app.StartTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           },
           end: {
             dateTime: app.EndTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           }
         };
+
       }
 
+console.log(resource);
 
 
 
         let schObj = (document.querySelector(".e-schedule") as any)
         .ej2_instances[0]
         var http = new XMLHttpRequest();
-        var url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
+      //  var url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
+        var url = `${environment.APIURL}/calendar/insert`;
         http.open('POST', url, true);
         //Send the proper header information along with the request
         http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
@@ -359,16 +427,16 @@ export class CalComponent  implements OnInit{
         }
         this.userdata =args.data[0];
         console.log(this.userdata );
-        this.modifieduserdata = {
-        "end": {
-        "dateTime": this.userdata.EndTime
-        },
-        "start": {
-        "dateTime":  this.userdata.StartTime
-        },
-        "summary": this.userdata.Subject
-        }
-        var params = JSON.stringify(this.modifieduserdata);
+        // this.modifieduserdata = {
+        // "end": {
+        // "dateTime": this.userdata.EndTime
+        // },
+        // "start": {
+        // "dateTime":  this.userdata.StartTime
+        // },
+        // "summary": this.userdata.Subject
+        // }
+        var params = JSON.stringify(resource);
         http.send(params);
     }
 
@@ -377,60 +445,71 @@ export class CalComponent  implements OnInit{
 
     if (args.requestType === "eventChange") {
 
+
+
+
+      console.log(args.data);
+
       args.cancel = true;
       var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
       if (!isNullOrUndefined(app.RecurrenceRule)) {
+
         resource = {
           id: app.Id,
           summary: app.Subject,
           location: app.Location,
           start: {
             dateTime: app.StartTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           },
           end: {
             dateTime: app.EndTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           },
           recurrence: [
             "RRULE:" + app.RecurrenceRule,
           ]
         };
       } else {
+
+
+        console.log(app);
+
+      if(app?.occurrence){
+
+        resource = {
+          id: app?.occurrence?.Id,
+          summary: app?.occurrence?.Subject,
+          location: app?.occurrence?.Location,
+          recurrenceid : app?.occurrence?.RecurrenceID,
+          start: {
+            dateTime: app?.occurrence?.StartTime,
+            timeZone: this.scheduleObj.timezone
+          },
+          end: {
+            dateTime: app?.occurrence?.EndTime,
+            timeZone: this.scheduleObj.timezone
+          }
+        };
+
+      } else {
+
+
         resource = {
           id: app.Id,
           summary: app.Subject,
           location: app.Location,
           start: {
             dateTime: app.StartTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           },
           end: {
             dateTime: app.EndTime,
-            timeZone: "UTC"
+            timeZone: this.scheduleObj.timezone
           }
         };
+      }
 
-
-
-
-
-
-        let schObj = (document.querySelector(".e-schedule") as any)
-        .ej2_instances[0]
-        var http = new XMLHttpRequest();
-        var url = `https://www.googleapis.com/calendar/v3/calendars/primary/events/${ resource.id }`;
-        http.open('UPDATE', url, true);
-        //Send the proper header information along with the request
-        http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
-        http.onreadystatechange = function(data:any) {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          schObj.refreshEvents()
-        }
-        }
-
-        var params = JSON.stringify(resource);
-        http.send(params);
 
 
 
@@ -442,7 +521,8 @@ export class CalComponent  implements OnInit{
             .ej2_instances[0]
         var http = new XMLHttpRequest();
         let dat =args.data;
-        var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+      //  var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+        var url = `${environment.APIURL}/calendar/update/${ resource.id }`;
         http.open('PUT', url, true);
         //Send the proper header information along with the request
         http.setRequestHeader('Accept',  'application/json');
@@ -552,6 +632,8 @@ export class CalComponent  implements OnInit{
   onActionComplete(args: ActionEventArgs):void {
 
 
+ console.log();
+
 
 
 
@@ -610,6 +692,8 @@ export class CalComponent  implements OnInit{
 ];
 
   ngOnInit() {
+
+
     this.initilaizeTarget();
 
   //  $("#modal").modal('show');
@@ -741,6 +825,11 @@ console.log(eventData);
   }
 
   public onToolbarItemClicked2(args): void {
+     // show date in user view
+     this.singleResourceDay = true;
+     // show date in user view
+
+
     this.scheduleObj.group.resources = []; // remove grouping
     switch (args.target.value) {
       case 'Day':
@@ -771,6 +860,14 @@ console.log(eventData);
         break;
     }
   }
+
+  test(){
+    alert('123')
+  }
+
+  displayCounter(count) {
+    console.log(count);
+}
 
   public onToolbarItemClicked1(args): void {
 
@@ -808,9 +905,18 @@ console.log(eventData);
     }
   }
 
+ public popupss(){
 
+   console.log( this.scheduleObj);
+
+  // const eventData: Record<string, any> = [];
+  //       this.scheduleObj.openEditor(eventData, 'Add', true);
+ }
 
   public onToolbarItemClicked(args: ClickEventArgs): void {
+     // show date in user view
+     this.singleResourceDay = true;
+     // show date in user view
     switch (args.item.text) {
       case 'Day':
         this.currentView = this.isTimelineView ? 'TimelineDay' : 'Day';
@@ -861,6 +967,11 @@ console.log(eventData);
   }
 
   public onTimelineViewChange(args: SwitchEventArgs): void {
+    // show date in user view
+    this.singleResourceDay = true;
+     // show date in user view
+
+
     this.isTimelineView = args.checked;
     switch (this.scheduleObj.currentView) {
       case 'Day':
@@ -906,6 +1017,7 @@ console.log(eventData);
 
 
     this.currentView = args.target.value;
+    // hide date in headers
     if(args.target.value == "Day"){
       this.singleResourceDay = false;
     }else {
@@ -1084,10 +1196,19 @@ console.log(eventData);
     return calendarText;
   }
 
+  addClick(){
+    alert('d')
+  }
 
   onPopupOpen(args: PopupOpenEventArgs) {
 
+    if (args.type === 'QuickInfo' ) {
+      args.cancel = true;
+    }
+
     if (args.type === 'Editor') {
+
+
       let startElement: HTMLInputElement = args.element.querySelector('#StartTime') as HTMLInputElement;
       if (!startElement.classList.contains('e-datetimepicker')) {
           new DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
@@ -1123,8 +1244,179 @@ console.log(eventData);
       }
 
 
+
+        (<any>this.scheduleObj.eventWindow).recurrenceEditor.endType.index =  0;
+        (<any>this.scheduleObj.eventWindow).recurrenceEditor.endType.dataSource = [
+          {
+              "text": "Until",
+              "value": "until"
+          },
+          {
+              "text": "Count",
+              "value": "count"
+          }
+      ]
+        console.log((<any>this.scheduleObj.eventWindow).recurrenceEditor.endType);
+
+
+
+
+        // All Day
+
+        let allDayEle: HTMLInputElement = args.element.querySelector('#IsAllDay') as HTMLInputElement;
+        console.log(allDayEle);
+
+      if (!allDayEle.classList.contains('e-checkbox')) {
+
+        if ( allDayEle.classList.contains('e-header-cells') || allDayEle.classList.contains('e-all-day-cells') || allDayEle.classList.contains('e-all-day-appointment')) {
+          new CheckBox({ checked: true, change: this.onCheck }, allDayEle);
+
+        }
+        else {
+
+          new CheckBox({ checked: false, change: this.onCheck }, allDayEle);
+        }
+      }
+
+      let timeZoneEle: HTMLInputElement = args.element.querySelector('#Timezone') as HTMLInputElement;
+      let booleanVal: boolean = args.data['Timezone'] ? true : false;
+
+      if(!timeZoneEle.classList.contains('e-checkbox')) {
+          new CheckBox({checked: booleanVal, change: this.onZoneChange}, timeZoneEle);
+      }
+
+      let startZoneEle: HTMLInputElement = args.element.querySelector('#StartTimezone') as HTMLInputElement;
+      let zoneVal: string = (<{ [key: string]: Object } & Window><unknown>window).Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC' : 'UTC';
+      let isAvaial: boolean = timezoneData.some((tz: { [key: string]: Object }) => { return tz.Value === zoneVal; });
+      zoneVal = isAvaial ? zoneVal : zoneVal;
+      if (!startZoneEle.classList.contains('e-dropdownlist')) {
+        let dropDownListObject: DropDownList = new DropDownList({
+          placeholder: 'Choose timezone', value: startZoneEle.value || zoneVal,
+          dataSource: timezoneData, fields: { text: 'Text', value: 'Value' },
+          filtering: (e: FilteringEventArgs) => {
+                let query: Query = new Query();
+                query = (e.text !== '') ? query.where('Text', 'contains', e.text, true) : query;
+                e.updateData(timezoneData, query);
+            }
+        });
+        dropDownListObject.appendTo(startZoneEle);
+      }
+
+      let endZoneEle: HTMLInputElement = args.element.querySelector('#EndTimezone') as HTMLInputElement;
+      if (!endZoneEle.classList.contains('e-dropdownlist')) {
+        let dropDownListObject: DropDownList = new DropDownList({
+          placeholder: 'Choose timezone', value: endZoneEle.value || zoneVal,
+          dataSource: timezoneData, fields: { text: 'Text', value: 'Value' },
+          filtering: (e: FilteringEventArgs) => {
+                let query: Query = new Query();
+                query = (e.text !== '') ? query.where('Text', 'contains', e.text, true) : query;
+                e.updateData(timezoneData, query);
+            }
+        });
+        dropDownListObject.appendTo(endZoneEle);
+      }
+
+      if (allDayEle.checked === true) {
+        document.querySelector('#TimezoneRow').classList.add('e-disable');
+        document.querySelector('#startZoneRow').classList.add('e-disable');
+        document.querySelector('#endZoneRow').classList.add('e-disable');
+        document.querySelectorAll('.e-time-icon')[1].classList.add('e-icon-disable');
+        document.querySelectorAll('.e-time-icon')[0].classList.add('e-icon-disable');
+        (document.querySelector('#StartTime') as any).ej2_instances[0].format = "M/d/yy";
+        (document.querySelector('#EndTime') as any).ej2_instances[0].format = "M/d/yy";
+        (document.querySelector('#StartTime') as any).ej2_instances[0].value.setHours(0, 0, 0);
+        (document.querySelector('#EndTime') as any).ej2_instances[0].value.setDate((document.querySelector('#StartTime') as any).ej2_instances[0].value.getDate() + 1);
+        (document.querySelector('#EndTime') as any).ej2_instances[0].value.setHours(0, 0, 0);
+        (document.querySelector('#StartTime') as any).ej2_instances[0].dataBind();
+      } else {
+
+          document.querySelector('#TimezoneRow').classList.remove('e-disable');
+          if(args.data['Timezone'] === true) {
+            document.querySelector('#startZoneRow').classList.remove('e-disable');
+          document.querySelector('#endZoneRow').classList.remove('e-disable');
+          } else {
+             document.querySelector('#startZoneRow').classList.add('e-disable');
+             document.querySelector('#endZoneRow').classList.add('e-disable');
+          }
+        document.querySelectorAll('.e-time-icon')[1].classList.remove('e-icon-disable');
+        document.querySelectorAll('.e-time-icon')[0].classList.remove('e-icon-disable');
+        (document.querySelector('#StartTime') as any).ej2_instances[0].format = "M/d/yy h:mm a";
+        (document.querySelector('#EndTime') as any).ej2_instances[0].format = "M/d/yy h:mm a";
+        // (document.querySelector('#StartTime') as any).ej2_instances[0].value.setHours(9, 0, 0);
+        // (document.querySelector('#EndTime') as any).ej2_instances[0].value.setHours(9, 30, 0);
+        (document.querySelector('#StartTime') as any).ej2_instances[0].dataBind();
+      }
+
+
+
+
+
+
+
+
+
     }
   }
+
+
+
+
+  public onCheck(args: any): void {
+    let zoneRow: HTMLTableRowElement = document.querySelector('#TimezoneRow');
+        let startZone: HTMLTableRowElement = document.querySelector('#startZoneRow');
+          let endZone: HTMLTableRowElement = document.querySelector('#endZoneRow');
+          if (args.checked === true) {
+            zoneRow.classList.add('e-disable');
+            startZone.classList.add('e-disable');
+            endZone.classList.add('e-disable');
+        document.querySelectorAll('.e-time-icon')[1].classList.add('e-icon-disable');
+        document.querySelectorAll('.e-time-icon')[0].classList.add('e-icon-disable');
+        (document.querySelector('#StartTime') as any).ej2_instances[0].format = "M/d/yy";
+        (document.querySelector('#EndTime') as any).ej2_instances[0].format = "M/d/yy";
+        (document.querySelector('#StartTime') as any).ej2_instances[0].value.setHours(0, 0, 0);
+        (document.querySelector('#EndTime') as any).ej2_instances[0].value.setDate((document.querySelector('#StartTime') as any).ej2_instances[0].value.getDate() + 1);
+        (document.querySelector('#EndTime') as any).ej2_instances[0].value.setHours(0, 0, 0);
+        (document.querySelector('#StartTime') as any).ej2_instances[0].dataBind();
+      } else {
+        if(zoneRow.classList.contains('e-disable')) {
+          zoneRow.classList.remove('e-disable');
+          if((document.querySelector('#Timezone') as HTMLInputElement).checked) {
+            startZone.classList.remove('e-disable');
+            endZone.classList.remove('e-disable');
+          }
+        }
+        document.querySelectorAll('.e-time-icon')[1].classList.remove('e-icon-disable');
+        document.querySelectorAll('.e-time-icon')[0].classList.remove('e-icon-disable');
+        (document.querySelector('#StartTime') as any).ej2_instances[0].format = "M/d/yy h:mm a";
+        (document.querySelector('#EndTime') as any).ej2_instances[0].format = "M/d/yy h:mm a";
+        // (document.querySelector('#StartTime') as any).ej2_instances[0].value.setHours(9, 0, 0);
+        // (document.querySelector('#EndTime') as any).ej2_instances[0].value.setHours(9, 30, 0);
+        (document.querySelector('#StartTime') as any).ej2_instances[0].dataBind();
+      }
+  }
+  public onZoneChange(args: any): void {
+    let startZone: HTMLTableRowElement = document.querySelector('#startZoneRow');
+    let endZone: HTMLTableRowElement = document.querySelector('#endZoneRow');
+
+    if(args.checked === true) {
+      startZone.classList.remove('e-disable');
+      endZone.classList.remove('e-disable');
+    } else {
+      startZone.classList.add('e-disable');
+      endZone.classList.add('e-disable');
+    }
+  }
+
+
+
+  public onChange(args: RecurrenceEditorChangeEventArgs): void {
+
+    let outputElement: HTMLElement = document.querySelector('#rule-output') as HTMLElement;
+      console.log(args);
+    // if (!isNullOrUndefined(args.value)) {
+    //     outputElement.innerText = args.value;
+    // }
+}
 
   onPopupOpen123(args: PopupOpenEventArgs) {
 
@@ -1262,8 +1554,8 @@ wrapper.setAttribute('class','wrapperclass');
         childdiv.appendChild(wrapper)
         _parentdiv.appendChild(childdiv);
     })
-    
-   
+
+
 
 
     var form_seconddiv = document.createElement("div");
