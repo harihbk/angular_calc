@@ -7,7 +7,14 @@
             <button class="today btn" id="addeventbtn" (click)="onToolbarItemClicked1('New Event')">
               New Event
             </button>
-            <button class="today btn" id="today" (click)="onToolbarItemClicked1('New Recurring Event')">
+
+
+
+            <button
+              class="today btn"
+              id="today"
+              (click)="onToolbarItemClicked1('New Recurring Event')"
+            >
               New Recurring Event
             </button>
             <select name="daygroup" id="daygroup" (change)="onToolbarItemClicked2($event)">
@@ -132,7 +139,7 @@
                 <div class="card-header p-0" id="headingOne">
                       <h6  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">FILTER BY STAFF <i class="fa fa-chevron-up" aria-hidden="true"></i></h6>
                 </div>
-            
+
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body p-0">
                     <div class="inner_filter_search">
@@ -225,7 +232,7 @@
                   </div>
                 </div>
               </div>
-            
+
             </div>
 
                <!-- New Filter End here -->
@@ -238,8 +245,26 @@
           <div class="col-lg-10 col-md-12 calander_height_without p-0">
             <div class="left-panel">
               <div class="overview-scheduler">
-                <ejs-schedule #scheduleObj id="schedule" cssClass="schedule-overview" height="100%" [group]="group" [(currentView)]="currentView" timezone="UTC" [eventSettings]="eventSettings" (popupOpen)="onPopupOpen($event)">
-                  <!--
+
+                <ejs-schedule
+                #scheduleObj
+                id="schedule"
+                cssClass="schedule-overview"
+                height="100%"
+                [group]="group"
+                [(currentView)]="currentView"
+                timezone="Asia/Calcutta"
+                [eventSettings]="eventSettings"
+                (popupOpen)='onPopupOpen($event)'
+                (actionBegin)="onActionBegin($event)"
+                (dataBinding)="onDataBinding($event)"
+                (actionComplete)="onActionComplete($event)"
+
+              >
+
+
+                <!--
+                   (popupOpen)='onPopupOpen($event)'
                    (dataBinding)="onDataBinding($event)"
                 (actionBegin)="onActionBegin($event)"
                 (actionComplete)="onActionComplete($event)"
@@ -261,9 +286,9 @@
                     <div class="date-text" *ngIf="singleResourceDay">
                       {{ getDateHeaderText(data.date) }}
                     </div>
-                   
+
                       <div [innerHTML]="getWeatherImage(data.date)" class="map_calac" *ngIf="singleResourceDay"></div>
-                    
+
                   </ng-template>
                   <e-views>
                     <e-view option="Day"></e-view>
@@ -283,6 +308,9 @@
                     <e-resource field="CalendarId" title="Calendars" [dataSource]="resourceDataSource" [allowMultiple]="allowMultiple" name="Calendars" textField="CalendarText" idField="CalendarId" colorField="CalendarColor"> </e-resource>
                   </e-resources>
 
+
+
+
                   <!-- <e-resources>
                 <e-resource field='CalendarId' title='Calendars' [dataSource]='resourceDataSource'
                   [query]='resourceQuery'
@@ -291,7 +319,7 @@
                 </e-resource>
               </e-resources> -->
                   <!-- Header template -->
-                  <ng-template #quickInfoTemplatesHeader let-data>
+                  <!-- <ng-template #quickInfoTemplatesHeader let-data>
                     <div class="quick-info-header">
                       <div class="quick-info-header-content" [ngStyle]="getHeaderStyles(data)">
                         <div class="quick-info-title">
@@ -303,7 +331,7 @@
                       </div>
                     </div>
                   </ng-template>
-                  <!-- <tr>
+                  <tr>
                            <td class="e-textlabel">Status</td>
                                 <td colspan="4">
                                     <ejs-dropdownlist id='Status' class="e-field" data-name="Status" placeholder='Choose Status'
@@ -311,57 +339,106 @@
                                     </ejs-dropdownlist>
                                 </td>
                             </tr> -->
-                  <!-- new event template-->
-                  <ng-template #editorTemplate let-data>
-                    <div class="col-sm-12">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <div class="custom-event-editor">
-                            <div class="summary">
-                              <label for="e-textlabel">Summary</label>
-                              <input id="Subject" autocomplete="off" class="e-field e-input" type="text" value="{{data.Subject}}" name="Subject" style="width: 100%;" />
-                            </div>
-                            <div class="starttime">
-                              <label for="e-textlabel">From</label>
-                              <input autocomplete="off" id="StartTime" class="e-field" type="text" name="StartTime" />
-                            </div>
-                            <div class="endtime">
-                              <label for="e-textlabel">To</label>
-                              <input autocomplete="off" id="EndTime" class="e-field" type="text" name="EndTime" />
-                            </div>
-                            <div class="RecurrenceEditor">
-                              <div id="RecurrenceEditor"></div>
-                            </div>
-                            <div class="endtime">
-                              <label for="e-textlabel">Owner</label>
-                              <input autocomplete="off" type="text" id="OwnerId" name="OwnerId" class="e-field" style="width: 100%;" />
-                            </div>
-                          </div>
-                        </div>
-                        <!--col-sm-6-->
-                        <div class="col-sm-6">
-                       
-                          <table class="custom-event-editor" width="100%" cellpadding="5">
-                            <tbody>
-                              <tr>
-                                <td style="width:30%" class="e-textlabel">Job</td>
-                                <td  style="position: relative;width:70%">
-                                  <input autocomplete="off" id="Job" class="e-field e-input" type="text" name="job" style="width: 100%;" />
-                                  <span class="e-icons circle-add" (click)="openDialog()"></span>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td style="vertical-align: text-top;" class="e-textlabel">Description</td>
-                                <td class="job_descripton">
-                                  <textarea name="description" id="Job" class="e-field e-input"  cols="30" rows="4"></textarea>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <h4 class="userdefinedfield">Custom Fields</h4>
 
-                          <div class="wrapperclass">
-                            <table class="custom-event-editor" width="100%" cellpadding="5">
+
+
+                    <!-- new event template-->
+        <ng-template #editorTemplate let-data>
+                  <div class="col-sm-12">
+                    <div class="row">
+                          <div class="col-sm-6">
+                             <div class="custom-event-editor">
+
+                                  <div class="summary">
+                                    <label for="e-textlabel">Summary</label>
+                                    <input id="Subject" class="e-field e-input" type="text" value="{{data.Subject}}"
+                                                              name="Subject" style="width: 100%" />
+                                  </div>
+
+
+                                  <div class="starttime">
+                                    <label for="e-textlabel">From</label>
+                                    <input id="StartTime" class="e-field" type="text" name="StartTime" />
+                                  </div>
+
+                                  <div class="endtime">
+                                    <label for="e-textlabel">To</label>
+                                    <input id="EndTime" class="e-field" type="text" name="EndTime" />
+                                  </div>
+
+
+
+                                  <div class="e-all-day-time-zone-row">
+                                    <div class="e-all-day-container">
+                                      <div class="e-float-input e-control-wrapper">AllDay
+                                        <input id="IsAllDay" class="e-field" type="text" name="IsAlDay" style="width: 100%"/>
+                                      </div>
+                                    </div>
+                                    <div id="TimezoneRow" class="e-time-zone-container">
+                                      <div class="e-float-input e-control-wrapper">Timezone
+                                        <input id="Timezone" class="e-field" type="text" name="Timezone" style="width: 100%"/>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="e-custom-row">
+                                    <div id="startZoneRow">
+                                      <div class="e-start-time-zone-container">
+                                        <div class="e-float-input e-control-wrapper">Start Timezone
+                                          <input id="StartTimezone" class="e-field" type="text" name="StartTimezone" style="width: 100%" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div id="endZoneRow">
+                                      <div class="e-end-time-zone-container">
+                                        <div class="e-float-input e-control-wrapper">End Timezone
+                                          <input id="EndTimezone" class="e-field" type="text" name="EndTimezone" style="width: 100%" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="RecurrenceEditor">
+
+                                    <div id='RecurrenceEditor'></div>
+                                  </div>
+                                 <!-- <ejs-recurrenceeditor (change)="onChange($event)" value="FREQ=DAILY;INTERVAL=2;COUNT=8"></ejs-recurrenceeditor> -->
+
+
+                                  <div class="endtime">
+                                    <label for="e-textlabel">Owner</label>
+                                    <input type="text" id="OwnerId" name="OwnerId" class="e-field" style="width: 100%" />
+                                  </div>
+
+                             </div>
+
+
+
+                          </div>  <!--col-sm-6-->
+
+                          <div class="col-sm-6">
+                            <table  class="custom-event-editor" width="100%" cellpadding="5">
+                              <tbody>
+                                  <tr>
+                                      <td class="e-textlabel">Job</td>
+                                      <td colspan="4">
+                                          <input id="Job" class="e-field e-input" type="text"
+                                              name="job" style="width: 100%" />
+                                              <span class="e-icons circle-add" (click)="openDialog()"></span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="e-textlabel">Description</td>
+                                    <td colspan="4">
+                                        <input id="Job" class="e-field e-input" type="text"
+                                            name="description" style="width: 100%" />
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <h4>Custom Fields</h4>
+
+                            <table  class="custom-event-editor" width="100%" cellpadding="5">
                               <tbody>
                                 <tr *ngFor="let customfield of customfields">
                                   <td  style="width:30%" class="e-textlabel">{{ customfield.label }}</td>
@@ -372,13 +449,16 @@
                               </tbody>
                             </table>
                           </div>
-                        
+
                         </div>
                       </div>
                       <!--row-->
-                    </div>
+
                   </ng-template>
                   <!-- new event template-->`
+
+
+
 
                   <!-- Content Template -->
                   <ng-template #quickInfoTemplatesContent let-data>
@@ -389,6 +469,8 @@
                       [ngTemplateOutletContext]="{ data: data }"
                     ></ng-container>
                   </ng-template>
+
+
 
                   <ng-template #cellContent let-data="data">
                     <div class="quick-info-content">
@@ -405,6 +487,8 @@
                       </div>
                     </div>
                   </ng-template>
+
+
 
                   <ng-template #eventContent let-data="data">
                     <div class="quick-info-content">
@@ -426,6 +510,8 @@
                   </ng-template>
 
                   <!-- Footer Template -->
+
+
                   <ng-template #quickInfoTemplatesFooter let-data>
                     <ng-container
                       [ngTemplateOutlet]="
@@ -434,6 +520,8 @@
                       [ngTemplateOutletContext]="{ data: data }"
                     ></ng-container>
                   </ng-template>
+
+
                   <ng-template #cellFooter let-data="data">
                     <div class="e-cell-footer">
                       <button ejs-button id="more-details" cssClass="e-flat" (click)="buttonClickActions($event)">
@@ -444,6 +532,8 @@
                       </button>
                     </div>
                   </ng-template>
+
+
                   <ng-template #eventFooter let-data="data">
                     <div class="e-event-footer">
                       <button ejs-button id="delete" cssClass="e-flat" (click)="buttonClickActions($event)">
@@ -454,6 +544,9 @@
                       </button>
                     </div>
                   </ng-template>
+
+
+
                 </ejs-schedule>
                 <ejs-contextmenu #menuObj cssClass="schedule-context-menu" target=".e-schedule" [items]="menuItems" (beforeOpen)="onContextMenuBeforeOpen($event)" (select)="onMenuItemSelect($event)"></ejs-contextmenu>
               </div>

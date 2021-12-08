@@ -48,6 +48,7 @@ let gapiClientConfig: NgGapiClientConfig = {
     AppComponent,
     Formula_sectionComponent,
 
+
   ],
   imports: [
     BrowserModule,
