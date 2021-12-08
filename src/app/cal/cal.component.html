@@ -129,10 +129,10 @@
       </div>
       <div class="overview-content">
         <div class="row">
-          <div class="col-lg-2 col-md-12 p-0 calander_pickers">
-            <ejs-calendar [value]="dateValue" start="Year" (change)="onClick($event)"></ejs-calendar>
-
-
+          <div class="col-lg-2 col-md-12 p-0  calander_pickers">
+            <div class="pr-2 pl-2">
+              <ejs-calendar [value]="dateValue" start="Year" (change)="onClick($event)"></ejs-calendar>
+            
             <!-- New Filter Start here -->
             <div id="accordion"  class="inner_calander_filter">
               <div class="card">
@@ -160,6 +160,26 @@
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
                                 <label class="form-check-label" for="defaultCheck1"> <span class="red blue"></span>All Users </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>Selva </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                <label class="form-check-label" for="defaultCheck1"> <span class="red blue"></span>All Users </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>Selva </label>
                               </div>
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
@@ -216,6 +236,11 @@
             </div>
 
                <!-- New Filter End here -->
+            
+            </div>
+         
+            
+
           </div>
           <div class="col-lg-10 col-md-12 calander_height_without p-0">
             <div class="left-panel">
