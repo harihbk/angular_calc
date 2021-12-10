@@ -23,6 +23,8 @@ import { DatePickerAllModule, TimePickerAllModule, DateTimePickerAllModule } fro
 import { NumericTextBoxAllModule, TextBoxAllModule } from '@syncfusion/ej2-angular-inputs';
 
 import { ScheduleAllModule, RecurrenceEditorAllModule } from '@syncfusion/ej2-angular-schedule';
+
+
 import { BrowserModule } from '@angular/platform-browser';
 
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';

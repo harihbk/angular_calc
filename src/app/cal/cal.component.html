@@ -230,15 +230,23 @@
                 [(currentView)]="currentView"
                 timezone="Asia/Calcutta"
                 [eventSettings]="eventSettings"
+                (cellClick)="onCellClick($event)"
                 (popupOpen)='onPopupOpen($event)'
                 (actionBegin)="onActionBegin($event)"
                 (dataBinding)="onDataBinding($event)"
                 (actionComplete)="onActionComplete($event)"
-
               >
 
 
                 <!--
+                   (popupOpen)='onPopupOpen($event)'
+                (actionBegin)="onActionBegin($event)"
+                (dataBinding)="onDataBinding($event)"
+                (actionComplete)="onActionComplete($event)"
+
+
+
+
                    (popupOpen)='onPopupOpen($event)'
                    (dataBinding)="onDataBinding($event)"
                 (actionBegin)="onActionBegin($event)"
@@ -318,7 +326,7 @@
 
 
                     <!-- new event template-->
-        <ng-template #editorTemplate let-data>
+        <!-- <ng-template #editorTemplate let-data>
                   <div class="col-sm-12">
                     <div class="row">
                           <div class="col-sm-6">
@@ -376,7 +384,6 @@
 
                                     <div id='RecurrenceEditor'></div>
                                   </div>
-                                 <!-- <ejs-recurrenceeditor (change)="onChange($event)" value="FREQ=DAILY;INTERVAL=2;COUNT=8"></ejs-recurrenceeditor> -->
 
 
                                   <div class="endtime">
@@ -388,7 +395,7 @@
 
 
 
-                          </div>  <!--col-sm-6-->
+                          </div>
 
                           <div class="col-sm-6">
                             <table  class="custom-event-editor" width="100%" cellpadding="5">
@@ -427,9 +434,13 @@
 
                         </div>
                       </div>
-                      <!--row-->
 
-                  </ng-template>
+
+                  </ng-template> -->
+
+
+
+
                   <!-- new event template-->`
 
 

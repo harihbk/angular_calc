@@ -5,7 +5,7 @@ import { SelectedEventArgs, TextBoxComponent } from '@syncfusion/ej2-angular-inp
 import {
   ScheduleComponent, GroupModel, DayService, WeekService, WorkWeekService, MonthService, YearService, AgendaService,
   TimelineViewsService, TimelineMonthService, TimelineYearService, View, EventSettingsModel, Timezone, CurrentAction,
-  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, PopupOpenEventArgs, ActionEventArgs, ToolbarActionArgs, RecurrenceEditor, RecurrenceEditorChangeEventArgs, timezoneData
+  CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, PopupOpenEventArgs, ActionEventArgs, ToolbarActionArgs, RecurrenceEditor, RecurrenceEditorChangeEventArgs, timezoneData, PopupCloseEventArgs
 } from '@syncfusion/ej2-angular-schedule';
 import { addClass, extend, removeClass, closest, remove, isNullOrUndefined, Internationalization, compile } from '@syncfusion/ej2-base';
 import { ChangeEventArgs as SwitchEventArgs, CheckBox, SwitchComponent } from '@syncfusion/ej2-angular-buttons';
@@ -220,6 +220,7 @@ export class CalComponent  implements OnInit{
     {name : 'Order' , label : 'Order'},
     {name : 'Quantity' , label : 'Quantity'},
    ];
+   flag: boolean;
 
 
   public dateParser(data: string) {
@@ -235,16 +236,22 @@ export class CalComponent  implements OnInit{
       //    { 'Content-Type': 'application/json' },
       //    { 'Authorization': 'Bearer '+this.service.GetAccessToken }
       //  ],
-    adaptor: new WebApiAdaptor(),
+
+      crudUrl: `${environment.APIURL}/calendar/updates`,
+
+    adaptor: new WebApiAdaptor,
     crossDomain: true
   });
+
+
+
 
 
   userdata: any;
   modifieduserdata: { end: { dateTime: any; }; start: { dateTime: any; }; summary: any; };
   public dataSource: Object[];
- public eventSettings: EventSettingsModel = {  dataSource: this.dataManger};
- // public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
+  public eventSettings: EventSettingsModel = {  dataSource: this.dataManger};
+  //public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
 
 
 
@@ -272,24 +279,40 @@ export class CalComponent  implements OnInit{
     const scheduleData: Record<string, any>[] = [];
 
 
-    let currentViewDates: Date[] = this.scheduleObj.getCurrentViewDates() as Date[];
-    let startDate: Date = currentViewDates[0] as Date;
-    let endDate: Date = currentViewDates[currentViewDates.length - 1] as Date;
+
     var aa = 0;
 
-    console.log(items);
+    console.log(e.result);
 
 
     // scheduleData.push({
-    //   Id: 1,
+    //   Id: 144,
     //   Subject: 'harin',
-    //   StartTime: '2021-12-06T03:00:00+00:00',
-    //   EndTime: '2021-12-06T04:00:00+00:00',
+    //   StartTime: '2021-12-05T01:00:00+00:00',
+    //   EndTime: '2021-12-05T01:30:00+00:00',
     //   IsAllDay:false,
-    //   RecurrenceRule :'FREQ=MONTHLY;BYMONTHDAY=1;INTERVAL=1;COUNT=5',
+    //   RecurrenceRule :'FREQ=DAILY;INTERVAL=1;COUNT=10;',
+    //   RecurrenceID:null,
     //  //RecurrenceRule : 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;'
-
+    //  RecurrenceException : "20211205T010000Z"
     // });
+
+    // scheduleData.push({
+    //   Id: 145,
+    //   Subject: 'harinxcv',
+    //   StartTime: '2021-12-05T01:00:00+00:00',
+    //   EndTime: '2021-12-05T02:30:00+00:00',
+    //   IsAllDay:false,
+    //   RecurrenceRule :null,
+    //   RecurrenceID:144,
+    //  //RecurrenceRule : 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;'
+    //  RecurrenceException : "20211205T010000Z",
+    //  Guid : "f9f664ac-2dea-ba1c-bb57-5d957a89a1c1"
+    // });
+
+
+
+
 
     // scheduleData.push({
     //   Id: 5,
@@ -316,7 +339,7 @@ export class CalComponent  implements OnInit{
         //   start = event.start.date as string;
         //   end = event.end.date as string;
         // }
-        if(event?.recurrence?.length > 0){
+      //  if(event?.recurrence?.length > 0){
 
           scheduleData.push({
             Id: event.id,
@@ -324,46 +347,63 @@ export class CalComponent  implements OnInit{
             StartTime: new Date(start),
             EndTime: new Date(end),
             IsAllDay: !event?.start?.dateTime,
-            RecurrenceRule :event?.recurrence[0].substring(6),
-
+            RecurrenceRule :event?.recurrence?.[0]?.substring(6) ?? null,
+            RecurrenceException : event?.RecurrenceException,
+            RecurrenceID: ( event?.RecurrenceID ? parseInt(event?.RecurrenceID) : null) ,
             CalendarId: (aa % 4) + 1
           });
-        } else {
-          scheduleData.push({
-            Id: event.id,
-            Subject: event.summary,
-            StartTime: new Date(start),
-            EndTime: new Date(end),
-            IsAllDay: !event?.start?.dateTime,
-
-            CalendarId: (aa % 4) + 1
-          });
-        }
+        // } else {
+        //   scheduleData.push({
+        //     Id: event.id,
+        //     Subject: event.summary,
+        //     StartTime: new Date(start),
+        //     EndTime: new Date(end),
+        //     IsAllDay: !event?.start?.dateTime,
+        //     RecurrenceException : event?.RecurrenceException,
+        //     RecurrenceID: event?.RecurrenceID,
+        //     CalendarId: (aa % 4) + 1
+        //   });
+        // }
 
 
         aa++;
       }
+     let f = scheduleData.sort(function(a,b){
+        return a.Id - b.Id
+      })
+    console.log(f);
 
-    console.log(scheduleData);
-
-    e.result = scheduleData;
+    e.result = f;
   }
+
+
+   public XMLHTTPRequest(method,event_id , resource){
+              let schObj = (document.querySelector(".e-schedule") as any)
+              .ej2_instances[0]
+          var http = new XMLHttpRequest();
+          //  var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+          var url = `${environment.APIURL}/calendar/${method}/${ event_id }`;
+          http.open('PUT', url, true);
+          //Send the proper header information along with the request
+          http.setRequestHeader('Accept',  'application/json');
+        //  http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+          http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+              if(http.readyState == 4 && http.status == 200) {
+                schObj.refreshEvents();
+              }
+          }
+          var params = JSON.stringify(resource);
+          http.send(params);
+   }
 
 
   onActionBegin(args: ActionEventArgs & ToolbarActionArgs):void {
 
-   // let recObject: RecurrenceEditor = new RecurrenceEditor();
-//FREQ=WEEKLY;BYDAY=MO,TU;INTERVAL=1;
 
-   // var apps = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
-
-    //  let dates: number[] = recObject.getRecurrenceDates(new Date(), 'FREQ=DAILY;INTERVAL=1', '20211203T114224Z,20211212T114224Z', 4, new Date());
-    //  //console.log(args.data[0].StartTime);
-    // console.log(dates);
-
-
+    console.log(args);
 
     if (args.requestType === "eventCreate") {
+
 
       args.cancel = true;
       var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
@@ -407,9 +447,6 @@ export class CalComponent  implements OnInit{
 
       }
 
-console.log(resource);
-
-
 
         let schObj = (document.querySelector(".e-schedule") as any)
         .ej2_instances[0]
@@ -421,21 +458,12 @@ console.log(resource);
         http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
         http.onreadystatechange = function(data:any) {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
+          alert(http.status)
           schObj.refreshEvents()
-
         }
         }
         this.userdata =args.data[0];
-        console.log(this.userdata );
-        // this.modifieduserdata = {
-        // "end": {
-        // "dateTime": this.userdata.EndTime
-        // },
-        // "start": {
-        // "dateTime":  this.userdata.StartTime
-        // },
-        // "summary": this.userdata.Subject
-        // }
+
         var params = JSON.stringify(resource);
         http.send(params);
     }
@@ -443,102 +471,102 @@ console.log(resource);
 
 
 
-    if (args.requestType === "eventChange") {
+
+  // if (args.requestType === "eventChange") {
+  //      var event_id
+
+
+
+  //   if(this.scheduleObj.currentAction == "EditOccurrence"){
+
+  //        event_id = args.data
+  //        const myPromise = new Promise((resolve, reject) => {
+  //         setTimeout(() => {
+  //           let obj =  args.data
+  //           resolve(obj);
+  //         }, 500);
+  //       });
+
+  //       myPromise.then(res=>{
+  //         this.XMLHTTPRequest('occurrenceEdit',event_id.parent.Id ,res);
+  //       })
+  //   }
+
+  //   if(this.scheduleObj.currentAction == "EditSeries"){
+
+
+  //       console.log(this.scheduleObj);
+
+
+  //   }
+
+  //   // if(args?.changedRecords?.length > 0){
+
+  //   //       let chnagedrecord = args.changedRecords[0]
+  //   //       var res_res = {
+  //   //         id: chnagedrecord.Id,
+  //   //         summary: chnagedrecord.Subject,
+  //   //         location: chnagedrecord.Location,
+  //   //         start: {
+  //   //           dateTime: chnagedrecord.StartTime,
+  //   //           timeZone: this.scheduleObj.timezone
+  //   //         },
+  //   //         end: {
+  //   //           dateTime: chnagedrecord.EndTime,
+  //   //           timeZone: this.scheduleObj.timezone
+  //   //         }
+  //   //       };
+
+  //   //       this.XMLHTTPRequest('update',res_res.id , res_res);
+  //   //     }
+
+  // }
 
 
 
 
-      console.log(args.data);
+    // if (args.requestType === "eventChange") {
 
-      args.cancel = true;
-      var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
-      if (!isNullOrUndefined(app.RecurrenceRule)) {
+    //   var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
 
-        resource = {
-          id: app.Id,
-          summary: app.Subject,
-          location: app.Location,
-          start: {
-            dateTime: app.StartTime,
-            timeZone: this.scheduleObj.timezone
-          },
-          end: {
-            dateTime: app.EndTime,
-            timeZone: this.scheduleObj.timezone
-          },
-          recurrence: [
-            "RRULE:" + app.RecurrenceRule,
-          ]
-        };
-      } else {
+    //   args.cancel = true;
+    //   var event_id = ""
+    //   var res_res ;
+    //   if(args.data.hasOwnProperty('occurrence')){
 
-
-        console.log(app);
-
-      if(app?.occurrence){
-
-        resource = {
-          id: app?.occurrence?.Id,
-          summary: app?.occurrence?.Subject,
-          location: app?.occurrence?.Location,
-          recurrenceid : app?.occurrence?.RecurrenceID,
-          start: {
-            dateTime: app?.occurrence?.StartTime,
-            timeZone: this.scheduleObj.timezone
-          },
-          end: {
-            dateTime: app?.occurrence?.EndTime,
-            timeZone: this.scheduleObj.timezone
-          }
-        };
-
-      } else {
-
-
-        resource = {
-          id: app.Id,
-          summary: app.Subject,
-          location: app.Location,
-          start: {
-            dateTime: app.StartTime,
-            timeZone: this.scheduleObj.timezone
-          },
-          end: {
-            dateTime: app.EndTime,
-            timeZone: this.scheduleObj.timezone
-          }
-        };
-      }
+    //     const myPromise = new Promise((resolve, reject) => {
+    //               setTimeout(() => {
+    //                 console.log(args);
+    //                      resolve(args.data)
+    //               }, 1000);
+    //             });
+    //             myPromise.then((res:any)=>{
+    //               console.log(res);
+    //            //   this.XMLHTTPRequest('occurrenceEdit',res.data.parent.Id , res.data);
+    //             })
 
 
 
+    //   }else if(!isNullOrUndefined(app.RecurrenceRule) && args?.changedRecords?.length > 0){
 
-      }
+    //     let chnagedrecord = args.changedRecords[0]
+    //     res_res = {
+    //       id: chnagedrecord.Id,
+    //       summary: chnagedrecord.Subject,
+    //       location: chnagedrecord.Location,
+    //       start: {
+    //         dateTime: chnagedrecord.StartTime,
+    //         timeZone: this.scheduleObj.timezone
+    //       },
+    //       end: {
+    //         dateTime: chnagedrecord.EndTime,
+    //         timeZone: this.scheduleObj.timezone
+    //       }
+    //     };
 
-
-
-            let schObj = (document.querySelector(".e-schedule") as any)
-            .ej2_instances[0]
-        var http = new XMLHttpRequest();
-        let dat =args.data;
-      //  var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
-        var url = `${environment.APIURL}/calendar/update/${ resource.id }`;
-        http.open('PUT', url, true);
-        //Send the proper header information along with the request
-        http.setRequestHeader('Accept',  'application/json');
-        http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
-        http.onreadystatechange = function(data:any) {//Call a function when the state changes.
-            if(http.readyState == 4 && http.status == 200) {
-              schObj.refreshEvents();
-            }
-        }
-
-
-        var params = JSON.stringify(resource);
-
-        http.send(params);
-
-    }
+    //     this.XMLHTTPRequest('update',res_res.id , res_res);
+    //   }
+    // }
 
 
 
@@ -547,9 +575,10 @@ console.log(resource);
 
     if (args.requestType === "eventRemove") {
       args.cancel = true;
+      var remove_res
       var app = isNullOrUndefined(args.data[0]) ? args.data : args.data[0];
       if (isNullOrUndefined(app.occurrence)) {
-        let resource = {
+         remove_res = {
           id: app.Id,
           summary: app.Subject,
           location: app.Location,
@@ -567,7 +596,7 @@ console.log(resource);
         .ej2_instances[0]
     var http = new XMLHttpRequest();
     let dat =args.data;
-    var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+    var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${remove_res.id}`;
     http.open('DELETE', url, true);
     //Send the proper header information along with the request
     http.setRequestHeader('Accept',  'application/json');
@@ -577,12 +606,12 @@ console.log(resource);
           schObj.refreshEvents();
         }
     }
-    var params = JSON.stringify(resource);
+    var params = JSON.stringify(remove_res);
     http.send(params);
 
 
       } else {
-        resource = {
+        remove_res = {
           recurringEventId: app.parent.Id,
           originalStartTime: {
             dateTime: app.occurrence.StartTime,
@@ -606,7 +635,7 @@ console.log(resource);
         .ej2_instances[0]
     var http = new XMLHttpRequest();
     let dat =args.data;
-    var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${resource.id}`;
+    var url =  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${remove_res.id}`;
     http.open('DELETE', url, true);
     //Send the proper header information along with the request
     http.setRequestHeader('Accept',  'application/json');
@@ -616,7 +645,7 @@ console.log(resource);
           schObj.refreshEvents();
         }
     }
-    var params = JSON.stringify(resource);
+    var params = JSON.stringify(remove_res);
     http.send(params);
 
       }
@@ -629,11 +658,13 @@ console.log(resource);
 
 
 
+  onCellClick(args: CellClickEventArgs): void {
+    this.scheduleObj.openEditor(args, 'Add');
+}
+
+
+
   onActionComplete(args: ActionEventArgs):void {
-
-
- console.log();
-
 
 
 
@@ -1196,11 +1227,11 @@ console.log(eventData);
     return calendarText;
   }
 
-  addClick(){
-    alert('d')
-  }
+  public enableRecurrenceValidation: boolean = true;
+
 
   onPopupOpen(args: PopupOpenEventArgs) {
+
 
     if (args.type === 'QuickInfo' ) {
       args.cancel = true;
@@ -1225,6 +1256,8 @@ console.log(eventData);
           });
           recurrObject.appendTo(recurElement);
           (this.scheduleObj.eventWindow as any).recurrenceEditor = recurrObject;
+          console.log(recurElement);
+
       }
 
       document.getElementById('RecurrenceEditor').style.display = (this.scheduleObj.currentAction == "EditOccurrence") ? 'none' : 'block';
@@ -1346,13 +1379,6 @@ console.log(eventData);
         // (document.querySelector('#EndTime') as any).ej2_instances[0].value.setHours(9, 30, 0);
         (document.querySelector('#StartTime') as any).ej2_instances[0].dataBind();
       }
-
-
-
-
-
-
-
 
 
     }
