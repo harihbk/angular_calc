@@ -4,12 +4,13 @@
       <div class="overview-toolbar">
         <div>
           <div class="row innrt_list">
-            <button class="today btn" id="addeventbtn" (click)="onToolbarItemClicked1('New Event')">
+            <button
+              class="today btn"
+              id="addeventbtn"
+              (click)="onToolbarItemClicked1('New Event')"
+            >
               New Event
             </button>
-
-
-
             <button
               class="today btn"
               id="today"
@@ -17,15 +18,22 @@
             >
               New Recurring Event
             </button>
-            <select name="daygroup" id="daygroup" (change)="onToolbarItemClicked2($event)">
+            <select
+              name="daygroup"
+              id="daygroup"
+              (change)="onToolbarItemClicked2($event)"
+            >
               <option value="Day">Day</option>
               <option value="Week" selected>Week</option>
               <option value="WorkWeek">WorkWeek</option>
               <option value="Month">Month</option>
               <option value="Year">Year</option>
             </select>
-
-            <select name="multiusers" id="multiusers" (change)="onGroupingChange1($event)">
+            <select
+              name="multiusers"
+              id="multiusers"
+              (change)="onGroupingChange1($event)"
+            >
               <option value=" ">Select View</option>
               <option value="Week">Multi Appointment</option>
               <option value="Day">User</option>
@@ -34,13 +42,19 @@
               <div class="inner_seacrh_bar">
                 <input type="search" />
               </div>
-              <button ejs-button id="settingsBtn" iconCss="e-icons e-settings" cssClass="overview-toolbar-settings" iconPosition="Top" (click)="onSettingsClick($event)">
+              <button
+                ejs-button
+                id="settingsBtn"
+                iconCss="e-icons e-settings"
+                cssClass="overview-toolbar-settings"
+                iconPosition="Top"
+                (click)="onSettingsClick($event)"
+              >
                 <i class="fa fa-cog" aria-hidden="true"></i>
               </button>
               <span><i class="fa fa-print" aria-hidden="true"></i></span>
             </div>
           </div>
-
           <!-- <ejs-toolbar id="toolbar_options" height="70px" overflowMode="Scrollable" scrollStep="100"
             (created)="onToolbarCreated()" (clicked)="onToolbarItemClicked($event)">
             <e-items>
@@ -129,123 +143,266 @@
       </div>
       <div class="overview-content">
         <div class="row">
-          <div class="col-lg-2 col-md-12 p-0  calander_pickers">
+          <div class="col-lg-2 col-md-12 p-0 calander_pickers">
             <div class="pr-2 pl-2">
-              <ejs-calendar [value]="dateValue" start="Year" (change)="onClick($event)"></ejs-calendar>
-
-            <!-- New Filter Start here -->
-            <div id="accordion"  class="inner_calander_filter">
-              <div class="card">
-                <div class="card-header p-0" id="headingOne">
-                      <h6  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">FILTER BY STAFF <i class="fa fa-chevron-up" aria-hidden="true"></i></h6>
-                </div>
-
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                  <div class="card-body p-0">
-                    <div class="inner_filter_search">
-                            <span><input type="search" name="" id="" /></span>
-                            <div class="inner_check_scroll">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>All Users </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red blue"></span>Selva </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red blue"></span>All Users </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>Selva </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red blue"></span>All Users </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>Selva </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>Selva </label>
-                              </div>
-                            </div>
+              <ejs-calendar
+                [value]="dateValue"
+                start="Year"
+                (change)="onClick($event)"
+              ></ejs-calendar>
+              <!-- New Filter Start here -->
+              <div id="accordion" class="inner_calander_filter">
+                <div class="card">
+                  <div class="card-header p-0" id="headingOne">
+                    <h6
+                      data-toggle="collapse"
+                      data-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      FILTER BY STAFF
+                      <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </h6>
+                  </div>
+                  <div
+                    id="collapseOne"
+                    class="collapse show"
+                    aria-labelledby="headingOne"
+                    data-parent="#accordion"
+                  >
+                    <div class="card-body p-0">
+                      <div class="inner_filter_search">
+                        <span><input type="search" name="" id="" /></span>
+                        <div class="inner_check_scroll">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red"></span>All Users
+                            </label>
                           </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red green"></span>Theo
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red blue"></span>Selva
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red blue"></span>All Users
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red green"></span>Theo
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red"></span>Selva
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red blue"></span>All Users
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red green"></span>Theo
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red"></span>Selva
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red green"></span>Theo
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red"></span>Selva
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header p-0" id="headingTwo">
+                    <h6
+                      class="collapsed"
+                      data-toggle="collapse"
+                      data-target="#collapseTwo"
+                      aria-expanded="false"
+                      aria-controls="collapseTwo"
+                    >
+                      FILTER BY STAFF 2<i
+                        class="fa fa-chevron-up"
+                        aria-hidden="true"
+                      ></i>
+                    </h6>
+                  </div>
+                  <div
+                    id="collapseTwo"
+                    class="collapse"
+                    aria-labelledby="headingTwo"
+                    data-parent="#accordion"
+                  >
+                    <div class="card-body p-0">
+                      <div class="inner_filter_search">
+                        <span><input type="search" name="" id="" /></span>
+                        <div class="inner_check_scroll">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red"></span>All Users
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red green"></span>Theo
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red blue"></span>Selva
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red blue"></span>All Users
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red green"></span>Theo
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="defaultCheck1"
+                            />
+                            <label class="form-check-label" for="defaultCheck1">
+                              <span class="red"></span>Selva
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="card">
-                <div class="card-header p-0" id="headingTwo">
-                    <h6 class="collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">FILTER BY STAFF 2<i class="fa fa-chevron-up" aria-hidden="true"></i></h6>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                  <div class="card-body p-0">
-                     <div class="inner_filter_search">
-                            <span><input type="search" name="" id="" /></span>
-                            <div class="inner_check_scroll">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>All Users </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red blue"></span>Selva </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red blue"></span>All Users </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red green"></span>Theo </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                <label class="form-check-label" for="defaultCheck1"> <span class="red"></span>Selva </label>
-                              </div>
-                            </div>
-                          </div>
-                  </div>
-                </div>
-              </div>
-
+              <!-- New Filter End here -->
             </div>
-
-               <!-- New Filter End here -->
-
-            </div>
-
-
-
           </div>
           <div class="col-lg-10 col-md-12 calander_height_without p-0">
             <div class="left-panel">
               <div class="overview-scheduler">
-
                 <ejs-schedule
                 #scheduleObj
                 id="schedule"
@@ -294,9 +451,11 @@
                     <div class="date-text" *ngIf="singleResourceDay">
                       {{ getDateHeaderText(data.date) }}
                     </div>
-
-                      <div [innerHTML]="getWeatherImage(data.date)" class="map_calac" *ngIf="singleResourceDay"></div>
-
+                    <div
+                      [innerHTML]="getWeatherImage(data.date)"
+                      class="map_calac"
+                      *ngIf="singleResourceDay"
+                    ></div>
                   </ng-template>
                   <e-views>
                     <e-view option="Day"></e-view>
@@ -311,14 +470,19 @@
                     <e-view option="TimelineMonth"></e-view>
                     <e-view option="TimelineYear"></e-view>
                   </e-views>
-
                   <e-resources>
-                    <e-resource field="CalendarId" title="Calendars" [dataSource]="resourceDataSource" [allowMultiple]="allowMultiple" name="Calendars" textField="CalendarText" idField="CalendarId" colorField="CalendarColor"> </e-resource>
+                    <e-resource
+                      field="CalendarId"
+                      title="Calendars"
+                      [dataSource]="resourceDataSource"
+                      [allowMultiple]="allowMultiple"
+                      name="Calendars"
+                      textField="CalendarText"
+                      idField="CalendarId"
+                      colorField="CalendarColor"
+                    >
+                    </e-resource>
                   </e-resources>
-
-
-
-
                   <!-- <e-resources>
                 <e-resource field='CalendarId' title='Calendars' [dataSource]='resourceDataSource'
                   [query]='resourceQuery'
@@ -347,130 +511,346 @@
                                     </ejs-dropdownlist>
                                 </td>
                             </tr> -->
+                  <!-- new event template-->
+                  <ng-template #editorTemplate let-data>
+                    <div class="col-sm-12">
+                      <div class="row box-shadowss">
+                        <div class="col-sm-6 defult_heightedit">
+                          <div class="custom-event-editor height_cal_100">
+                            <div class="summary">
+                              <label for="e-textlabel">Summary</label>
+                              <input
+                                id="Subject"
+                                class="e-field e-input"
+                                type="text"
+                                value="{{ data.Subject }}"
+                                name="Subject"
+                                style="width: 100%"
+                              />
+                            </div>
+                            <div class="row">
+                              <div class="col-6">
+                                <div class="starttime">
+                                  <label for="e-textlabel">From</label>
+                                  <input
+                                    id="StartTime"
+                                    class="e-field"
+                                    type="text"
+                                    name="StartTime"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-6">
+                                <div class="endtime">
+                                  <label for="e-textlabel">To</label>
+                                  <input
+                                    id="EndTime"
+                                    class="e-field"
+                                    type="text"
+                                    name="EndTime"
+                                  />
+                                </div>
+                              </div>
+                            </div>
 
-
-
-                    <!-- new event template-->
-        <!-- <ng-template #editorTemplate let-data>
-                  <div class="col-sm-12">
-                    <div class="row">
-                          <div class="col-sm-6">
-                             <div class="custom-event-editor">
-
-                                  <div class="summary">
-                                    <label for="e-textlabel">Summary</label>
-                                    <input id="Subject" class="e-field e-input" type="text" value="{{data.Subject}}"
-                                                              name="Subject" style="width: 100%" />
+                            <div class="row e-all-day-time-zone-row">
+                              <div class="col-6">
+                                <div class="e-all-day-container">
+                                  <div class="e-float-input e-control-wrapper">
+                                    <i class="fas fa-sync"></i>AllDay
+                                    <input
+                                      id="IsAllDay"
+                                      class="e-field"
+                                      type="text"
+                                      name="IsAlDay"
+                                      style="width: 100%"
+                                    />
                                   </div>
-
-
-                                  <div class="starttime">
-                                    <label for="e-textlabel">From</label>
-                                    <input id="StartTime" class="e-field" type="text" name="StartTime" />
+                                </div>
+                              </div>
+                              <div class="col-6">
+                                <div
+                                  id="TimezoneRow"
+                                  class="e-time-zone-container"
+                                >
+                                  <div class="e-float-input e-control-wrapper">
+                                    Timezone
+                                    <input
+                                      id="Timezone"
+                                      class="e-field"
+                                      type="text"
+                                      name="Timezone"
+                                      style="width: 100%"
+                                    />
                                   </div>
+                                </div>
+                              </div>
+                            </div>
 
-                                  <div class="endtime">
-                                    <label for="e-textlabel">To</label>
-                                    <input id="EndTime" class="e-field" type="text" name="EndTime" />
+                            <div class="row e-custom-row p-0">
+                              <div class="col-6">
+                                <div id="startZoneRow">
+                                  <div class="e-start-time-zone-container">
+                                    <div
+                                      class="e-float-input e-control-wrapper"
+                                    >
+                                      Start Timezone
+                                      <input
+                                        id="StartTimezone"
+                                        class="e-field"
+                                        type="text"
+                                        name="StartTimezone"
+                                        style="width: 100%"
+                                      />
+                                    </div>
                                   </div>
+                                </div>
+                              </div>
+                              <div class="col-6">
+                                <div id="endZoneRow">
+                                  <div class="e-end-time-zone-container">
+                                    <div
+                                      class="e-float-input e-control-wrapper"
+                                    >
+                                      End Timezone
+                                      <input
+                                        id="EndTimezone"
+                                        class="e-field"
+                                        type="text"
+                                        name="EndTimezone"
+                                        style="width: 100%"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 
+                            <div class="RecurrenceEditor">
+                              <div id="RecurrenceEditor"></div>
+                            </div>
+                            <div class="row calcprivate">
+                              <div class="col-6">
+                                <div class="form-check">
+                                  <label
+                                    class="form-check-label"
+                                    for="defaultCheck1"
+                                  >
+                                    <i class="fas fa-user-lock"></i> Private
+                                  </label>
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="defaultCheck1"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-6">
+                                <div class="form-check">
+                                  <label
+                                    class="form-check-label"
+                                    for="defaultCheck1"
+                                  >
+                                    Confirm
+                                  </label>
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="defaultCheck1"
+                                  />
+                                </div>
+                              </div>
+                            </div>
 
-
-                                  <div class="e-all-day-time-zone-row">
-                                    <div class="e-all-day-container">
-                                      <div class="e-float-input e-control-wrapper">AllDay
-                                        <input id="IsAllDay" class="e-field" type="text" name="IsAlDay" style="width: 100%"/>
+                            <div class="row">
+                              <div class="col-6">
+                                <label
+                                  ><i class="fas fa-car"></i>Travel Time</label
+                                >
+                              </div>
+                              <div class="col-6">
+                                <select name="" id="">
+                                  <option value="">10 Mintues</option>
+                                  <option value="">20 Mintues</option>
+                                  <option value="">30 Mintues</option>
+                                  <option value="">40 Mintues</option>
+                                  <option value="">50 Mintues</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                  <label
+                                  ><i class="fas fa-bell"></i
+                                  >Notification</label
+                                >
+                                </div>
+                            </div>
+                            <div *ngFor="let item of NotificationArray ;let i=index;" >
+                              <div class="row calnotfic">
+                                <div class="col-6">
+                                  <div class="row">
+                                    <div class="col-6">
+                                      <div class="form-check">
+                                        <label
+                                          class="form-check-label"
+                                          for="exampleRadios1"
+                                        >
+                                          Sms
+                                        </label>
+                                        <p>
+                                          <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="exampleRadios"
+                                            id="exampleRadios1"
+                                            value="option1"
+                                            checked
+                                          />
+                                        </p>
                                       </div>
                                     </div>
-                                    <div id="TimezoneRow" class="e-time-zone-container">
-                                      <div class="e-float-input e-control-wrapper">Timezone
-                                        <input id="Timezone" class="e-field" type="text" name="Timezone" style="width: 100%"/>
+                                    <div class="col-6">
+                                      <div class="form-check">
+                                        <label
+                                          class="form-check-label"
+                                          for="exampleRadios1"
+                                        >
+                                          Email
+                                        </label>
+                                        <p>
+                                          <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="exampleRadios"
+                                            id="exampleRadios1"
+                                            value="option1"
+                                            checked
+                                          />
+                                        </p>
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="e-custom-row">
-                                    <div id="startZoneRow">
-                                      <div class="e-start-time-zone-container">
-                                        <div class="e-float-input e-control-wrapper">Start Timezone
-                                          <input id="StartTimezone" class="e-field" type="text" name="StartTimezone" style="width: 100%" />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div id="endZoneRow">
-                                      <div class="e-end-time-zone-container">
-                                        <div class="e-float-input e-control-wrapper">End Timezone
-                                          <input id="EndTimezone" class="e-field" type="text" name="EndTimezone" style="width: 100%" />
-                                        </div>
-                                      </div>
-                                    </div>
+                                </div>
+                                <div class="col-6" style="display: flex;align-items: flex-end;">
+
+                                  <div  class="calcincreament" >
+                                    <span class="list_increamnetbtn"><input type="number" /></span>
+                                    <span class="list_increamnetbtn"><input type="number" /></span>
+                                    <span (click)="fnAddMultipleNotification(i)" *ngIf="i==NotificationArray.length-1 && NotificationArray.length<4" class="addcalcs" ><button>+</button></span>
+                                    <span  class="removeclacs" (click)="fndeleteNotification(i)" *ngIf="i<NotificationArray.length-1 || i==3"><i class="fas fa-trash"></i></span>
                                   </div>
 
-                                  <div class="RecurrenceEditor">
-
-                                    <div id='RecurrenceEditor'></div>
-                                  </div>
-
-
-                                  <div class="endtime">
-                                    <label for="e-textlabel">Owner</label>
-                                    <input type="text" id="OwnerId" name="OwnerId" class="e-field" style="width: 100%" />
-                                  </div>
-
-                             </div>
+                                </div>
+                              </div>
+                            </div>
 
 
-
+                            <div class="row">
+                              <div class="col-6">
+                                <!-- <ejs-recurrenceeditor (change)="onChange($event)" value="FREQ=DAILY;INTERVAL=2;COUNT=8"></ejs-recurrenceeditor> -->
+                                <div class="endtime">
+                                  <label for="e-textlabel"
+                                    ><i class="far fa-calendar-alt"></i
+                                    >Owner</label
+                                  >
+                                  <input
+                                    type="text"
+                                    id="OwnerId"
+                                    name="OwnerId"
+                                    class="e-field"
+                                    style="width: 100%"
+                                  />
+                                </div>
+                              </div>
+                              <div
+                                class="col-6"
+                                style="display: flex; align-items: self-end"
+                              >
+                                <select name="" id="">
+                                  <option value="">Filter</option>
+                                  <option value="">Filter2</option>
+                                  <option value="">Filter3</option>
+                                </select>
+                              </div>
+                            </div>
                           </div>
-
-                          <div class="col-sm-6">
-                            <table  class="custom-event-editor" width="100%" cellpadding="5">
+                        </div>
+                        <!--col-sm-6-->
+                        <div class="col-sm-6">
+                          <div class="custom-event-editor">
+                            <table class="" width="100%" cellpadding="5">
                               <tbody>
-                                  <tr>
-                                      <td class="e-textlabel">Job</td>
-                                      <td colspan="4">
-                                          <input id="Job" class="e-field e-input" type="text"
-                                              name="job" style="width: 100%" />
-                                              <span class="e-icons circle-add" (click)="openDialog()"></span>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="e-textlabel">Description</td>
-                                    <td colspan="4">
-                                        <input id="Job" class="e-field e-input" type="text"
-                                            name="description" style="width: 100%" />
-                                    </td>
+                                <tr>
+                                  <td style="width: 30%" class="e-textlabel">
+                                    Add Job
+                                  </td>
+                                  <td style="position: relative; width: 70%">
+                                    <input
+                                      autocomplete="off"
+                                      id="Job"
+                                      class="e-field e-input"
+                                      type="text"
+                                      name="job"
+                                      style="width: 100%"
+                                    />
+                                    <span
+                                      class="e-icons circle-add"
+                                      (click)="openDialog()"
+                                    ></span>
+                                  </td>
                                 </tr>
-                              </tbody>
-                            </table>
-
-                            <h4>Custom Fields</h4>
-
-                            <table  class="custom-event-editor" width="100%" cellpadding="5">
-                              <tbody>
-                                <tr *ngFor="let customfield of customfields">
-                                  <td  style="width:30%" class="e-textlabel">{{ customfield.label }}</td>
-                                  <td  style="width:70%">
-                                    <input autocomplete="off" id="Job" class="e-field e-input" type="text" name="{{ customfield.name }}" style="width: 100%;" />
+                                <tr>
+                                  <td
+                                    style="vertical-align: text-top"
+                                    class="e-textlabel"
+                                  >
+                                    Description
+                                  </td>
+                                  <td class="job_descripton">
+                                    <textarea
+                                      name="description"
+                                      id="Job"
+                                      class="e-field e-input"
+                                      cols="30"
+                                      rows="4"
+                                    ></textarea>
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
                           </div>
 
+                          <h4 class="userdefinedfield">User defined fields</h4>
+                          <div class="user_height_filed custom-event-editor">
+                            <table class="" width="100%" cellpadding="5">
+                              <tbody>
+                                <tr *ngFor="let customfield of customfields">
+                                  <td style="width: 30%" class="e-textlabel">
+                                    {{ customfield.label }}
+                                  </td>
+                                  <td style="width: 70%">
+                                    <input
+                                      autocomplete="off"
+                                      id="Job"
+                                      class="e-field e-input"
+                                      type="text"
+                                      name="{{ customfield.name }}"
+                                      style="width: 100%"
+                                    />
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
-
-
-                  </ng-template> -->
-
-
-
-
-                  <!-- new event template-->`
-
-
-
-
+                    </div>
+                    <!--row-->
+                  </ng-template>
+                  <!-- new event template-->
                   <!-- Content Template -->
                   <ng-template #quickInfoTemplatesContent let-data>
                     <ng-container
@@ -480,27 +860,38 @@
                       [ngTemplateOutletContext]="{ data: data }"
                     ></ng-container>
                   </ng-template>
-
-
-
                   <ng-template #cellContent let-data="data">
                     <div class="quick-info-content">
                       <div class="e-cell-content">
                         <div class="content-area">
-                          <ejs-textbox #titleObj id="title" placeholder="Title"></ejs-textbox>
+                          <ejs-textbox
+                            #titleObj
+                            id="title"
+                            placeholder="Title"
+                          ></ejs-textbox>
                         </div>
                         <div class="content-area">
-                          <ejs-dropdownlist id="eventType" #eventTypeObj [dataSource]="resourceDataSource" [fields]="calendarFields" placeholder="Choose Type" [value]="calendarsValue[0]" popupHeight="150pc"> </ejs-dropdownlist>
+                          <ejs-dropdownlist
+                            id="eventType"
+                            #eventTypeObj
+                            [dataSource]="resourceDataSource"
+                            [fields]="calendarFields"
+                            placeholder="Choose Type"
+                            [value]="calendarsValue[0]"
+                            popupHeight="150pc"
+                          >
+                          </ejs-dropdownlist>
                         </div>
                         <div class="content-area">
-                          <ejs-textbox #notesObj id="notes" placeholder="Notes"></ejs-textbox>
+                          <ejs-textbox
+                            #notesObj
+                            id="notes"
+                            placeholder="Notes"
+                          ></ejs-textbox>
                         </div>
                       </div>
                     </div>
                   </ng-template>
-
-
-
                   <ng-template #eventContent let-data="data">
                     <div class="quick-info-content">
                       <div class="event-content">
@@ -519,10 +910,7 @@
                       </div>
                     </div>
                   </ng-template>
-
                   <!-- Footer Template -->
-
-
                   <ng-template #quickInfoTemplatesFooter let-data>
                     <ng-container
                       [ngTemplateOutlet]="
@@ -531,53 +919,84 @@
                       [ngTemplateOutletContext]="{ data: data }"
                     ></ng-container>
                   </ng-template>
-
-
                   <ng-template #cellFooter let-data="data">
                     <div class="e-cell-footer">
-                      <button ejs-button id="more-details" cssClass="e-flat" (click)="buttonClickActions($event)">
+                      <button
+                        ejs-button
+                        id="more-details"
+                        cssClass="e-flat"
+                        (click)="buttonClickActions($event)"
+                      >
                         More Details
                       </button>
-                      <button ejs-button id="add" cssClass="e-flat" [isPrimary]="true" (click)="buttonClickActions($event)">
+                      <button
+                        ejs-button
+                        id="add"
+                        cssClass="e-flat"
+                        [isPrimary]="true"
+                        (click)="buttonClickActions($event)"
+                      >
                         Add
                       </button>
                     </div>
                   </ng-template>
-
-
                   <ng-template #eventFooter let-data="data">
                     <div class="e-event-footer">
-                      <button ejs-button id="delete" cssClass="e-flat" (click)="buttonClickActions($event)">
+                      <button
+                        ejs-button
+                        id="delete"
+                        cssClass="e-flat"
+                        (click)="buttonClickActions($event)"
+                      >
                         Delete
                       </button>
-                      <button ejs-button id="more-details" cssClass="e-flat" [isPrimary]="true" (click)="buttonClickActions($event)">
+                      <button
+                        ejs-button
+                        id="more-details"
+                        cssClass="e-flat"
+                        [isPrimary]="true"
+                        (click)="buttonClickActions($event)"
+                      >
                         More Details
                       </button>
                     </div>
                   </ng-template>
-
-
-
                 </ejs-schedule>
-                <ejs-contextmenu #menuObj cssClass="schedule-context-menu" target=".e-schedule" [items]="menuItems" (beforeOpen)="onContextMenuBeforeOpen($event)" (select)="onMenuItemSelect($event)"></ejs-contextmenu>
+                <ejs-contextmenu
+                  #menuObj
+                  cssClass="schedule-context-menu"
+                  target=".e-schedule"
+                  [items]="menuItems"
+                  (beforeOpen)="onContextMenuBeforeOpen($event)"
+                  (select)="onMenuItemSelect($event)"
+                ></ejs-contextmenu>
               </div>
             </div>
           </div>
         </div>
-
         <div class="right-panel hide">
           <div class="control-panel e-css">
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">First Day of Week</label>
+                <label style="line-height: 34px; margin: 0"
+                  >First Day of Week</label
+                >
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id="weekFirstDay" [dataSource]="weekDays" (change)="onWeekDayChange($event)" [value]="firstDayOfWeek" [fields]="fields" popupHeight="150px"> </ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="weekFirstDay"
+                  [dataSource]="weekDays"
+                  (change)="onWeekDayChange($event)"
+                  [value]="firstDayOfWeek"
+                  [fields]="fields"
+                  popupHeight="150px"
+                >
+                </ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Work week</label>
+                <label style="line-height: 34px; margin: 0">Work week</label>
               </div>
               <div class="col-right">
                 <ejs-multiselect
@@ -596,7 +1015,7 @@
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Resources</label>
+                <label style="line-height: 34px; margin: 0">Resources</label>
               </div>
               <div class="col-right">
                 <ejs-multiselect
@@ -616,74 +1035,143 @@
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Timezone</label>
+                <label style="line-height: 34px; margin: 0">Timezone</label>
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id="timezone" [dataSource]="timezoneData" (change)="onTimezoneChange($event)" value="Etc/GMT" [fields]="fields" popupHeight="150px"> </ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="timezone"
+                  [dataSource]="timezoneData"
+                  (change)="onTimezoneChange($event)"
+                  value="Etc/GMT"
+                  [fields]="fields"
+                  popupHeight="150px"
+                >
+                </ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Day Start Hour</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Day Start Hour</label
+                >
               </div>
               <div class="col-right">
-                <ejs-timepicker id="dayStartHour" showClearButton="false" [value]="dayStartHourValue" (change)="onDayStartHourChange($event)"> </ejs-timepicker>
+                <ejs-timepicker
+                  id="dayStartHour"
+                  showClearButton="false"
+                  [value]="dayStartHourValue"
+                  (change)="onDayStartHourChange($event)"
+                >
+                </ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Day End Hour</label>
+                <label style="line-height: 34px; margin: 0">Day End Hour</label>
               </div>
               <div class="col-right">
-                <ejs-timepicker id="dayEndHour" showClearButton="false" [value]="dayEndHourValue" (change)="onDayEndHourChange($event)"> </ejs-timepicker>
+                <ejs-timepicker
+                  id="dayEndHour"
+                  showClearButton="false"
+                  [value]="dayEndHourValue"
+                  (change)="onDayEndHourChange($event)"
+                >
+                </ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Work Start Hour</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Work Start Hour</label
+                >
               </div>
               <div class="col-right">
-                <ejs-timepicker id="workHourStart" showClearButton="false" [value]="workStartHourValue" (change)="onWorkStartHourChange($event)"> </ejs-timepicker>
+                <ejs-timepicker
+                  id="workHourStart"
+                  showClearButton="false"
+                  [value]="workStartHourValue"
+                  (change)="onWorkStartHourChange($event)"
+                >
+                </ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Work End Hour</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Work End Hour</label
+                >
               </div>
               <div class="col-right">
-                <ejs-timepicker id="workHourEnd" showClearButton="false" [value]="workEndHourValue" (change)="onWorkEndHourChange($event)"></ejs-timepicker>
+                <ejs-timepicker
+                  id="workHourEnd"
+                  showClearButton="false"
+                  [value]="workEndHourValue"
+                  (change)="onWorkEndHourChange($event)"
+                ></ejs-timepicker>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Slot Duration</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Slot Duration</label
+                >
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id="slotDuration" [dataSource]="timeSlotDuration" [fields]="timeSlotFields" (change)="onTimescaleDurationChange($event)" [value]="timeSlotDurationValue" popupHeight="150px"></ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="slotDuration"
+                  [dataSource]="timeSlotDuration"
+                  [fields]="timeSlotFields"
+                  (change)="onTimescaleDurationChange($event)"
+                  [value]="timeSlotDurationValue"
+                  popupHeight="150px"
+                ></ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Slot Interval</label>
+                <label style="line-height: 34px; margin: 0"
+                  >Slot Interval</label
+                >
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id="slotInterval" [dataSource]="timeSlotCount" (change)="onTimescaleIntervalChange($event)" [value]="timeSlotCountValue" popupHeight="150px"> </ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="slotInterval"
+                  [dataSource]="timeSlotCount"
+                  (change)="onTimescaleIntervalChange($event)"
+                  [value]="timeSlotCountValue"
+                  popupHeight="150px"
+                >
+                </ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Time Format</label>
+                <label style="line-height: 34px; margin: 0">Time Format</label>
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id="timeFormat" [dataSource]="timeFormatData" (change)="onTimeFormatChange($event)" [fields]="timeSlotFields" [value]="timeFormatValue" popupHeight="150px"></ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="timeFormat"
+                  [dataSource]="timeFormatData"
+                  (change)="onTimeFormatChange($event)"
+                  [fields]="timeSlotFields"
+                  [value]="timeFormatValue"
+                  popupHeight="150px"
+                ></ejs-dropdownlist>
               </div>
             </div>
             <div class="col-row">
               <div class="col-left">
-                <label style="line-height: 34px; margin: 0;">Week Numbers</label>
+                <label style="line-height: 34px; margin: 0">Week Numbers</label>
               </div>
               <div class="col-right">
-                <ejs-dropdownlist id="weekNumber" [dataSource]="weekNumberData" (change)="onWeekNumberChange($event)" [fields]="timeSlotFields" [value]="weekNumberValue" popupHeight="150px"></ejs-dropdownlist>
+                <ejs-dropdownlist
+                  id="weekNumber"
+                  [dataSource]="weekNumberData"
+                  (change)="onWeekNumberChange($event)"
+                  [fields]="timeSlotFields"
+                  [value]="weekNumberValue"
+                  popupHeight="150px"
+                ></ejs-dropdownlist>
               </div>
             </div>
           </div>
@@ -692,9 +1180,19 @@
     </div>
   </div>
 </div>
-
 <div #container class="root-container">
-  <ejs-dialog id="dialog" class="list_cals" #ejDialog isModal="true" [visible]="visible" content="Congratulations! Login Success" header="Success" [buttons]="popupbutton" [target]="targetElement" width="280px">
+  <ejs-dialog
+    id="dialog"
+    class="list_cals"
+    #ejDialog
+    isModal="true"
+    [visible]="visible"
+    content="Congratulations! Login Success"
+    header="Success"
+    [buttons]="popupbutton"
+    [target]="targetElement"
+    width="280px"
+  >
     <ng-template #content>
       <app-customjob></app-customjob>
     </ng-template>
