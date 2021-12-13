@@ -66,8 +66,8 @@ export class CalComponent  implements OnInit{
   public targetElement: HTMLElement;
 
   public cursor;
-
-
+  DeleteNotification:any=1;
+  public NotificationArray:any=[{sms:'',msg:''}];
   public showFileList = false;
   public multiple = false;
   public buttons: Record<string, any> = { browse: this.importTemplateFn({ text: 'Import' })[0] as HTMLElement };
@@ -264,7 +264,25 @@ export class CalComponent  implements OnInit{
   }
 
 
+  fnAddMultipleNotification(i){
+    if(this.NotificationArray.length>3){
+      alert('Limit exceded');
+    }else{
+      this.NotificationArray.push({sms:'',msg:'',id:i})
+      console.log(this.NotificationArray);
+    }
+   
+  }
+  fndeleteNotification(i){
+  //alert(i);
+    if(this.NotificationArray.length===1){
+    }else{
+      this.NotificationArray.splice(i,1);
+      console.log(this.NotificationArray);
+      
+    }
 
+  }
   onDataBinding(e: Record<string, any>): void {
     const items: Record<string, any>[] = (
       e.result as Record<string, Record<string, any>[]>).result;
@@ -1730,6 +1748,7 @@ wrapper.setAttribute('class','wrapperclass');
       this.scheduleObj.exportToICalendar();
     }
   }
+  
 
 }
 

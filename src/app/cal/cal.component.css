@@ -1519,6 +1519,38 @@ input:focus {
   box-shadow: unset;
   background: transparent !important;
 }
+/* .calander_height_without .e-week-view table tbody td .e-date-header-wrap > .e-schedule-table {
+  width: 2000px;
+}
+.calander_height_without .e-week-view table tbody td .e-content-wrap .e-schedule-table{
+  width: 2000px;
+} */
+.e-week-view .e-content-wrap .e-appointment.e-lib.e-draggable{
+  /* cursor: pointer !important; */
+  transition: 0.5s all;
+}
+.e-week-view .e-content-wrap .e-appointment.e-lib.e-draggable:hover {
+    /* transform: scale(2); */
+    display: flex;
+    align-items: center;
+    z-index: 99;
+    /* box-shadow: -1px -2px 17px 1px #4e3232; */
+    border: 2px solid white;
+    border-radius: 10px;
+    width: 100% !important;
+    height: 100px !important;
+}
+.e-week-view .e-content-wrap .e-appointment.e-lib.e-draggable:hover .e-appointment-details div{
+  font-size: 14px !important;
+}
+.e-all-day-appointment-section{
+  background-color: rgb(41, 120, 181);
+  color: white !important;
+  border-radius: 50%;
+}
+.e-all-day-appointment-section:hover{
+  background-color: rgb(41, 120, 181) !important;
+}
 
 .inner_calander_filter i {
   position: absolute;
@@ -1531,13 +1563,15 @@ input:focus {
 	border-radius: 5px;
 }
 .addcalcs button{
-    background-color: #e3165b;
-    border: none;
-    color: white;
-    height: 24px;
-    font-size: 19px;
-    width: 30px;
-	border-radius: 5px;
+  background-color: #e3165b;
+  border: none;
+  color: white;
+  padding: 0;
+  height: 20px;
+  font-size: 19px;
+  line-height: 20px;
+  width: 20px;
+  border-radius: 5px;
 }
 .list_increamnetbtn input{
 	width:100%;
@@ -1770,7 +1804,7 @@ input:focus {
   background: transparent;
 }
 .defult_heightedit:hover::-webkit-scrollbar-thumb {
-  background: gray;
+  background: #f5f5f5;
   border-radius: 0px 10px;
 }
 .defult_heightedit::-webkit-scrollbar-track {
@@ -1803,11 +1837,20 @@ input:focus {
 .custom-event-editor > div {
   padding-bottom: 10px;
 }
-.custom-event-editor {
+.box-shadowss{
   box-shadow: 0 2px 6px 0 #0000001a, 0 2px 6px 0 #0000001a;
-  padding: 10px;
+  padding: 10px 0px;
   margin: 1px 0px;
   border-radius: 10px;
+}
+.height_cal_100{
+  height: 100%;
+}
+.custom-event-editor {
+  /* box-shadow: 0 2px 6px 0 #0000001a, 0 2px 6px 0 #0000001a;
+  padding: 10px;
+  margin: 1px 0px;
+  border-radius: 10px; */
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -1939,7 +1982,13 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 10px;
+  padding-top: 0px;
+}
+.removeclacs i{
+  color: #e3165b;
+}
+.calnotfic{
+  padding: 0 !important;
 }
 .e-schedule-dialog .e-subject-container,
 .e-schedule-dialog .e-location-container,
@@ -1949,9 +1998,7 @@ input:focus {
 .e-schedule-dialog .e-end-time-zone-container {
   width: auto;
 }
-.calnotfic input {
-  padding-top: 4px;
-}
+
 @media (max-width: 1024px) {
   .calander_pickers {
     display: -webkit-box;
@@ -2038,6 +2085,10 @@ input:focus {
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%);
+  }
+  #scheduleEditForm .col-sm-6
+  {
+	  padding: 10px 0px;
   }
   .e-week-view {
     height: auto;

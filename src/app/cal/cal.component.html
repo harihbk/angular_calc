@@ -503,9 +503,9 @@
                   <!-- new event template-->
                   <ng-template #editorTemplate let-data>
                     <div class="col-sm-12">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <div class="custom-event-editor defult_heightedit">
+                      <div class="row box-shadowss">
+                        <div class="col-sm-6 defult_heightedit">
+                          <div class="custom-event-editor height_cal_100">
                             <div class="summary">
                               <label for="e-textlabel">Summary</label>
                               <input
@@ -669,67 +669,73 @@
                                 </select>
                               </div>
                             </div>
-
-                            <div class="row calnotfic">
-                              <div class="col-6">
-                                <label
+                            <div class="row">
+                                <div class="col-12">
+                                  <label
                                   ><i class="fas fa-bell"></i
                                   >Notification</label
                                 >
-                                <div class="row">
-                                  <div class="col-6">
-                                    <div class="form-check">
-                                      <label
-                                        class="form-check-label"
-                                        for="exampleRadios1"
-                                      >
-                                        Sms
-                                      </label>
-                                      <p>
-                                        <input
-                                          class="form-check-input"
-                                          type="radio"
-                                          name="exampleRadios"
-                                          id="exampleRadios1"
-                                          value="option1"
-                                          checked
-                                        />
-                                      </p>
+                                </div>
+                            </div>
+                            <div *ngFor="let item of NotificationArray ;let i=index;" >
+                              <div class="row calnotfic">
+                                <div class="col-6">
+                                  <div class="row">
+                                    <div class="col-6">
+                                      <div class="form-check">
+                                        <label
+                                          class="form-check-label"
+                                          for="exampleRadios1"
+                                        >
+                                          Sms
+                                        </label>
+                                        <p>
+                                          <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="exampleRadios"
+                                            id="exampleRadios1"
+                                            value="option1"
+                                            checked
+                                          />
+                                        </p>
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div class="col-6">
-                                    <div class="form-check">
-                                      <label
-                                        class="form-check-label"
-                                        for="exampleRadios1"
-                                      >
-                                        Email
-                                      </label>
-                                      <p>
-                                        <input
-                                          class="form-check-input"
-                                          type="radio"
-                                          name="exampleRadios"
-                                          id="exampleRadios1"
-                                          value="option1"
-                                          checked
-                                        />
-                                      </p>
+                                    <div class="col-6">
+                                      <div class="form-check">
+                                        <label
+                                          class="form-check-label"
+                                          for="exampleRadios1"
+                                        >
+                                          Email
+                                        </label>
+                                        <p>
+                                          <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="exampleRadios"
+                                            id="exampleRadios1"
+                                            value="option1"
+                                            checked
+                                          />
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div class="col-6" style="display: flex;align-items: flex-end;">
-
-                                <div class="calcincreament">
-                                  <span class="list_increamnetbtn"><input type="number" /></span>
-                                  <span class="list_increamnetbtn"><input type="number" /></span>
-                                  <span class="addcalcs"><button>+</button></span>
-                               
+                                <div class="col-6" style="display: flex;align-items: flex-end;">
+  
+                                  <div  class="calcincreament" >
+                                    <span class="list_increamnetbtn"><input type="number" /></span>
+                                    <span class="list_increamnetbtn"><input type="number" /></span>
+                                    <span (click)="fnAddMultipleNotification(i)" *ngIf="i==NotificationArray.length-1 && NotificationArray.length<4" class="addcalcs" ><button>+</button></span>
+                                    <span  class="removeclacs" (click)="fndeleteNotification(i)" *ngIf="i<NotificationArray.length-1 || i==3"><i class="fas fa-trash"></i></span>
+                                  </div>
+  
                                 </div>
-
                               </div>
                             </div>
+                           
 
                             <div class="row">
                               <div class="col-6">
