@@ -27,6 +27,7 @@ import { environment } from 'src/environments/environment';
 import { EventHandler } from "@syncfusion/ej2-base";
 import { classList } from '@syncfusion/ej2-base';
 import { EventemitterService } from './services/eventemitter.service';
+import { QuickPopups } from '@syncfusion/ej2-schedule/src/schedule/popups/quick-popups';
 
 
 declare var moment: any;
@@ -231,13 +232,12 @@ export class CalComponent  implements OnInit{
     url:
      // "https://www.googleapis.com/calendar/v3/calendars/primary/events" ,
      `${environment.APIURL}/calendar/get`,
-      // headers: [
-      //    { 'Accept': 'application/json' },
-      //    { 'Content-Type': 'application/json' },
-      //    { 'Authorization': 'Bearer '+this.service.GetAccessToken }
-      //  ],
-
-      crudUrl: `${environment.APIURL}/calendar/updates`,
+    //  headers: [
+        // { 'Accept': 'application/json' },
+        // { 'Content-Type': 'application/json' },
+       //  { 'Authorization': 'Bearer '+this.service.GetAccessToken }
+     //  ],
+    //  crudUrl :  `${environment.APIURL}/calendar/insertOrUpdate`,
 
     adaptor: new WebApiAdaptor,
     crossDomain: true
@@ -268,6 +268,12 @@ export class CalComponent  implements OnInit{
     // })
 
 
+
+   // console.log((g.element as HTMLElement).querySelector('.e-control').getAttribute('class'));
+
+
+
+
   }
 
 
@@ -278,11 +284,11 @@ export class CalComponent  implements OnInit{
 
     const scheduleData: Record<string, any>[] = [];
 
-
+    console.log(e.result);
 
     var aa = 0;
 
-    console.log(e.result);
+
 
 
     // scheduleData.push({
@@ -340,6 +346,7 @@ export class CalComponent  implements OnInit{
         //   end = event.end.date as string;
         // }
       //  if(event?.recurrence?.length > 0){
+
 
           scheduleData.push({
             Id: event.id,
@@ -458,7 +465,7 @@ export class CalComponent  implements OnInit{
         http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
         http.onreadystatechange = function(data:any) {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-          alert(http.status)
+
           schObj.refreshEvents()
         }
         }
@@ -472,33 +479,69 @@ export class CalComponent  implements OnInit{
 
 
 
-  // if (args.requestType === "eventChange") {
-  //      var event_id
+  if (args.requestType === "eventChange") {
+       var event_id
+
+    if(this.scheduleObj.currentAction == "EditOccurrence"){
+
+         event_id = args.data
+         const myPromise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            let obj =  args.data
+            resolve(obj);
+          }, 500);
+        });
+
+        myPromise.then(res=>{
+          this.XMLHTTPRequest('occurrenceEdit',event_id.parent.Id ,res);
+        })
+    } else {
+      event_id = args.data
+
+      const myPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          let obj =  args.data
+          resolve(obj);
+        }, 500);
+      });
+
+
+      myPromise.then(res=>{
+
+
+        let schObj = (document.querySelector(".e-schedule") as any)
+        .ej2_instances[0]
+        var http = new XMLHttpRequest();
+      //  var url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
+        var url = `${environment.APIURL}/calendar/series/update`;
+        http.open('put', url, true);
+        //Send the proper header information along with the request
+       // http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+        http.onreadystatechange = function(data:any) {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          schObj.refreshEvents()
+        }
+        }
+        args.changedRecords[0]['timezone']  = this.scheduleObj.timezone
+        //this.userdata =args.changedRecords[0];
+        var params = JSON.stringify(args.changedRecords[0]);
+        http.send(params);
 
 
 
-  //   if(this.scheduleObj.currentAction == "EditOccurrence"){
 
-  //        event_id = args.data
-  //        const myPromise = new Promise((resolve, reject) => {
-  //         setTimeout(() => {
-  //           let obj =  args.data
-  //           resolve(obj);
-  //         }, 500);
-  //       });
-
-  //       myPromise.then(res=>{
-  //         this.XMLHTTPRequest('occurrenceEdit',event_id.parent.Id ,res);
-  //       })
-  //   }
-
-  //   if(this.scheduleObj.currentAction == "EditSeries"){
+      })
 
 
-  //       console.log(this.scheduleObj);
+
+    }
 
 
-  //   }
+
+
+  }
+
+
 
   //   // if(args?.changedRecords?.length > 0){
 
@@ -735,6 +778,8 @@ export class CalComponent  implements OnInit{
     // $(document).ready(function() {
     //   alert('I am Called From jQuery');
     // });
+
+
   }
 
   public ngAfterViewChecked(): void {
