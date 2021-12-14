@@ -12,6 +12,8 @@ import {
   TimelineViewsService, TimelineMonthService, TimelineYearService, View, EventSettingsModel, Timezone, CurrentAction,
   CellClickEventArgs, ResourcesModel, EJ2Instance, PrintService, ExcelExportService, ICalendarExportService, CallbackFunction, Schedule, ActionEventArgs, ToolbarActionArgs
 } from '@syncfusion/ej2-angular-schedule';
+
+
 import { addClass, extend, removeClass, closest, remove, isNullOrUndefined, Internationalization, compile } from '@syncfusion/ej2-base';
 import { ChangeEventArgs as SwitchEventArgs, SwitchComponent } from '@syncfusion/ej2-angular-buttons';
 import { AjaxOption, CustomDataAdaptor, DataManager, ODataV4Adaptor, Predicate, Query, RemoteSaveAdaptor, UrlAdaptor } from '@syncfusion/ej2-data';
