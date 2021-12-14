@@ -160,7 +160,7 @@
                       aria-expanded="true"
                       aria-controls="collapseOne"
                     >
-                      FILTER BY STAFF
+                      Filter by Appointment
                       <i class="fa fa-chevron-up" aria-hidden="true"></i>
                     </h6>
                   </div>
@@ -174,127 +174,44 @@
                       <div class="inner_filter_search">
                         <span><input type="search" name="" id="" /></span>
                         <div class="inner_check_scroll">
+
+
                           <div class="form-check">
                             <input
                               class="form-check-input"
                               type="checkbox"
                               value=""
                               id="defaultCheck1"
+
                             />
                             <label class="form-check-label" for="defaultCheck1">
                               <span class="red"></span>All Users
                             </label>
                           </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red green"></span>Theo
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red blue"></span>Selva
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red blue"></span>All Users
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red green"></span>Theo
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red"></span>Selva
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red blue"></span>All Users
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red green"></span>Theo
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red"></span>Selva
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red green"></span>Theo
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red"></span>Selva
-                            </label>
-                          </div>
+
+
+                          <ng-container >
+                            <div class="form-check" *ngFor="let appointment of _resourceappointmentuserDataSource;let i=index">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="{{ appointment.typeid }}"
+                                id="defaultCheck1"
+                                [ngModel]="appointmentfilter[i]"
+                                (change) = "appointmentchange($event)"
+                                name="appointmentfilter"
+                              />
+                              <label class="form-check-label" for="defaultCheck1">
+                                <span class="red green"></span>{{ appointment.typename }}
+                              </label>
+                            </div>
+                          </ng-container>
+
+
+
+
+
+
                         </div>
                       </div>
                     </div>
@@ -309,7 +226,7 @@
                       aria-expanded="false"
                       aria-controls="collapseTwo"
                     >
-                      FILTER BY STAFF 2<i
+                      Filter by Staff<i
                         class="fa fa-chevron-up"
                         aria-hidden="true"
                       ></i>
@@ -336,61 +253,24 @@
                               <span class="red"></span>All Users
                             </label>
                           </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red green"></span>Theo
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red blue"></span>Selva
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red blue"></span>All Users
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red green"></span>Theo
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="defaultCheck1"
-                            />
-                            <label class="form-check-label" for="defaultCheck1">
-                              <span class="red"></span>Selva
-                            </label>
-                          </div>
+
+                          <ng-container *ngFor="let user of resourceuserDataSource">
+                            <div class="form-check" >
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="{{ user?.CalendarId }}"
+                                id="defaultCheck1"
+                                [(ngModel)]="model.stafffilter"
+
+                              />
+                              <label class="form-check-label" for="defaultCheck1">
+                                <span class="red green"></span>{{ user?.CalendarText }}
+                              </label>
+                            </div>
+                          </ng-container>
+
+
                         </div>
                       </div>
                     </div>
@@ -751,30 +631,53 @@
                             <div class="row">
                               <div class="col-6">
                                 <!-- <ejs-recurrenceeditor (change)="onChange($event)" value="FREQ=DAILY;INTERVAL=2;COUNT=8"></ejs-recurrenceeditor> -->
-                                <div class="endtime">
+
+
+                                <div class="appointment">
                                   <label for="e-textlabel"
                                     ><i class="far fa-calendar-alt"></i
-                                    >Owner</label
+                                    >Appointment</label
                                   >
                                   <input
                                     type="text"
-                                    id="OwnerId"
-                                    name="OwnerId"
+                                    id="appointment"
+                                    name="appointmentType"
                                     class="e-field"
                                     style="width: 100%"
                                   />
                                 </div>
+
+
                               </div>
+
+
+
                               <div
                                 class="col-6"
                                 style="display: flex; align-items: self-end"
                               >
-                                <select name="" id="">
-                                  <option value="">Filter</option>
-                                  <option value="">Filter2</option>
-                                  <option value="">Filter3</option>
-                                </select>
+
+                              <div class="endtime">
+                                <label for="e-textlabel"
+                                  ><i class="far fa-calendar-alt"></i
+                                  >Owner</label
+                                >
+                                <input
+                                  type="text"
+                                  id="OwnerId"
+                                  name="staffName"
+                                  class="e-field"
+                                  style="width: 100%"
+                                />
                               </div>
+
+
+
+                              </div>
+
+
+
+
                             </div>
                           </div>
                         </div>

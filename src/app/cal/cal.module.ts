@@ -31,9 +31,11 @@ import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { CustomjobComponent } from './customjob/customjob.component';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { NeweventComponent } from './newevent/newevent.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
+    FormsModule,
     CommonModule,
     CalRoutes,
     ScheduleAllModule,
