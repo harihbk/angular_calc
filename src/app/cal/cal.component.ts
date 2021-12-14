@@ -250,8 +250,14 @@ export class CalComponent  implements OnInit{
   userdata: any;
   modifieduserdata: { end: { dateTime: any; }; start: { dateTime: any; }; summary: any; };
   public dataSource: Object[];
-  public eventSettings: EventSettingsModel = {  dataSource: this.dataManger};
-  //public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
+  public temp: string = '<div class="tooltip-wrap">' +
+  '<div class="image ${EventType}"></div>' +
+  '<div class="content-area"><div class="name">${Subject}</></div>' +
+  '${if(City !== null && City !== undefined)}<div class="city">${City}</div>${/if}' +
+  '<div class="time">From&nbsp;:&nbsp;${StartTime.toLocaleString()} </div>' +
+  '<div class="time">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;${EndTime.toLocaleString()} </div></div></div>';
+ public eventSettings: EventSettingsModel = {  dataSource: this.dataManger,enableTooltip: true, tooltipTemplate: this.temp };
+ // public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
 
 
 
@@ -1102,22 +1108,36 @@ console.log(eventData);
   }
 
   public onGroupingChange1(args): void {
-  //  console.log(args.event.value);
+  
+   console.log(args.target.value);
  // this.scheduleObj.group.resources = args.checked ? ['Calendars'] : [];
       this.group = {
       allowGroupEdit: true,
       resources: ['Calendars']
+   
     };
 
+    
 
     this.currentView = args.target.value;
+    
     // hide date in headers
     if(args.target.value == "Day"){
       this.singleResourceDay = false;
     }else {
       this.singleResourceDay = true;
     }
+
     this.scheduleObj.group.resources = ['Calendars'] ;
+
+    
+    if(args.target.value == "Week"){
+      setTimeout(function() {
+        $('.e-week-view').addClass('multiuserweek')
+      },30);
+    }else {
+      $('.e-week-view').removeClass('.multiuserweek')
+    }
   }
 
   public onGroupingChange(args: SwitchEventArgs): void {
