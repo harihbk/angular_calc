@@ -1105,10 +1105,10 @@ console.log(eventData);
 
   public onAllowMultiDrag(args: SwitchEventArgs): void {
     this.scheduleObj.allowMultiDrag = args.checked;
-  }
-
+   }
+  public changeView;
   public onGroupingChange1(args): void {
-  
+  this.changeView=args.target.value;
    console.log(args.target.value);
  // this.scheduleObj.group.resources = args.checked ? ['Calendars'] : [];
       this.group = {
@@ -1134,7 +1134,7 @@ console.log(eventData);
     if(args.target.value == "Week"){
       setTimeout(function() {
         $('.e-week-view').addClass('multiuserweek')
-      },30);
+      },1000);
     }else {
       $('.e-week-view').removeClass('.multiuserweek')
     }
@@ -1293,6 +1293,20 @@ console.log(eventData);
     this.scheduleObj.selectedDate = ev.value
     this.selectedDate = ev.value
    console.log(ev.value)
+  //  alert(this.changeView);
+  if(this.changeView=='Week' || this.changeView=='0'){
+    setTimeout(function() {
+      $('.e-week-view').addClass('multiuserweek')
+    },10);
+  }
+ 
+  //  if(ev.target.value == "Week"){
+  //   setTimeout(function() {
+  //     $('.e-week-view').addClass('multiuserweek')
+  //   },30);
+  // }else {
+  //   $('.e-week-view').removeClass('.multiuserweek')
+  // }
   }
 
   public getHeaderDetails(data: { [key: string]: Date }): string {
