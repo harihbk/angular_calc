@@ -28,6 +28,16 @@ import { EventHandler } from "@syncfusion/ej2-base";
 import { classList } from '@syncfusion/ej2-base';
 import { EventemitterService } from './services/eventemitter.service';
 import { QuickPopups } from '@syncfusion/ej2-schedule/src/schedule/popups/quick-popups';
+import {  Subject } from 'rxjs';
+
+
+export interface IUsers
+{
+  CalendarText: string,
+  CalendarId: number,
+   CalendarColor: string
+
+}
 
 
 declare var moment: any;
@@ -222,6 +232,8 @@ export class CalComponent  implements OnInit{
     {name : 'Quantity' , label : 'Quantity'},
    ];
    flag: boolean;
+   users: any = [];
+   caluser: any;
 
 
   public dateParser(data: string) {
@@ -259,7 +271,17 @@ export class CalComponent  implements OnInit{
  public eventSettings: EventSettingsModel = {  dataSource: this.dataManger,enableTooltip: true, tooltipTemplate: this.temp };
  // public eventSettings: EventSettingsModel = { dataSource: this.generateEvents() };
 
+  public userres:Subject<any>=new Subject();
+  public cal_users: IUsers[] = [];
 
+  public resourceuserDataSource = []
+  public resourceappointmentuserDataSource = []
+  public  model = {
+    appointmentfilter:null,
+    stafffilter : null
+  };
+
+  public  appointmentfilter : any =[];
 
   constructor(
     public service : CalendarService,
@@ -268,18 +290,94 @@ export class CalComponent  implements OnInit{
     public emitterservice : EventemitterService
   ) {
 
-    // this.emitterservice.subject.subscribe(res=>{
-    //  console.log(res);
+  this.getusers();
+  this.getappointment();
+  }
 
-    // })
+  set _resourceuserDataSource(res){
+  this.resourceuserDataSource = res;
+  }
+
+  get _resourceuserDataSource(){
+    return this.resourceuserDataSource;
+    }
 
 
 
-   // console.log((g.element as HTMLElement).querySelector('.e-control').getAttribute('class'));
+  set _resourceappointmentuserDataSource(res){
+    this.resourceappointmentuserDataSource = res;
+    }
+
+    get _resourceappointmentuserDataSource(){
+      return this.resourceappointmentuserDataSource
+    }
+
+    getusers(){
+      this.service.getUsers(0).toPromise().then(res=>{
+       this._resourceuserDataSource = res
+      });
+
+  }
+
+  getappointment(){
+    this.service.getappointment().toPromise().then(res=>{
+
+      this._resourceappointmentuserDataSource = res
+     });
+  }
+
+  removeTimzeOffset(value) {
+    // To add offset with StartDate and EndDate
+    let targetTime = new Date(value);
+    let tzDifference = new Date().getTimezoneOffset();
+    return new Date(targetTime.getTime() - (tzDifference * 60 * 1000)).toISOString()
+  }
+
+  appointmentchange(ev){
+
+    // this.appointmentfilter.push(appointment_id);
+    // [...new Set(this.appointmentfilter)];
+
+  if(ev.target.checked){
+    this.appointmentfilter.push(ev.target.value);
+  } else {
+    this.appointmentfilter =  this.appointmentfilter.filter(e => e !== ev.target.value)
+  }
+
+  let currentViewDates: Date[] = this.scheduleObj.getCurrentViewDates() as Date[];
+  let startDate: Date = currentViewDates[0] as Date;
+  let endDate: Date = currentViewDates[currentViewDates.length - 1] as Date;
+
+  const scheduleData: Record<string, any>[] = [];
+  this.service.getEvents(this.removeTimzeOffset(startDate),this.removeTimzeOffset(endDate),this.appointmentfilter).subscribe(res=>{
+
+  console.log(res);
+
+
+    // scheduleData.push({
+    //     Id: 144,
+    //     Subject: 'harin',
+    //     StartTime: '2021-12-12T01:00:00+00:00',
+    //     EndTime: '2021-12-12T01:30:00+00:00',
+    //     IsAllDay:false,
+    //    // RecurrenceRule :'FREQ=DAILY;INTERVAL=1;COUNT=10;',
+    //     RecurrenceID:null,
+    //    //RecurrenceRule : 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;'
+    //   // RecurrenceException : "20211205T010000Z"
+    //   });
+    // this.scheduleObj.eventSettings.dataSource =scheduleData;
+    // console.log(this.scheduleObj.eventSettings.dataSource);
+
+  },err=>{
+    console.log(err);
+
+  })
 
 
 
-
+  //  this.service.getUsers(appointment_id).subscribe(res=>{
+  //     this._resourceuserDataSource = res
+  //  })
   }
 
 
@@ -290,7 +388,7 @@ export class CalComponent  implements OnInit{
       this.NotificationArray.push({sms:'',msg:'',id:i})
       console.log(this.NotificationArray);
     }
-   
+
   }
   fndeleteNotification(i){
   //alert(i);
@@ -298,7 +396,7 @@ export class CalComponent  implements OnInit{
     }else{
       this.NotificationArray.splice(i,1);
       console.log(this.NotificationArray);
-      
+
     }
 
   }
@@ -312,64 +410,11 @@ export class CalComponent  implements OnInit{
 
     var aa = 0;
 
-
-
-
-    // scheduleData.push({
-    //   Id: 144,
-    //   Subject: 'harin',
-    //   StartTime: '2021-12-05T01:00:00+00:00',
-    //   EndTime: '2021-12-05T01:30:00+00:00',
-    //   IsAllDay:false,
-    //   RecurrenceRule :'FREQ=DAILY;INTERVAL=1;COUNT=10;',
-    //   RecurrenceID:null,
-    //  //RecurrenceRule : 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;'
-    //  RecurrenceException : "20211205T010000Z"
-    // });
-
-    // scheduleData.push({
-    //   Id: 145,
-    //   Subject: 'harinxcv',
-    //   StartTime: '2021-12-05T01:00:00+00:00',
-    //   EndTime: '2021-12-05T02:30:00+00:00',
-    //   IsAllDay:false,
-    //   RecurrenceRule :null,
-    //   RecurrenceID:144,
-    //  //RecurrenceRule : 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;'
-    //  RecurrenceException : "20211205T010000Z",
-    //  Guid : "f9f664ac-2dea-ba1c-bb57-5d957a89a1c1"
-    // });
-
-
-
-
-
-    // scheduleData.push({
-    //   Id: 5,
-    //   Subject: 'Team Fun hari',
-    //   Location: 'Office',
-    //   StartTime: "2021-12-06T09:00:00+00:00",
-    //   EndTime: "2021-12-06T09:30:00+00:00",
-    //   IsAllDay: false,
-    // //  RecurrenceRule: 'FREQ=MONTHLY;BYDAY=MO,TU;BYSETPOS=1;INTERVAL=1;UNTIL=20220204T080803Z;',
-    //   RecurrenceRule: "FREQ=MONTHLY;BYDAY=MO;BYSETPOS=1;INTERVAL=1;UNTIL=20220204T092349Z;",
-    //   CategoryColor: '#00bdae'
-    // });
-
-
       for (const event of items) {
 
         let when: string = event?.start?.dateTime as string;
         let start: string = event?.start?.dateTime as string;
         let end: string = event?.end?.dateTime as string;
-
-        // if (!when) {
-
-        //   when = event.start.date as string;
-        //   start = event.start.date as string;
-        //   end = event.end.date as string;
-        // }
-      //  if(event?.recurrence?.length > 0){
 
 
           scheduleData.push({
@@ -383,18 +428,6 @@ export class CalComponent  implements OnInit{
             RecurrenceID: ( event?.RecurrenceID ? parseInt(event?.RecurrenceID) : null) ,
             CalendarId: (aa % 4) + 1
           });
-        // } else {
-        //   scheduleData.push({
-        //     Id: event.id,
-        //     Subject: event.summary,
-        //     StartTime: new Date(start),
-        //     EndTime: new Date(end),
-        //     IsAllDay: !event?.start?.dateTime,
-        //     RecurrenceException : event?.RecurrenceException,
-        //     RecurrenceID: event?.RecurrenceID,
-        //     CalendarId: (aa % 4) + 1
-        //   });
-        // }
 
 
         aa++;
@@ -441,9 +474,6 @@ export class CalComponent  implements OnInit{
       var resource;
       if (!isNullOrUndefined(app.RecurrenceRule)) {
 
-        console.log(app.RecurrenceRule);
-
-
         resource = {
           summary: app.Subject,
           location: app.Location,
@@ -455,13 +485,14 @@ export class CalComponent  implements OnInit{
             dateTime: app.EndTime,
             timeZone: this.scheduleObj.timezone
           },
+          customfields : app,
           recurrence: [
             "RRULE:" + app.RecurrenceRule,
           ]
         };
       } else {
 
-        console.log(app.StartTime);
+        console.log(app);
 
         resource = {
           summary: app.Subject,
@@ -473,7 +504,8 @@ export class CalComponent  implements OnInit{
           end: {
             dateTime: app.EndTime,
             timeZone: this.scheduleObj.timezone
-          }
+          },
+          customfields : app
         };
 
       }
@@ -486,15 +518,13 @@ export class CalComponent  implements OnInit{
         var url = `${environment.APIURL}/calendar/insert`;
         http.open('POST', url, true);
         //Send the proper header information along with the request
-        http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
+       // http.setRequestHeader('Authorization',  'Bearer '+this.service.GetAccessToken);
         http.onreadystatechange = function(data:any) {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-
-          schObj.refreshEvents()
-        }
+          if(http.readyState == 4 && http.status == 200) {
+            schObj.refreshEvents()
+          }
         }
         this.userdata =args.data[0];
-
         var params = JSON.stringify(resource);
         http.send(params);
     }
@@ -724,6 +754,10 @@ export class CalComponent  implements OnInit{
   }
 
 
+  checkValuestaff(ev){
+    alert(ev.target.value);
+
+  }
 
   onCellClick(args: CellClickEventArgs): void {
     this.scheduleObj.openEditor(args, 'Add');
@@ -791,6 +825,11 @@ export class CalComponent  implements OnInit{
 
   ngOnInit() {
 
+     this.service.getUsers(0).subscribe(res=>{
+      this.users =res ?? [];
+
+      });
+
 
     this.initilaizeTarget();
 
@@ -799,9 +838,7 @@ export class CalComponent  implements OnInit{
   }
 
   ngAfterViewInit(): void {
-    // $(document).ready(function() {
-    //   alert('I am Called From jQuery');
-    // });
+
 
 
   }
@@ -820,105 +857,105 @@ export class CalComponent  implements OnInit{
     return compile(template.trim())(data) as NodeList;
   }
 
-  public generateEvents(): Record<string, any>[] {
-    const eventData: Record<string, any>[] = [];
-    const eventSubjects: string[] = [
-      'Bering Sea Gold', 'Technology', 'Maintenance', 'Meeting', 'Travelling', 'Annual Conference', 'Birthday Celebration',
-      'Farewell Celebration', 'Wedding Anniversary', 'Alaska: The Last Frontier', 'Deadest Catch', 'Sports Day', 'MoonShiners',
-      'Close Encounters', 'HighWay Thru Hell', 'Daily Planet', 'Cash Cab', 'Basketball Practice', 'Rugby Match', 'Guitar Class',
-      'Music Lessons', 'Doctor checkup', 'Brazil - Mexico', 'Opening ceremony', 'Final presentation'
-    ];
-    const weekDate: Date = new Date(new Date().setDate(new Date().getDate() - new Date().getDay()));
-    let startDate: Date = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate(), 10, 0);
-    let endDate: Date = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate(), 11, 30);
+//   public generateEvents(): Record<string, any>[] {
+//     const eventData: Record<string, any>[] = [];
+//     const eventSubjects: string[] = [
+//       'Bering Sea Gold', 'Technology', 'Maintenance', 'Meeting', 'Travelling', 'Annual Conference', 'Birthday Celebration',
+//       'Farewell Celebration', 'Wedding Anniversary', 'Alaska: The Last Frontier', 'Deadest Catch', 'Sports Day', 'MoonShiners',
+//       'Close Encounters', 'HighWay Thru Hell', 'Daily Planet', 'Cash Cab', 'Basketball Practice', 'Rugby Match', 'Guitar Class',
+//       'Music Lessons', 'Doctor checkup', 'Brazil - Mexico', 'Opening ceremony', 'Final presentation'
+//     ];
+//     const weekDate: Date = new Date(new Date().setDate(new Date().getDate() - new Date().getDay()));
+//     let startDate: Date = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate(), 10, 0);
+//     let endDate: Date = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate(), 11, 30);
 
 
 
 
 
-    eventData.push({
-      Id: 1,
-      Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
-      StartTime: startDate,
-      EndTime: endDate,
-      Location: '',
-      Description: 'Event Scheduled',
-      RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;',
-      IsAllDay: false,
-      IsReadonly: false,
-      CalendarId: 1
-    });
+//     eventData.push({
+//       Id: 1,
+//       Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
+//       StartTime: startDate,
+//       EndTime: endDate,
+//       Location: '',
+//       Description: 'Event Scheduled',
+//       RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;',
+//       IsAllDay: false,
+//       IsReadonly: false,
+//       CalendarId: 1
+//     });
 
-console.log(eventData);
+// console.log(eventData);
 
-    for (let a = 0, id = 2; a < 500; a++) {
-
-
-      const month: number = Math.floor(Math.random() * (11 - 0 + 1) + 0);
-      const date: number = Math.floor(Math.random() * (28 - 1 + 1) + 1);
-      const hour: number = Math.floor(Math.random() * (23 - 0 + 1) + 0);
-      const minutes: number = Math.floor(Math.random() * (59 - 0 + 1) + 0);
-      const start: Date = new Date(new Date().getFullYear(), month, date, hour, minutes, 0);
-      const end: Date = new Date(start.getTime());
-      end.setHours(end.getHours() + 2);
-      startDate = new Date(start.getTime());
-      endDate = new Date(end.getTime());
-      eventData.push({
-        Id: id,
-        Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
-        StartTime: startDate,
-        EndTime: endDate,
-        Location: '',
-        Description: 'Event Scheduled',
-        IsAllDay: id % 10 === 0,
-        IsReadonly: endDate < new Date(),
-        CalendarId: (a % 4) + 1
-      });
+//     for (let a = 0, id = 2; a < 500; a++) {
 
 
-      id++;
-    }
+//       const month: number = Math.floor(Math.random() * (11 - 0 + 1) + 0);
+//       const date: number = Math.floor(Math.random() * (28 - 1 + 1) + 1);
+//       const hour: number = Math.floor(Math.random() * (23 - 0 + 1) + 0);
+//       const minutes: number = Math.floor(Math.random() * (59 - 0 + 1) + 0);
+//       const start: Date = new Date(new Date().getFullYear(), month, date, hour, minutes, 0);
+//       const end: Date = new Date(start.getTime());
+//       end.setHours(end.getHours() + 2);
+//       startDate = new Date(start.getTime());
+//       endDate = new Date(end.getTime());
+//       eventData.push({
+//         Id: id,
+//         Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
+//         StartTime: startDate,
+//         EndTime: endDate,
+//         Location: '',
+//         Description: 'Event Scheduled',
+//         IsAllDay: id % 10 === 0,
+//         IsReadonly: endDate < new Date(),
+//         CalendarId: (a % 4) + 1
+//       });
 
-    eventData.push({
-      CalendarId: 1,
-      Description: "Add notes",
-      EndTime: new Date('2021-11-30T03:00:00+05:30'),
-      EndTimezone: null,
-      Id: 502,
-      IsAllDay: false,
-      Location: undefined,
-      RecurrenceException: null,
-      RecurrenceID: null,
-      RecurrenceRule: null,
-      StartTime: new Date('2021-11-29T02:00:00+05:30'),
-      StartTimezone: null,
-      Subject: "hi hari"
-    });
 
+//       id++;
+//     }
 
+//     eventData.push({
+//       CalendarId: 1,
+//       Description: "Add notes",
+//       EndTime: new Date('2021-11-30T03:00:00+05:30'),
+//       EndTimezone: null,
+//       Id: 502,
+//       IsAllDay: false,
+//       Location: undefined,
+//       RecurrenceException: null,
+//       RecurrenceID: null,
+//       RecurrenceRule: null,
+//       StartTime: new Date('2021-11-29T02:00:00+05:30'),
+//       StartTimezone: null,
+//       Subject: "hi hari"
+//     });
 
 
 
-    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
-      Timezone.prototype.offset = (date: Date, zone: string): number => moment.tz.zone(zone).utcOffset(date.getTime());
-    }
-    const overviewEvents: { [key: string]: Date }[] = extend([], eventData, null, true) as { [key: string]: Date }[];
-    const timezone: Timezone = new Timezone();
-    const utcTimezone: never = 'UTC' as never;
-    const currentTimezone: never = timezone.getLocalTimezoneName() as never;
-    for (const event of overviewEvents) {
-      event.StartTime = timezone.convert(event.StartTime, utcTimezone, currentTimezone);
-      event.EndTime = timezone.convert(event.EndTime, utcTimezone, currentTimezone);
-    }
-    return overviewEvents;
-  }
 
-  public onToolbarCreated(): void {
-    setInterval(() => {
-      this.updateLiveTime(this.scheduleObj ? this.scheduleObj.timezone : 'UTC');
 
-    }, 1000);
-  }
+//     if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+//       Timezone.prototype.offset = (date: Date, zone: string): number => moment.tz.zone(zone).utcOffset(date.getTime());
+//     }
+//     const overviewEvents: { [key: string]: Date }[] = extend([], eventData, null, true) as { [key: string]: Date }[];
+//     const timezone: Timezone = new Timezone();
+//     const utcTimezone: never = 'UTC' as never;
+//     const currentTimezone: never = timezone.getLocalTimezoneName() as never;
+//     for (const event of overviewEvents) {
+//       event.StartTime = timezone.convert(event.StartTime, utcTimezone, currentTimezone);
+//       event.EndTime = timezone.convert(event.EndTime, utcTimezone, currentTimezone);
+//     }
+//     return overviewEvents;
+//   }
+
+//   public onToolbarCreated(): void {
+//     setInterval(() => {
+//       this.updateLiveTime(this.scheduleObj ? this.scheduleObj.timezone : 'UTC');
+
+//     }, 1000);
+//   }
 
   OnInit(){
 
@@ -1114,13 +1151,13 @@ console.log(eventData);
       this.group = {
       allowGroupEdit: true,
       resources: ['Calendars']
-   
+
     };
 
-    
+
 
     this.currentView = args.target.value;
-    
+
     // hide date in headers
     if(args.target.value == "Day"){
       this.singleResourceDay = false;
@@ -1130,7 +1167,7 @@ console.log(eventData);
 
     this.scheduleObj.group.resources = ['Calendars'] ;
 
-    
+
     if(args.target.value == "Week"){
       setTimeout(function() {
         $('.e-week-view').addClass('multiuserweek')
@@ -1327,7 +1364,7 @@ console.log(eventData);
   public enableRecurrenceValidation: boolean = true;
 
 
-  onPopupOpen(args: PopupOpenEventArgs) {
+  async onPopupOpen(args: PopupOpenEventArgs) {
 
 
     if (args.type === 'QuickInfo' ) {
@@ -1354,24 +1391,61 @@ console.log(eventData);
           recurrObject.appendTo(recurElement);
           (this.scheduleObj.eventWindow as any).recurrenceEditor = recurrObject;
           console.log(recurElement);
-
       }
+
+      (<any>this.scheduleObj.eventWindow).recurrenceEditor.value = args.data.RecurrenceRule;
+
+
 
       document.getElementById('RecurrenceEditor').style.display = (this.scheduleObj.currentAction == "EditOccurrence") ? 'none' : 'block';
 
 
 
 
+     // console.log(await this.service.getUsers(0).toPromise());
+
+
+
+
+    async function onChange(this : any,args){
+      let processElementappointment: HTMLInputElement= args.element.querySelector('select[name="appointmentType"]');
+      let val = processElementappointment.value;
+
+   if(val){
+
       let processElement: HTMLInputElement= args.element.querySelector('#OwnerId');
       if (!processElement.classList.contains('e-multiselect')) {
           let multiSelectObject: MultiSelect = new MultiSelect({
               placeholder: 'Choose a owner',
               fields: { text: 'CalendarText', value: 'CalendarId'},
-              dataSource: <any>this.resourceDataSource,
-              value: <string[]>((args.data.OwnerId instanceof Array) ? args.data.OwnerId : [args.data.OwnerId])
+              dataSource: <any>await this.service.getUsers(val).toPromise(),
+              value: <string[]>((args.data.staffName instanceof Array) ? args.data.staffName : [args.data.staffName]),
           });
           multiSelectObject.appendTo(processElement);
       }
+   }
+
+
+
+      }
+
+
+      let processElementappointment: HTMLInputElement= args.element.querySelector('#appointment');
+      if (!processElementappointment.classList.contains('e-multiselect')) {
+          let multiSelectObject: DropDownList = new DropDownList({
+              placeholder: 'Choose a Appointment',
+              fields: { text: 'typename', value: 'typeid'},
+              dataSource: <any>this.resourceappointmentuserDataSource,
+              change:onChange.bind(this,args),
+             // value : 2
+            //  value: <string[]>((args.data.OwnerId instanceof Array) ? args.data.OwnerId : [args.data.OwnerId])
+          });
+          multiSelectObject.appendTo(processElementappointment);
+      }
+
+
+
+
 
 
 
@@ -1386,8 +1460,6 @@ console.log(eventData);
               "value": "count"
           }
       ]
-        console.log((<any>this.scheduleObj.eventWindow).recurrenceEditor.endType);
-
 
 
 
@@ -1853,7 +1925,7 @@ wrapper.setAttribute('class','wrapperclass');
       this.scheduleObj.exportToICalendar();
     }
   }
-  
+
 
 }
 

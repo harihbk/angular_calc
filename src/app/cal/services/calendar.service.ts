@@ -8,7 +8,7 @@ import {
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from "ng-gapi";
-import { BehaviorSubject, from, Observable, of, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, pipe, Subject, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { environment  } from 'src/environments/environment';
 
@@ -24,7 +24,7 @@ export class CalendarService {
   public _getCalendarEvents$: Subject<any> = new BehaviorSubject<Object>(null);
   private _data: BehaviorSubject<any> = new BehaviorSubject(null);
   public schedularobj = new Subject()
-
+  public _getcalendarusers$ : Subject<any> = new Subject();
 
 
 constructor(
@@ -203,6 +203,39 @@ private tokenRequestParams: any = {
     console.error(errorMessage);
     return throwError(errorMessage);
 }
+
+
+getUsers(id){
+
+
+  return this.http.get(`${environment.APIURL}/calendar/user/byAppointment/${id}`).pipe(
+    map((res:any) => res.result.map(res => {
+      return {
+        CalendarText : res.username,
+        CalendarId       : res.userid,
+        CalendarColor : res.color
+      }
+    }))
+  );
+
+
+}
+
+getEvents(startdate,enddate,staff){
+   return this.http.get(`${environment.APIURL}/calendar/get?StartDate=${startdate}&EndDate=${enddate}&staff=${staff}`)
+}
+
+getappointment(){
+  return this.http.get(`${environment.APIURL}/calendar/appointment/type/list`).pipe(
+    map((res:any) => res.result.map(res => {
+      return {
+        typeid : res.typeid,
+        typename       : res.typename
+      }
+    }))
+  );
+}
+
 
 
 
