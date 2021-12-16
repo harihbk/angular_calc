@@ -1148,21 +1148,34 @@ input:focus {
   font-size: 10px;
   color: #2978b5;
   line-height: 13px;
-  font-weight: bold;
+}
+.e-calendar .e-header.e-month, .e-bigger.e-small .e-calendar .e-header.e-month{
+  padding-top: 0px;
+}
+.e-schedule .e-year-view .e-calendar-wrapper .e-month-calendar.e-calendar{
+  padding:0px;
 }
 .calander_height_without .e-schedule .e-day-view .e-time-cells-wrap table td {
   border: none;
   font-size: 10px;
   color: #2978b5;
   line-height: 13px;
-  font-weight: bold;
+
 }
 .calander_height_without .e-schedule .e-work-week-view .e-time-cells-wrap table td {
   border: none;
   font-size: 10px;
   color: #2978b5;
   line-height: 13px;
-  font-weight: bold;
+}
+.e-calendar .e-content.e-year td, .e-calendar .e-content.e-decade td, .e-bigger.e-small .e-calendar .e-content.e-year td, .e-bigger.e-small .e-calendar .e-content.e-decade td{
+  height: 55px;
+}
+.datacalcfelex{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  height: 100%;
 }
 .calander_height_without .e-schedule .e-week-view .e-disable-dates {
   border: none !important;
@@ -1451,10 +1464,10 @@ input:focus {
   border: none;
   color: white;
   padding: 0;
-  height: 20px;
-  font-size: 19px;
-  line-height: 20px;
-  width: 20px;
+  height: 15px;
+  font-size: 15px;
+  line-height: 15px;
+  width: 15px;
   border-radius: 5px;
 }
 .list_increamnetbtn input{
@@ -1699,7 +1712,15 @@ padding: 0px;
   height: 470px;
   overflow: auto;
   overflow-x: hidden;
+  scrollbar-color:unset;
+  transition: 0.5s all;
+  scrollbar-width: none;
 }
+.defult_heightedit:hover {
+  scrollbar-color: #f5f5f5 transparent;
+  scrollbar-width: thin;
+}
+
 .e-recurrenceeditor .e-form-left {
   padding: 0;
 }
@@ -1801,6 +1822,7 @@ padding: 0px;
 
 .job_descripton textarea:focus {
   border: 2px solid #e3165b !important;
+  padding: 10px;
 }
 
 .e-quick-popup-wrapper .e-event-popup .e-popup-content {
@@ -1955,7 +1977,9 @@ padding: 0px;
 .e-more-popup-wrapper .e-more-event-content{
   padding: 10px;
 }
-
+.calcnotfiflex i{
+  padding: 0;
+}
 
 /* ========================Media query start here ibu ================================= */
 
@@ -1969,12 +1993,17 @@ padding: 0px;
     justify-content: space-between;
     padding: 10px;
     height: auto;
+    border:none !important;
   }
+  .datacalcfelex{
+    display: block;
+  }
+
   .e-quick-popup-wrapper.e-device .e-event-popup .e-popup-header .e-subject-wrap{
-    padding: 5px;
+    padding: 0px;
   }
-  .e-quick-popup-wrapper .e-event-popup .e-popup-header{
-    background-color:transparent;
+  .e-quick-popup-wrapper .e-event-popup .e-popup-header .e-subject-wrap .e-subject{
+    padding:10px;
   }
   .overview-content .calander_pickers {
     -webkit-box-flex: 0;
@@ -2004,9 +2033,16 @@ padding: 0px;
   }
   .e-quick-popup-wrapper.e-device {
     width: 90%;
+    bottom: unset;
     height: auto !important;
-    margin: 30px auto;
-    bottom: unset
+    left: 0% !important;
+    top: 40px !important;
+    transition: 0.4s all;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+.e-quick-popup-wrapper .e-event-popup .e-popup-footer{
+  padding:15px;
 }
   .calander_height_without .e-week-view .e-schedule-table:first-child{
     border-spacing: unset;
@@ -2017,6 +2053,9 @@ padding: 0px;
   .inner_calander_filter {
     background-color: white;
   }
+  .e-quick-popup-wrapper .e-event-popup .e-popup-header .e-header-icon-wrapper{
+    display: none;
+      }
 }
 
 @media (max-width: 768px) {
@@ -2049,22 +2088,24 @@ padding: 0px;
     -ms-flex-pack: justify;
     justify-content: space-between;
   }
+  .e-quick-popup-wrapper.e-device .e-event-popup .e-popup-header .e-subject-wrap{
+    padding: 0;
+  }
+  .e-quick-popup-wrapper .e-event-popup .e-popup-header .e-subject-wrap .e-subject{
+    padding: 10px;
+    font-size: 16px;
+    text-transform: capitalize;
+  }
+
+.row.box-shadowss .col-sm-6{
+  max-width: 100%;
+  flex: 0 0 100%;
+  height: auto;
+}
 }
 @media (max-width: 568px) {
   .e-schedule .e-year-view .e-calendar-wrapper .e-month-calendar.e-calendar {
     min-width: 100%;
-  }
-  .e-quick-popup-wrapper {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-  }
-  #scheduleEditForm .col-sm-6
-  {
-	  padding: 10px 0px;
   }
   .e-week-view {
     height: auto;
@@ -2114,7 +2155,7 @@ padding: 0px;
     font-size: 20px;
   }
 
-  .schedule-overview .overview-content .right-panel {
+  /* .schedule-overview .overview-content .right-panel {
     position: fixed;
     width: 90%;
     height: 60vh;
@@ -2123,7 +2164,7 @@ padding: 0px;
     -webkit-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
-  }
+  } */
 
 }
 /* ========================Media query End here ibu ================================= */
