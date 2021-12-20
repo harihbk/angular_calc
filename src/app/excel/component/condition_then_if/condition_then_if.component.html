@@ -1,6 +1,6 @@
 
 
-<div [formGroup]="condition_then_if">
+<div [formGroup]="condition_then_if" >
     <div class="row ">
       <div class="">
         <select  id="condition_then_if" class="form-control " formControlName="choosen" (change)="fncondition_then_if($event)">
@@ -19,23 +19,37 @@
       <div class="form-group" >
         <!-- <div class="spacer" *ngIf="_condition_then_if.value.choosen == 'thenif'"> -->
           <div class="spacer" *ngIf="!isCheck">
-          <div class="p-1 row">
-            <app-conditionform [expression]="condition_then_if.get('_expression')['controls']['expression']['controls']" ></app-conditionform>
-          </div>
 
-          <div class="row p-1">
+            <div class="p-1 row">
+              <app-conditionform [expression]="_expression" ></app-conditionform>
+            </div>
+
+             <!-- <div class="row p-1">
+              <app-condition_then_if  [expression]="_expression" [condition_then_if]="_ccondition_then_if" (selected)="fncondition_then_if($event)"></app-condition_then_if>
+            </div> -->
+
+            <!-- <div class="row p-1">
+              <app-condition_else_if  [condition_else_if]="condition_then_if.get('_expression')['controls']['condition_else_if']['controls']" (_select)="fncondition_else_if($event)"></app-condition_else_if>
+            </div> -->
+
+          <!-- <div class="p-1 row">
+            <app-conditionform [expression]="condition_then_if.get('_expression')['controls']['expression']['controls']" ></app-conditionform>
+          </div> -->
+
+          <!-- <div class="row p-1">
             <app-condition_then_if  [condition_then_if]="condition_then_if.get('_expression')['controls']['condition_then_if']['controls']" (selected)="fncondition_then_if($event)"></app-condition_then_if>
           </div>
 
           <div class="row p-1">
             <app-condition_else_if  [condition_else_if]="condition_then_if.get('_expression')['controls']['condition_else_if']['controls']" (_select)="fncondition_else_if($event)"></app-condition_else_if>
-          </div>
+          </div> -->
 
 
         </div>
       </div>
 
     </div>
+
 </div>
 
 

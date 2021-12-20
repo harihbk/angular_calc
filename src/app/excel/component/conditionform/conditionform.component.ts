@@ -7,7 +7,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./conditionform.component.css']
 })
 export class ConditionformComponent implements OnInit {
-  @Input() expression: FormGroup;
+  @Input() expression;
   _expression : FormGroup;
   constructor(
     public fb:FormBuilder
@@ -18,8 +18,17 @@ export class ConditionformComponent implements OnInit {
 
   ngOnInit() {
 
-  this._expression = this.fb.group(this.expression);
+ this.expression.setControl('expression',this.fb.group({
+  left : [''],
+  right : [''],
+  logical : ['']
+}))
 
+this.expression = (this.expression.get('expression') as FormGroup)
+
+  console.log(this.expression);
+
+  //this.expression = this.expression.get('expression')  as FormGroup;
 
 
   }

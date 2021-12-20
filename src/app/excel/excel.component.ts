@@ -9,7 +9,9 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 export class ExcelComponent implements OnInit {
 
   myForm      : FormGroup
-  _Formarray  : FormArray;
+  _Formarray  : FormGroup;
+  exx: FormGroup;
+  thenif: FormGroup;
 
   constructor(
     private fb: FormBuilder
@@ -44,11 +46,7 @@ export class ExcelComponent implements OnInit {
   validation(){
   return  this.fb.group({
 
-      expression : this.fb.group({
-         left : [''],
-         right : [''],
-         logical : ['']
-      }),
+      expression : this.fb.group({}),
       condition_then_if : this.fb.group({
         value : [''],
         choosen : [''],
@@ -70,13 +68,13 @@ export class ExcelComponent implements OnInit {
 
     this.myForm = this.fb.group({
         name: [''],
-       _formarray : new FormArray([
-        this.validation()
-       ])
+       _formarray : this.validation()
+
     })
 
-    this._Formarray = this.myForm.get('_formarray') as FormArray;
-
+    this._Formarray = this.myForm.get('_formarray') as FormGroup;
+    this.exx =  this._Formarray.get('expression')  as FormGroup;
+    this.thenif =  this._Formarray.get('condition_then_if')  as FormGroup;
     // let obj =
     // {
     //  statement   : "=IF",
@@ -132,20 +130,20 @@ export class ExcelComponent implements OnInit {
     console.log(this.myForm);
 
     let rawdata = this.myForm.getRawValue();
-    console.log(rawdata)
+    console.log(this.myForm.value)
     var formula;
 
 
-    rawdata._formarray.forEach(element => {
-       let expression = element.expression;
-       let condition_then_if = element.condition_then_if;
-       let condition_else_if = element.condition_else_if;
-     formula = `=IF(${expression.left} ${expression.logical} ${expression.right} , ${this.checkthen(condition_then_if)}  , ${this.checkelse(condition_else_if)})`
-    console.log(formula);
-    });
-     this.myForm.patchValue({
-       name : formula
-     })
+    // rawdata._formarray.forEach(element => {
+    //    let expression = element.expression;
+    //    let condition_then_if = element.condition_then_if;
+    //    let condition_else_if = element.condition_else_if;
+    //  formula = `=IF(${expression.left} ${expression.logical} ${expression.right} , ${this.checkthen(condition_then_if)}  , ${this.checkelse(condition_else_if)})`
+    // console.log(formula);
+    // });
+    //  this.myForm.patchValue({
+    //    name : formula
+    //  })
 
 
 

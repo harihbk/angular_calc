@@ -12,22 +12,22 @@
       </div>
 
       <ng-container formArrayName="_formarray">
-            <div *ngFor="let _items of _Formarray.controls; index as i">
-                  <ng-container [formGroupName]="i">
+            <!-- <div *ngFor="let _items of _Formarray.controls; index as i">
+                  <ng-container [formGroupName]="i"> -->
 
-                      <div class="p-3 row">
-                        <app-conditionform [expression]="_items.get('expression')['controls']" ></app-conditionform>
+                       <div class="p-3 row">
+                        <app-conditionform [expression]="exx" ></app-conditionform>
                       </div>
 
                       <div class="row p-1">
-                        <app-condition_then_if [form]="myForm" [condition_then_if]="_items.get('condition_then_if')['controls']"  (selected)="fncondition_then_if($event)"></app-condition_then_if>
+                        <app-condition_then_if [condition_then_if]="thenif" [expression]="exx"  (selected)="fncondition_then_if($event)"></app-condition_then_if>
                       </div>
 
-                      <div class="row p-1">
-                        <app-condition_else_if  [condition_else_if]="_items.get('condition_else_if')['controls']" (_select)="fncondition_else_if($event)"></app-condition_else_if>
-                      </div>
-                  </ng-container>
-            </div>
+                      <!-- <div class="row p-1">
+                        <app-condition_else_if  [condition_else_if]="_Formarray" (_select)="fncondition_else_if($event)"></app-condition_else_if>
+                      </div> -->
+                  <!-- </ng-container>
+            </div> -->
       </ng-container>
 
 
