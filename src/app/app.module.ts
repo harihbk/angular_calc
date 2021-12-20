@@ -27,6 +27,7 @@ import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
 import { TokenInterceptorService } from './calcmodule/token-interceptor.service';
 
 import {NgxFsModule} from 'ngx-fs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 
@@ -49,7 +50,7 @@ let gapiClientConfig: NgGapiClientConfig = {
     Formula_sectionComponent,
 
 
-  ],
+   ],
   imports: [
     BrowserModule,
     AppRoutingRoutes,

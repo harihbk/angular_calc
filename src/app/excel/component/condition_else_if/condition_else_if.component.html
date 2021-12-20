@@ -1,0 +1,20 @@
+<div [formGroup]="_condition_else_if">
+  <div class="row ">
+    <div class="">
+      <select id="condition_else_if" class="form-control" formControlName="choosen" (change)="fncondition_else_if($event)">
+        <option value="else">ELSE</option>
+        <option value="elseif">ELSEIF</option>
+      </select>
+    </div>
+
+
+    <div class="form-group" >
+      <div class="spacer">
+      <input type="text" class="form-control col-sm-3" formControlName="value">
+      </div>
+    </div>
+
+
+  </div>
+</div>
+

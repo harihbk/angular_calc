@@ -1,0 +1,32 @@
+
+
+<div [formGroup]="_expression">
+
+      <div class="row">
+        <span class="p-1">=IF</span>
+        <div class="col-sm-2 d-flex">
+          <input id="expression_left" type="text"  class="form-control" formControlName="left">
+        </div>
+
+        <div class="col-sm-2">
+          <div class="operator">
+            <select name="logicaloperator" id="logicaloperator" class="form-control" formControlName="logical">
+              <option value="<"><</option>
+              <option value=">">></option>
+              <option value="<="><=</option>
+              <option value=">=">>=</option>
+              <option value="=">=</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-sm-2">
+          <div class="expression">
+            <input id="expression_right" type="text"  class="form-control" formControlName="right">
+          </div>
+        </div>
+      </div>
+
+
+
+</div>

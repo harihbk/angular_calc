@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NeweventComponent } from './cal/newevent/newevent.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { ExcelComponent } from './excel/excel.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,14 @@ const routes: Routes = [
    {
     path : 'popup',
     loadChildren:()=>import('./cal/newevent/newevent.module').then(m=>m.CalModule)
+  },
+
+
+  {
+    path : 'excel',
+    loadChildren:()=>import('./excel/excel.module').then(m=>m.ExcelModule)
   }
+
 
 
 ];
