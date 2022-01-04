@@ -21,16 +21,16 @@
           <div class="spacer" *ngIf="!isCheck">
 
             <div class="p-1 row">
-              <app-conditionform [expression]="_expression" ></app-conditionform>
+              <app-conditionform  [events]="events_condition_thenif_Subject.asObservable()" [expression]="_expression" [dataset]="expression_dataset"></app-conditionform>
             </div>
 
-             <!-- <div class="row p-1">
-              <app-condition_then_if  [expression]="_expression" [condition_then_if]="_ccondition_then_if" (selected)="fncondition_then_if($event)"></app-condition_then_if>
-            </div> -->
+             <div class="row p-1">
+              <app-condition_then_if [events]="events_condition_thenif_Subject.asObservable()" [expression]="_expression" [condition_else_if]="_ccondition_else_if" [condition_then_if]="_ccondition_then_if" (selected)="fncondition_then_if($event)"></app-condition_then_if>
+            </div>
 
-            <!-- <div class="row p-1">
-              <app-condition_else_if  [condition_else_if]="condition_then_if.get('_expression')['controls']['condition_else_if']['controls']" (_select)="fncondition_else_if($event)"></app-condition_else_if>
-            </div> -->
+            <div class="row p-1">
+              <app-condition_else_if  [events]="events_condition_thenif_Subject.asObservable()" [condition_else_if]="_ccondition_else_if" (_select)="fncondition_else_if($event)"></app-condition_else_if>
+            </div>
 
           <!-- <div class="p-1 row">
             <app-conditionform [expression]="condition_then_if.get('_expression')['controls']['expression']['controls']" ></app-conditionform>

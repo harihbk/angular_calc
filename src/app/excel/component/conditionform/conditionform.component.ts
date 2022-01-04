@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-conditionform',
@@ -8,31 +9,46 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class ConditionformComponent implements OnInit {
   @Input() expression;
+  @Input() dataset;
+  @Input() events: Observable<any>;
   _expression : FormGroup;
+  subscription: Subscription
   constructor(
     public fb:FormBuilder
   ) {
+
 
   }
 
 
   ngOnInit() {
 
- this.expression.setControl('expression',this.fb.group({
-  left : [''],
-  right : [''],
-  logical : ['']
-}))
 
-this.expression = (this.expression.get('expression') as FormGroup)
 
-  console.log(this.expression);
+    this.expression.addControl('left', this.fb.control(''));
+    this.expression.addControl('right',this.fb.control(''));
+    this.expression.addControl('logical',this.fb.control(''));
 
-  //this.expression = this.expression.get('expression')  as FormGroup;
 
+
+
+    this.subscription = this.events.subscribe((res :any)=>{
+
+
+      (this.expression as FormGroup).patchValue({
+        left :res.expression.left,
+        right : res.expression.right,
+        logical : res.expression.logical
+      })
+
+     // console.log(res);
+    })
 
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+}
 
 
 }

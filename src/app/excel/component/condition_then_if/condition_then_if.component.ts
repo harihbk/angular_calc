@@ -1,5 +1,6 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-condition_then_if',
@@ -14,49 +15,83 @@ import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class Condition_then_ifComponent implements OnInit {
-  @Input() condition_then_if;
+  @Input() condition_then_if : FormGroup
+  @Input()  condition_else_if : FormGroup
   @Input() form : FormGroup;
+  @Input() dataset;
   @Output() selected: EventEmitter<string> = new EventEmitter<string>();
   @Output() _select: EventEmitter<string> = new EventEmitter<string>()
   isCheck: boolean = true;
   _condition_then_if : FormGroup
   @Input() expression: FormGroup;
+
+  @Input() events: Observable<any>;
+
+  events_condition_thenif_Subject: Subject<any> = new Subject<any>();
+
+
+  subscription: Subscription
+  add: any;
   constructor(
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private cd: ChangeDetectorRef
   ) { }
 
+  public expression_dataset = {
+    expression : {
+      left: "11",
+      logical: ">",
+      right: "22"
+    },
+  }
+
+
   ngOnInit() {
-    //this.condition_then_if = this.fb.group(this.condition_then_if);
 
- // this._condition_then_if = this.condition_then_if.get('condition_then_if')  as FormGroup;
+    this.condition_then_if.addControl('value', this.fb.control(''));
+    this.condition_then_if.addControl('choosen',this.fb.control(''));
 
-  //    this.expression =  this.fb.group({
-  //     left : [''],
-  //     right : [''],
-  //     logical : ['']
-  //  })
+   this.subscription = this.events.subscribe((res:any)=>{
+     (this.condition_then_if as FormGroup).patchValue({
+      value :res?.condition_then_if?.value,
+      choosen : res?.condition_then_if?.choosen,
+      _expression :  res?.condition_then_if?._expression
+     })
 
+     this.fun(res?.condition_then_if?.choosen , res?.condition_then_if?._expression);
 
+   })
 
   }
 
-      get _ccondition_then_if(){
+  fun(elm , _elm){
+  //  console.log(_elm);
+    if(elm == "thenif"){
 
-        return  this.condition_then_if.get('_expression').controls as FormGroup
-      }
+      (this.condition_then_if as FormGroup).addControl('_expression',this.validation())
 
-      // get _expression(){
-      // //  return  this.expression.get('expression').controls as FormGroup
-      // }
+      setTimeout(() => this.events_condition_thenif_Subject.next(_elm ) , 50)
 
+
+
+      this.isCheck = false;
+    } else {
+      this.isCheck = true;
+    }
+  }
+
+  get _ccondition_then_if(){
+    return this.condition_then_if.get('_expression').get('condition_then_if') as FormGroup
+  }
+
+  get _ccondition_else_if(){
+    return this.condition_then_if.get('_expression').get('condition_else_if') as FormGroup
+  }
 
   validation(){
     return  this.fb.group({
       expression : this.fb.group({}),
-     condition_then_if : this.fb.group({
-       value : [''],
-       choosen : [''],
-     }),
+     condition_then_if : this.fb.group({}),
      condition_else_if : this.fb.group({
        value : [''],
        choosen : [''],
@@ -67,7 +102,9 @@ export class Condition_then_ifComponent implements OnInit {
     }
 
   get _expression(){
-    console.log( this.condition_then_if.get('_expression').get('expression') );
+
+
+    //console.log(this.condition_then_if.get('_expression').get('expression'));
 
     return this.condition_then_if.get('_expression').get('expression') as FormGroup
   }
@@ -75,15 +112,15 @@ export class Condition_then_ifComponent implements OnInit {
 
   fncondition_then_if(ev:any){
 
-    //this.expression = this.condition_then_if.get('expression')  as FormGroup;
 
     if( ev?.target?.value != "then"){
-     // (this.condition_then_if.get('condition_then_if')['controls']['_exp'] as FormGroup).addControl('_expression',this.validation())
-   //   this.condition_then_if.get('condition_then_if').addControl('_expression',this.validation())
+
         (this.condition_then_if as FormGroup).addControl('_expression',this.validation())
 
+        this.events_condition_thenif_Subject.subscribe(res=>{
+          console.log(res);
 
-
+        })
     }
 
 
@@ -96,5 +133,9 @@ export class Condition_then_ifComponent implements OnInit {
   fncondition_else_if(ev:any){
     this._select.emit(ev?.target?.value)
    }
+
+   ngOnDestroy() {
+    this.subscription.unsubscribe()
+}
 
 }
