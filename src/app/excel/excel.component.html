@@ -16,8 +16,9 @@
                   <ng-container [formGroupName]="i"> -->
 
                        <div class="p-3 row">
-                        <app-conditionform [events]="events_expression_Subject.asObservable()" [expression]="exx" [dataset]="expression_dataset"></app-conditionform>
+                        <app-conditionform [events]="events_expression_Subject.asObservable()" [expression]="exx" [dataset]="expression_dataset" style="width:100%"></app-conditionform>
                       </div>
+
 
                       <div class="row p-1">
                         <app-condition_then_if  [events]="events_condition_thenif_Subject.asObservable()" [dataset]="dataset" [condition_then_if]="thenif" [expression]="exx"  [condition_else_if]="elseif"  (selected)="fncondition_then_if($event)"></app-condition_then_if>
@@ -26,9 +27,11 @@
                       <div class="row p-1">
                         <app-condition_else_if [events]="events_condition_elseif_Subject.asObservable()" [condition_else_if]="elseif" [condition_then_if]="thenif" [expression]="exx" (_select)="fncondition_else_if($event)"></app-condition_else_if>
                       </div>
+
                   <!-- </ng-container>
             </div> -->
       </ng-container>
+
 
 
       <button type="submit" >Save</button>

@@ -7,13 +7,15 @@ import { LogicaldropdownComponent } from './logicaldropdown/logicaldropdown.comp
 import { ConditionformComponent } from './component/conditionform/conditionform.component';
 import { Condition_then_ifComponent } from './component/condition_then_if/condition_then_if.component';
 import { Condition_else_ifComponent } from './component/condition_else_if/condition_else_if.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   imports: [
     CommonModule,
     ExcelRoutes,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   declarations: [
     ExcelComponent,

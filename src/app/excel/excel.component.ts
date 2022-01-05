@@ -38,7 +38,7 @@ export class ExcelComponent implements OnInit {
 
 
      var obj = {
-    'expression'          : {},
+      'expression'        : {},
       'condition_then_if' : {},
       'condition_else_if' : {}
      };
