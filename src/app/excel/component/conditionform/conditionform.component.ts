@@ -1,13 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Form, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
+import { trigger, state, style, transition,
+  animate, group, query, stagger, keyframes
+} from '@angular/animations';
+
 
 @Component({
   selector: 'app-conditionform',
   templateUrl: './conditionform.component.html',
   styleUrls: ['./conditionform.component.css']
+
 })
+
+
 export class ConditionformComponent implements OnInit {
+  animationState = 'in';
   @Input() expression;
   @Input() dataset;
   @Input() events: Observable<any>;
@@ -22,12 +30,30 @@ export class ConditionformComponent implements OnInit {
   hn: boolean;
   show: boolean = false;
   exxa: any;
+  right_rec: boolean = false;
+  left_rec: boolean = false;
+  private _then: FormGroup;
+  thenshowhide: boolean = false;
+  elsehide: boolean = false;
+  public _aggregatefunc: FormArray;
+  aggregate_left: boolean = false;
+  conditionlegend: any;
+  aggregate_left_instance: FormArray;
   constructor(
     public fb:FormBuilder
   ) {
 
 
   }
+
+  toggleShowDiv(divName: string) {
+    if (divName === 'divA') {
+      console.log(this.animationState);
+      this.animationState = this.animationState === 'out' ? 'in' : 'out';
+      console.log(this.animationState);
+    }
+  }
+
 
 
   ngOnInit() {
@@ -36,12 +62,37 @@ export class ConditionformComponent implements OnInit {
     this.expression.addControl('lefts',this.fb.group({
       left : [''],
       expression : this.fb.group({}),
-      aggregate  : this.fb.array([])
+      aggregate  :  this.fb.array([]),
+      aggregate_type : [''],
+
     }));
 
-    this.expression.addControl('right',this.fb.control(''));
+    this.expression.addControl('rights',this.fb.group({
+      right : [''],
+      expression : this.fb.group({}),
+      aggregate  :  this.fb.array([]),
+      aggregate_type : [''],
+
+    }));
+
+    // this.expression.addControl('right',this.fb.control(''));
     this.expression.addControl('logical',this.fb.control(''));
    // this.expression.addControl('aggregate',this.fb.array([]));
+   this.expression.addControl('condition_expression_then',this.fb.group({
+    condition : [''],
+    value     : [''],
+    aggregate_type : [''],
+    expression : this.fb.group({})
+  }));
+
+
+
+  this.expression.addControl('condition_expression_else',this.fb.group({
+    condition : [''],
+    value     : [''],
+    aggregate_type : [''],
+    expression : this.fb.group({})
+  }));
 
 
 
@@ -56,6 +107,8 @@ export class ConditionformComponent implements OnInit {
     this._Formarray = this.expression.get('lefts') as FormGroup;
 
   }
+
+
 
 
   get addressArray()  {
@@ -85,11 +138,135 @@ get _aggregate():FormArray{
     this.selectedAggregate = val
   }
 
+  conditional_else(val){
+   this.elsehide = false;
+   if(val == 'if'){
+    this.elsehide = true;
+  this._then =  ((this.expression.get('condition_expression_then') as FormGroup).get('expression') as FormGroup)
+
+   this._then.addControl('lefts',this.fb.group({
+    left : [''],
+    expression : this.fb.group({}),
+    aggregate  : this.fb.array([]),
+    aggregate_type : [''],
+
+  }));
+
+  this._then.addControl('rights',this.fb.group({
+    right : [''],
+    expression : this.fb.group({}),
+    aggregate  : this.fb.array([]),
+    aggregate_type : [''],
+
+  }));
+  this._then.addControl('logical',this.fb.control(''));
+ this._then.addControl('condition_expression_then',this.fb.group({
+  condition : [''],
+  value     : [''],
+  aggregate_type : [''],
+  expression : this.fb.group({})
+}));
+
+
+
+this.expression.addControl('condition_expression_else',this.fb.group({
+  condition : [''],
+  value     : [''],
+  aggregate_type : [''],
+  expression : this.fb.group({})
+}));
+  }
+
+  }
+  conditional_then(val){
+    this.thenshowhide = false;
+    if(val == 'if'){
+      this.thenshowhide = true;
+    this._then =  ((this.expression.get('condition_expression_then') as FormGroup).get('expression') as FormGroup)
+
+     this._then.addControl('lefts',this.fb.group({
+      left : [''],
+      expression : this.fb.group({}),
+      aggregate  :this.fb.array([]),
+      aggregate_type : [''],
+
+    }));
+
+    this._then.addControl('rights',this.fb.group({
+      right : [''],
+      expression : this.fb.group({}),
+      aggregate  : this.fb.array([]),
+      aggregate_type : [''],
+
+    }));
+    this._then.addControl('logical',this.fb.control(''));
+   this._then.addControl('condition_expression_then',this.fb.group({
+    condition : [''],
+    value     : [''],
+    aggregate_type : [''],
+    expression : this.fb.group({})
+  }));
+
+
+
+  this.expression.addControl('condition_expression_else',this.fb.group({
+    condition : [''],
+    value     : [''],
+    aggregate_type : [''],
+    expression : this.fb.group({})
+  }));
+    }
+
+  }
+
+  conditional_rightdropdown(val){
+    this.right_rec = false
+    if(val == 'if'){
+
+      this.exxa = (this.exxx as FormGroup)
+      this.exxa.addControl('lefts',this.fb.group({
+        left : [''],
+        expression : this.fb.group({}),
+        aggregate  : this.fb.array([]),
+        aggregate_type : ['']
+      }));
+      this.exxa.addControl('rights',this.fb.group({
+        right : [''],
+        expression : this.fb.group({}),
+        aggregate  : this.fb.array([]),
+        aggregate_type : ['']
+      }));
+      this.exxa.addControl('logical',this.fb.control(''));
+      this.exxa.addControl('condition_expression_then',this.fb.group({
+        condition : [''],
+        value     : [''],
+        aggregate_type : ['']
+      }));
+      this.exxa.addControl('condition_expression_else',this.fb.group({
+        condition : [''],
+        value     : [''],
+        aggregate_type : ['']
+      }));
+
+
+      this.right_rec = true
+    } else if (val == 'operator'){
+      // empty array
+      (<FormArray>(this.addressArray as FormGroup).get('aggregate')).clear();
+    //  this.add_aggregate()
+      this.show = true;
+    }
+
+  }
+
   conditional_dropdown(val){
 
+    //condition value whether and,or etc ...
+    this.conditionlegend = val.toUpperCase()
 
-    this.hn = false
+    this.left_rec = false
     this.show = false
+    this.aggregate_left = false;
     if(val == 'if'){
       console.log((this.exxx));
       this.exxa = (this.exxx as FormGroup)
@@ -98,38 +275,67 @@ get _aggregate():FormArray{
       this.exxa.addControl('lefts',this.fb.group({
         left : [''],
         expression : this.fb.group({}),
-        aggregate  : this.fb.array([])
+        aggregate  : this.fb.array([]),
+        aggregate_type : ['']
       }));
-      this.exxa.addControl('right',this.fb.control(''));
+      this.exxa.addControl('rights',this.fb.group({
+        right : [''],
+        expression : this.fb.group({}),
+        aggregate  : this.fb.array([]),
+        aggregate_type : ['']
+      }));
       this.exxa.addControl('logical',this.fb.control(''));
-      this.hn = true
+      this.exxa.addControl('condition_expression_then',this.fb.group({
+        condition : [''],
+        value     : [''],
+        aggregate_type : ['']
+      }));
+      this.exxa.addControl('condition_expression_else',this.fb.group({
+        condition : [''],
+        value     : [''],
+        aggregate_type : ['']
+      }));
+
+
+
+      this.left_rec = true
     } else if (val == 'operator'){
       // empty array
       (<FormArray>(this.addressArray as FormGroup).get('aggregate')).clear();
-      this.add_aggregate()
+      //this.add_aggregate()
       this.show = true;
+    } else if(val == 'and' || val == 'or'){
+
+      this.aggregate_left = true;
+      this._aggregatefunc = (<FormArray>(this.expression.get('lefts') as FormGroup).get('aggregate') as FormArray)
+
+
+
+    // this.left_operator_instance =
+
     }
+  }
+
+  get _lefts(){
+    return <FormGroup>(this.expression.get('lefts') as FormGroup);
   }
 
   remove_aggregate(){}
 
   add_aggregate(){
-  //  console.log((this.addressArray as FormGroup).get('aggregate'));
-
     const control =  <FormArray>(this.addressArray as FormGroup).get('aggregate')
-    //const control = <FormArray>this.expression.get('aggregate');
     control.push(this.newaggregate())
-
     console.log(this.expression);
 
   }
 
   newaggregate(): FormGroup {
     return this.fb.group({
-      opera: '',
+      aggregation_type_left: '',
+      aggregation_type_right: '',
       aggregates_left : '',
       aggregates_right : '',
-      aggregates_operator : ''
+      aggregates_operator : '',
     })
  }
 

@@ -2,6 +2,206 @@
 
 <div [formGroup]="expression" class="expd ">
 
+
+
+    <div class="row">
+      <div class="col">
+        <!-- <mat-icon aria-hidden="false" aria-label="Example home icon"  (click)="toggleShowDiv('divA')">add_circle</mat-icon> -->
+        <div class="animate" >
+               <!--left Condition-->
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border">IF</legend>
+                      <ng-container  formGroupName="lefts">
+                  <div class="row">
+
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect (selectionChange)="conditional_dropdown(alarmSelect.value)">
+                          <mat-option value="">Choose</mat-option>
+                          <mat-option value="string">STRING</mat-option>
+                          <mat-optgroup label="Operators">
+                            <mat-option value="and">AND</mat-option>
+                            <mat-option value="or">OR</mat-option>
+                            <mat-option value="round">ROUND</mat-option>
+                          </mat-optgroup>
+                          <mat-option value="if">IF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                      <mat-form-field class="example-form-field m-1" >
+                        <mat-label>Left value</mat-label>
+                      <input matInput  id="expression_left" type="text"  class="col-sm-3" formControlName="left">
+                    </mat-form-field>
+
+
+                </div>
+                  <!--recursive if-->
+                <div class="col p-0 pt-3" *ngIf="left_rec">
+                  <!-- <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">IF Left</legend> -->
+                  <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
+                  <!-- </fieldset> -->
+                </div>
+
+                   <!--operators fields-->
+                   <div class="col p-0 pt-3" *ngIf="aggregate_left">
+
+                        <!-- <ng-container formGroupName="aggregate"> -->
+
+                              <div class="row">
+                                <div [ngSwitch]="conditionlegend">
+                                    <div *ngSwitchCase="'AND'">
+                                      <app-and [left_operator] = "_lefts" [conditionlegend]="conditionlegend"></app-and>
+                                    </div>
+                                    <div *ngSwitchCase="'OR'">
+                                      <app-and [left_operator] = "_lefts" [conditionlegend]="conditionlegend"></app-and>
+                                    </div>
+                                </div>
+
+                              </div>
+
+                        <!-- </ng-container> -->
+
+
+                  </div>
+
+
+                  </ng-container>
+
+
+                  <!--conditional operator-->
+                <div class="row">
+                  <mat-form-field class="m-1">
+                    <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="logical">
+                      <mat-option value="">Choose Operator</mat-option>
+                      <mat-option value="<"><</mat-option>
+                      <mat-option value=">">></mat-option>
+                      <mat-option value="<="><=</mat-option>
+                      <mat-option value=">=">>=</mat-option>
+                      <mat-option value="=">=</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+
+                 <!--Right Condition-->
+                <div class="row">
+                    <ng-container  formGroupName="rights">
+
+                      <mat-form-field class="m-1">
+                        <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
+                          <mat-option value="">Choose</mat-option>
+                          <mat-option value="string">STRING</mat-option>
+                          <mat-optgroup label="Operators">
+                            <mat-option value="and">AND</mat-option>
+                            <mat-option value="or">OR</mat-option>
+                            <mat-option value="round">ROUND</mat-option>
+                          </mat-optgroup>
+                          <mat-option value="if">IF</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field class="example-form-field m-1" >
+                        <mat-label>Right value</mat-label>
+                          <input matInput  id="expression_right" type="text"  class="col-sm-3" formControlName="right">
+                      </mat-form-field>
+
+                  </ng-container>
+                </div>
+                <!--recursive if-->
+                <div class="col p-0 pt-3" *ngIf="right_rec">
+                    <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
+                </div>
+
+                <!--then thenif-->
+
+                  <ng-container formGroupName="condition_expression_then">
+                    <div class="row">
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition"  #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
+                        <mat-option value="">Statement</mat-option>
+                        <mat-option value="then">THEN</mat-option>
+                        <mat-option value="thenif">THENIF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect3 (selectionChange)="conditional_then(alarmSelect3.value)">
+                        <mat-option value="">Choose</mat-option>
+                        <mat-option value="string">STRING</mat-option>
+                        <mat-optgroup label="Operators">
+                          <mat-option value="and">AND</mat-option>
+                          <mat-option value="or">OR</mat-option>
+                          <mat-option value="round">ROUND</mat-option>
+                        </mat-optgroup>
+                        <mat-option value="if">IF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-form-field m-1" >
+                      <mat-label>Expression</mat-label>
+                    <input matInput  id="value" type="text"  class="col-sm-3" formControlName="value">
+                  </mat-form-field>
+
+
+
+
+                </div>
+                <div class="col p-0 pt-3" *ngIf="thenshowhide">
+                  <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
+                </div>
+                  </ng-container>
+
+
+
+                <!--else elseif-->
+
+                  <ng-container formGroupName="condition_expression_else">
+                    <div class="row">
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition"  #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
+                        <mat-option value="">Statement</mat-option>
+                        <mat-option value="else">ELSE</mat-option>
+                        <mat-option value="elseif">ELSEIF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect5 (selectionChange)="conditional_else(alarmSelect5.value)">
+                        <mat-option value="">Choose</mat-option>
+                        <mat-option value="string">STRING</mat-option>
+                        <mat-optgroup label="Operators">
+                          <mat-option value="and">AND</mat-option>
+                          <mat-option value="or">OR</mat-option>
+                          <mat-option value="round">ROUND</mat-option>
+                        </mat-optgroup>
+                        <mat-option value="if">IF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-form-field m-1" >
+                      <mat-label>Expression</mat-label>
+                    <input matInput  id="value" type="text"  class="col-sm-3" formControlName="value" >
+                  </mat-form-field>
+
+
+                </div>
+                <div class="col p-0 pt-3" *ngIf="elsehide">
+                  <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
+                </div>
+                  </ng-container>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+<!--
+
   <div class="row">
     <div class="col-sm-5 bordercolor">
       <ng-container  formGroupName="lefts">
@@ -13,9 +213,9 @@
                 <option value="operator">OPERATOR</option>
                 <option value="if">IF</option>
               </select>
-            </div>
+            </div> -->
     <!--operator-->
-      <div class="m-1" formArrayName="aggregate" *ngIf="show">
+      <!-- <div class="m-1" formArrayName="aggregate" *ngIf="show">
         <div  *ngFor="let step of _aggregate.controls; let i = index">
             <div [formGroupName]="i"  class="row">
 
@@ -67,21 +267,21 @@
                 </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--operator-->
 
       <!--nested if-->
-
+<!--
       <div class="col p-0 pt-3" *ngIf="hn">
         <fieldset class="scheduler-border">
           <legend class="scheduler-border">IF Right</legend>
           <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
         </fieldset>
-      </div>
+      </div> -->
 
       <!--nestd if-->
 
-  </ng-container>
+  <!-- </ng-container>
     </div>
 
     <div class="col-sm-2 ">
@@ -116,7 +316,7 @@
 
 
 
-  </div>
+  </div> -->
 
 
 

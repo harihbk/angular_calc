@@ -1,0 +1,71 @@
+<p class="text-right">
+  <mat-icon color="primary" (click)="addformarray()">add_circle</mat-icon>
+</p>
+<fieldset class="scheduler-border">
+
+
+      <legend class="scheduler-border">{{ conditionlegend }}</legend>
+        <div [formGroup]="left_operator">
+        <ng-container formArrayName="aggregate">
+          <ng-container *ngFor="let op of _formarray.controls;let i = index">
+            <div  [formGroupName]="i">
+
+              <div class="text-right">
+                <mat-icon class="text-right" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
+              </div>
+
+              <mat-form-field class="m-1">
+                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_left" #alarmSelect >
+                    <mat-option value="">Choose</mat-option>
+                    <mat-option value="string">STRING</mat-option>
+                    <mat-optgroup label="Operators">
+                      <mat-option value="and">AND</mat-option>
+                      <mat-option value="or">OR</mat-option>
+                      <mat-option value="round">ROUND</mat-option>
+                    </mat-optgroup>
+                    <mat-option value="if">IF</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="example-form-field m-1" >
+                <mat-label> value</mat-label>
+              <input matInput  id="aggregates_left" type="text"  class="col-sm-3" formControlName="aggregates_left">
+              </mat-form-field>
+
+              <mat-form-field class="m-1">
+                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregates_operator">
+                  <mat-option value="">Choose Operator</mat-option>
+                  <mat-option value="<"><</mat-option>
+                  <mat-option value=">">></mat-option>
+                  <mat-option value="<="><=</mat-option>
+                  <mat-option value=">=">>=</mat-option>
+                  <mat-option value="=">=</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="m-1">
+                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_right" #alarmSelect >
+                    <mat-option value="">Choose</mat-option>
+                    <mat-option value="string">STRING</mat-option>
+                    <mat-optgroup label="Operators">
+                      <mat-option value="and">AND</mat-option>
+                      <mat-option value="or">OR</mat-option>
+                      <mat-option value="round">ROUND</mat-option>
+                    </mat-optgroup>
+                    <mat-option value="if">IF</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="example-form-field m-1" >
+                <mat-label> value</mat-label>
+                  <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="aggregates_right">
+              </mat-form-field>
+
+            </div>
+
+          </ng-container>
+
+        </ng-container>
+
+        </div>
+</fieldset>

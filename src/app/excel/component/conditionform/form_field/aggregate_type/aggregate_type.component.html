@@ -1,0 +1,12 @@
+<mat-form-field class="m-1">
+  <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect (selectionChange)="conditional_dropdown(alarmSelect.value)">
+      <mat-option value="">Choose</mat-option>
+      <mat-option value="string">STRING</mat-option>
+      <mat-optgroup label="Operators">
+        <mat-option value="and">AND</mat-option>
+        <mat-option value="or">OR</mat-option>
+        <mat-option value="round">ROUND</mat-option>
+      </mat-optgroup>
+      <mat-option value="if">IF</mat-option>
+  </mat-select>
+</mat-form-field>

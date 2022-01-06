@@ -8,6 +8,10 @@ import { ConditionformComponent } from './component/conditionform/conditionform.
 import { Condition_then_ifComponent } from './component/condition_then_if/condition_then_if.component';
 import { Condition_else_ifComponent } from './component/condition_else_if/condition_else_if.component';
 import {MatIconModule} from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { AndComponent } from './component/conditionform/operators/and/and.component';
+import { OrComponent } from './component/conditionform/operators/or/or.component';
 
 @NgModule({
   imports: [
@@ -15,14 +19,18 @@ import {MatIconModule} from '@angular/material/icon';
     ExcelRoutes,
     ReactiveFormsModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule,
+    MatInputModule
   ],
   declarations: [
     ExcelComponent,
     LogicaldropdownComponent,
     ConditionformComponent,
     Condition_then_ifComponent,
-    Condition_else_ifComponent
+    Condition_else_ifComponent,
+    AndComponent,
+    OrComponent
 
   ]
 })
