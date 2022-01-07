@@ -10,8 +10,15 @@
         <div class="animate" >
                <!--left Condition-->
           <fieldset class="scheduler-border">
-            <legend class="scheduler-border">IF</legend>
-                      <ng-container  formGroupName="lefts">
+            <legend class="scheduler-border" (click)="toggleShowDiv()"
+            mat-raised-button
+            matTooltip="{{ animationState == 'in' ? 'hide' : 'show' }} "
+            matTooltipClass="example-tooltip-red"
+            aria-label="Button that shows a red tooltip"
+            class="example-button"
+            >IF</legend>
+            <div  [@slideInOut]="animationState" >
+                      <ng-container  formGroupName="lefts" >
                   <div class="row">
 
                     <mat-form-field class="m-1">
@@ -189,6 +196,7 @@
                   <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
                 </div>
                   </ng-container>
+                </div>
         </fieldset>
       </div>
     </div>
@@ -448,5 +456,6 @@
 </div>
 
 
+<!-- <pre>{{ expression.value | json }}<pre> -->
 
 

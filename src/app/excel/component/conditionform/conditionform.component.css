@@ -4,6 +4,7 @@
 
 
 fieldset.scheduler-border {
+  cursor: pointer;
   border: 1px solid #ddd;
   border-left: 2px solid #808080;
   border-radius: 5px;
@@ -20,4 +21,13 @@ fieldset.scheduler-border {
 
 .bordercolor{
   border: 1px solid #fb9696;
+}
+
+
+legend{
+  width:0px
+}
+
+.example-button {
+  background: #b71c1c;
 }

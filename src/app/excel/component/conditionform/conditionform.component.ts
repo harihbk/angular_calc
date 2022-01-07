@@ -4,17 +4,55 @@ import { Observable, Subscription } from 'rxjs';
 import { trigger, state, style, transition,
   animate, group, query, stagger, keyframes
 } from '@angular/animations';
+import { TooltipPosition } from '@angular/material/tooltip';
 
+
+export const SlideInOutAnimation = [
+  trigger('slideInOut', [
+      state('in', style({
+          'max-height': '*', 'opacity': '1', 'visibility': 'visible'
+      })),
+      state('out', style({
+          'max-height': '0px', 'opacity': '0', 'visibility': 'hidden'
+      })),
+      transition('in => out', [group([
+          animate('400ms ease-in-out', style({
+              'opacity': '0'
+          })),
+          animate('600ms ease-in-out', style({
+              'max-height': '0px'
+          })),
+          animate('700ms ease-in-out', style({
+              'visibility': 'hidden'
+          }))
+      ]
+      )]),
+      transition('out => in', [group([
+          animate('1ms ease-in-out', style({
+              'visibility': 'visible'
+          })),
+          animate('600ms ease-in-out', style({
+              'max-height': '*'
+          })),
+          animate('800ms ease-in-out', style({
+              'opacity': '1'
+          }))
+      ]
+      )])
+  ]),
+]
 
 @Component({
   selector: 'app-conditionform',
   templateUrl: './conditionform.component.html',
-  styleUrls: ['./conditionform.component.css']
+  styleUrls: ['./conditionform.component.css'],
+  animations: [SlideInOutAnimation]
 
 })
 
 
 export class ConditionformComponent implements OnInit {
+  positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
   animationState = 'in';
   @Input() expression;
   @Input() dataset;
@@ -46,14 +84,12 @@ export class ConditionformComponent implements OnInit {
 
   }
 
-  toggleShowDiv(divName: string) {
-    if (divName === 'divA') {
-      console.log(this.animationState);
-      this.animationState = this.animationState === 'out' ? 'in' : 'out';
-      console.log(this.animationState);
-    }
-  }
 
+
+
+  toggleShowDiv() {
+    this.animationState = this.animationState === 'out' ? 'in' : 'out';
+}
 
 
   ngOnInit() {

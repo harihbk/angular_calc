@@ -17,3 +17,19 @@ fieldset.scheduler-border {
 .bordercolor{
   border: 1px solid #fb9696;
 }
+
+.add_circle,.remove_circle:hover{
+  cursor: pointer;
+}
+
+legend{
+  width:0px
+}
+
+.example-button {
+  margin-top: 16px;
+}
+
+.example-tooltip-red {
+  background: #b71c1c;
+}

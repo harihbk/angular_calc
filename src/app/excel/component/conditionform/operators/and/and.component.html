@@ -1,21 +1,26 @@
 <p class="text-right">
-  <mat-icon color="primary" (click)="addformarray()">add_circle</mat-icon>
+  <mat-icon color="primary" class="add_circle" (click)="addformarray()">add_circle</mat-icon>
 </p>
-<fieldset class="scheduler-border">
+<fieldset class="scheduler-border" >
 
-
-      <legend class="scheduler-border">{{ conditionlegend }}</legend>
-        <div [formGroup]="left_operator">
-        <ng-container formArrayName="aggregate">
+      <legend class="scheduler-border"
+      (click)="toggleShowDiv()"
+      mat-raised-button
+      matTooltip="{{ animationState == 'in' ? 'hide' : 'show' }} "
+      matTooltipClass="example-tooltip-red"
+      aria-label="Button that shows a red tooltip"
+      class="example-button"
+      >{{ conditionlegend }}</legend>
+        <div [formGroup]="left_operator"  [@slideInOut]="animationState" style="background-color: rgb(243, 229, 229);">
+        <ng-container formArrayName="aggregate" >
           <ng-container *ngFor="let op of _formarray.controls;let i = index">
             <div  [formGroupName]="i">
-
               <div class="text-right">
-                <mat-icon class="text-right" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
+                <mat-icon class="text-right remove_circle" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
               </div>
 
               <mat-form-field class="m-1">
-                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_left" #alarmSelect >
+                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_left" #alarmSelect (selectionChange)="conditional_left(i,alarmSelect.value)">
                     <mat-option value="">Choose</mat-option>
                     <mat-option value="string">STRING</mat-option>
                     <mat-optgroup label="Operators">
@@ -26,6 +31,14 @@
                     <mat-option value="if">IF</mat-option>
                 </mat-select>
               </mat-form-field>
+
+             <!-- recursive for and operators left-->
+              <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_left_expression.lefts')?.value">
+                <app-conditionform  [expression]="conditional_lefts" ></app-conditionform>
+              </ng-container>
+
+
+
 
               <mat-form-field class="example-form-field m-1" >
                 <mat-label> value</mat-label>
@@ -44,7 +57,7 @@
               </mat-form-field>
 
               <mat-form-field class="m-1">
-                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_right" #alarmSelect >
+                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_right" #alarmSelect9 (selectionChange)="conditional_right(i,alarmSelect9.value)">
                     <mat-option value="">Choose</mat-option>
                     <mat-option value="string">STRING</mat-option>
                     <mat-optgroup label="Operators">
@@ -55,6 +68,11 @@
                     <mat-option value="if">IF</mat-option>
                 </mat-select>
               </mat-form-field>
+
+                   <!-- recursive for and operators right-->
+                   <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_right_expression.rights')?.value">
+                    <app-conditionform  [expression]="conditional_rights" ></app-conditionform>
+                  </ng-container>
 
               <mat-form-field class="example-form-field m-1" >
                 <mat-label> value</mat-label>
@@ -69,3 +87,7 @@
 
         </div>
 </fieldset>
+
+
+
+

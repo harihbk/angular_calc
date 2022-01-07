@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { AndComponent } from './component/conditionform/operators/and/and.component';
 import { OrComponent } from './component/conditionform/operators/or/or.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { OrComponent } from './component/conditionform/operators/or/or.component
     FormsModule,
     MatIconModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatTooltipModule
   ],
   declarations: [
     ExcelComponent,
