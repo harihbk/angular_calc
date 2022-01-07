@@ -8,9 +8,23 @@ import { TooltipPosition } from '@angular/material/tooltip';
 
 
 export const SlideInOutAnimation = [
+  trigger('dotedline',[
+    state('fieldset.scheduler-border',style({
+      'content': '' ,
+      'position':'absolute',
+      'border' : '1px dashed #808080',
+      'color': '#486bd3'
+    })),
+
+
+  ]),
   trigger('slideInOut', [
+
       state('in', style({
-          'max-height': '*', 'opacity': '1', 'visibility': 'visible'
+          'max-height': '*',
+           'opacity': '1',
+           'visibility': 'visible',
+
       })),
       state('out', style({
           'max-height': '0px', 'opacity': '0', 'visibility': 'hidden'

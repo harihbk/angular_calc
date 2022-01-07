@@ -6,11 +6,12 @@
 fieldset.scheduler-border {
   cursor: pointer;
   border: 1px solid #ddd;
-  border-left: 2px solid #808080;
+  border-left: 0;
   border-radius: 5px;
   padding: 0 1.4em 1.4em 1.4em;
   padding-bottom: 0;
   margin: 0 0 1.5em 0;
+  position : relative;
   -webkit-box-shadow:  0px 0px 0px 0px #000;
           box-shadow:  0px 0px 0px 0px #000;
 }
@@ -30,4 +31,16 @@ legend{
 
 .example-button {
   background: #b71c1c;
+}
+
+.formdot{
+  position: relative;
+}
+.formdot:before{
+  content: '';
+  position: absolute;
+  border: 1px dashed #808080;
+  height: calc(100% - 52px);
+  top: 10px;
+  left: 0;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { _functions } from '../excel/_function'
@@ -7,7 +7,7 @@ import { _functions } from '../excel/_function'
   templateUrl: './excel.component.html',
   styleUrls: ['./excel.component.css']
 })
-export class ExcelComponent implements OnInit {
+export class ExcelComponent implements OnInit , AfterViewInit  {
 
   myForm      : FormGroup
   _Formarray  : FormGroup;
@@ -244,10 +244,17 @@ export class ExcelComponent implements OnInit {
 
     })
 
+
+
+
     this._Formarray = this.myForm.get('_formarray') as FormGroup;
     this.exx =  this._Formarray.get('expression')  as FormGroup;
     this.thenif =  this._Formarray.get('condition_then_if')  as FormGroup;
     this.elseif =  this._Formarray.get('condition_else_if')  as FormGroup;
+
+
+
+
     // let obj =
     // {
     //  statement   : "=IF",
@@ -269,6 +276,12 @@ export class ExcelComponent implements OnInit {
   }
 
 
+  ngAfterViewInit(): void {
+
+    this.myForm.valueChanges.subscribe(val => {
+      this.formatformula(val)
+    })
+  }
 
   get expression() {
     return this.myForm.get('expression') as FormGroup;
@@ -300,6 +313,41 @@ export class ExcelComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.myForm.value)
+    let obj = this.myForm.value.expression
+    var formula = `${obj}`
+
+  }
+
+  formatformula(val){
+    let obj = val._formarray;
+    console.log(obj.expression.condition_expression_then);
+    let express = obj.expression
+
+   var formula =`=IF( ${express?.lefts?.left ?? '' } ${express?.logical ?? 'or'} ${express?.rights?.right ?? ''} , ${this._checkthen(obj.expression.condition_expression_then)} , ${this._checkthen(obj.expression.condition_expression_else) } )`
+
+
+   this.myForm.patchValue({
+     name : formula
+   }, {emitEvent: false})
+  //  console.log(formula);
+
+  }
+
+  _checkthen(val){
+   return `${val?.value ?? ''}`
+  }
+
+  nestedformatformula(val){
+    let obj = val._formarray;
+    console.log(obj);
+    let express = obj.expression
+    var formula =`=IF( ${express.lefts.left } ${express.logical } ${express.rights.right } , ${this._checkthen(obj.condition_expression_then)} , `
+    console.log(formula);
+
+  }
+
+  onSubmit123() {
 
 
 
