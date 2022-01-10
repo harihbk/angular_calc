@@ -323,7 +323,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
     let obj = val._formarray;
     let express = obj.expression
     console.log(express);
-    var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(obj.expression.condition_expression_then)} , ${this._checkthen(obj.expression.condition_expression_else) } )`
+    var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(express.condition_expression_then)} , ${this._checkthen(express.condition_expression_else) } )`
     this.myForm.patchValue({
       name : formula
     }, {emitEvent: false})
@@ -347,7 +347,21 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
   }
 
   _checkthen(val){
-   return `${val?.value ?? '_'}`
+    console.log(val?.aggregate_type);
+     switch(val?.aggregate_type){
+       case 'and':
+        return `AND( ${this.andcondition(val?.aggregate)} )`;
+       break;
+       case 'or':
+        return `AND( ${this.andcondition(val?.aggregate)} )`;
+       break;
+       case 'string':
+        return `${val?.value ?? '_'}`
+       break;
+       default :
+       return `_`
+     }
+ //return "_";
   }
 
   nestedformatformula(exx){
