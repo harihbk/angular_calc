@@ -1,6 +1,4 @@
-<p class="text-right">
-  <mat-icon color="primary" class="add_circle" (click)="addformarray()">add_circle</mat-icon>
-</p>
+
 <fieldset class="scheduler-border" >
 
       <legend class="scheduler-border"
@@ -10,17 +8,19 @@
       matTooltipClass="example-tooltip-red"
       aria-label="Button that shows a red tooltip"
       class="example-button"
-      ><span class="and_span">{{ conditionlegend }}<i class="fas fa-minus"></i></span></legend>
-        <div [formGroup]="left_operator"  [@slideInOut]="animationState" >
+      ><span class="and_span">{{ conditionlegend }}</span> </legend>
+      <p class="text-right m-0">
+        <mat-icon color="primary" class="add_circle" (click)="addformarray()">add_circle</mat-icon>
+      </p>
+        <div [formGroup]="left_operator"  class=" inner_and"[@slideInOut]="animationState" >
         <ng-container formArrayName="aggregate" >
+         
           <ng-container *ngFor="let op of _formarray.controls;let i = index">
           
             <div  [formGroupName]="i">
             
-                  <div>
-                    <div class="text-right mius_excel">
-                      <mat-icon class="text-right remove_circle" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
-                    </div>
+                  <div class="list_flex_Excel">
+                   
                     <mat-form-field class="m-1">
               
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_left" #alarmSelect (selectionChange)="conditional_left(i,alarmSelect.value)">
@@ -39,10 +39,7 @@
                      
                     </mat-form-field>
       
-                   <!-- recursive for and operators left-->
-                    <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_left_expression.lefts')?.value">
-                      <app-conditionform  [expression]="conditional_lefts" ></app-conditionform>
-                    </ng-container>
+                
       
       
       
@@ -85,6 +82,14 @@
                       <mat-label> value</mat-label>
                         <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="aggregates_right">
                     </mat-form-field>
+                    <div class="text-right mius_excel">
+                      <mat-icon class="text-right remove_circle" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
+                    </div>
+                       <!-- recursive for and operators left-->
+                       <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_left_expression.lefts')?.value">
+                        <app-conditionform  [expression]="conditional_lefts" ></app-conditionform>
+                      </ng-container>
+                    
                   </div>
             
 
