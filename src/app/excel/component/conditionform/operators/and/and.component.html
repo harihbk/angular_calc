@@ -10,74 +10,83 @@
       matTooltipClass="example-tooltip-red"
       aria-label="Button that shows a red tooltip"
       class="example-button"
-      >{{ conditionlegend }}</legend>
-        <div [formGroup]="left_operator"  [@slideInOut]="animationState" style="background-color: rgb(243, 229, 229);">
+      ><span class="and_span">{{ conditionlegend }}<i class="fas fa-minus"></i></span></legend>
+        <div [formGroup]="left_operator"  [@slideInOut]="animationState" >
         <ng-container formArrayName="aggregate" >
           <ng-container *ngFor="let op of _formarray.controls;let i = index">
+          
             <div  [formGroupName]="i">
-              <div class="text-right">
-                <mat-icon class="text-right remove_circle" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
-              </div>
-
-              <mat-form-field class="m-1">
-                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_left" #alarmSelect (selectionChange)="conditional_left(i,alarmSelect.value)">
-                    <mat-option value="">Choose</mat-option>
-                    <mat-option value="string">STRING</mat-option>
-                    <mat-optgroup label="Operators">
-                      <mat-option value="and">AND</mat-option>
-                      <mat-option value="or">OR</mat-option>
-                      <mat-option value="round">ROUND</mat-option>
-                    </mat-optgroup>
-                    <mat-option value="if">IF</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-             <!-- recursive for and operators left-->
-              <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_left_expression.lefts')?.value">
-                <app-conditionform  [expression]="conditional_lefts" ></app-conditionform>
-              </ng-container>
-
-
-
-
-              <mat-form-field class="example-form-field m-1" >
-                <mat-label> value</mat-label>
-              <input matInput  id="aggregates_left" type="text"  class="col-sm-3" formControlName="aggregates_left">
-              </mat-form-field>
-
-              <mat-form-field class="m-1">
-                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregates_operator">
-                  <mat-option value="">Choose Operator</mat-option>
-                  <mat-option value="<"><</mat-option>
-                  <mat-option value=">">></mat-option>
-                  <mat-option value="<="><=</mat-option>
-                  <mat-option value=">=">>=</mat-option>
-                  <mat-option value="=">=</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <mat-form-field class="m-1">
-                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_right" #alarmSelect9 (selectionChange)="conditional_right(i,alarmSelect9.value)">
-                    <mat-option value="">Choose</mat-option>
-                    <mat-option value="string">STRING</mat-option>
-                    <mat-optgroup label="Operators">
-                      <mat-option value="and">AND</mat-option>
-                      <mat-option value="or">OR</mat-option>
-                      <mat-option value="round">ROUND</mat-option>
-                    </mat-optgroup>
-                    <mat-option value="if">IF</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-                   <!-- recursive for and operators right-->
-                   <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_right_expression.rights')?.value">
-                    <app-conditionform  [expression]="conditional_rights" ></app-conditionform>
-                  </ng-container>
-
-              <mat-form-field class="example-form-field m-1" >
-                <mat-label> value</mat-label>
-                  <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="aggregates_right">
-              </mat-form-field>
+            
+                  <div>
+                    <div class="text-right mius_excel">
+                      <mat-icon class="text-right remove_circle" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
+                    </div>
+                    <mat-form-field class="m-1">
+              
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_left" #alarmSelect (selectionChange)="conditional_left(i,alarmSelect.value)">
+                          <mat-option value="">Choose</mat-option>
+                          <mat-option value="string">STRING</mat-option>
+                          <mat-optgroup label="Operators">
+                            <mat-option value="and">AND</mat-option>
+                            <mat-option value="or">OR</mat-option>
+                            <mat-option value="round">ROUND</mat-option>
+                          </mat-optgroup>
+                          <mat-option value="if">IF</mat-option>
+                          <div>
+                            
+                          </div>
+                      </mat-select>
+                     
+                    </mat-form-field>
+      
+                   <!-- recursive for and operators left-->
+                    <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_left_expression.lefts')?.value">
+                      <app-conditionform  [expression]="conditional_lefts" ></app-conditionform>
+                    </ng-container>
+      
+      
+      
+      
+                    <mat-form-field class="example-form-field m-1" >
+                      <mat-label> value</mat-label>
+                    <input matInput  id="aggregates_left" type="text"  class="col-sm-3" formControlName="aggregates_left">
+                    </mat-form-field>
+      
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregates_operator">
+                        <mat-option value="">Choose Operator</mat-option>
+                        <mat-option value="<"><</mat-option>
+                        <mat-option value=">">></mat-option>
+                        <mat-option value="<="><=</mat-option>
+                        <mat-option value=">=">>=</mat-option>
+                        <mat-option value="=">=</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+      
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_right" #alarmSelect9 (selectionChange)="conditional_right(i,alarmSelect9.value)">
+                          <mat-option value="">Choose</mat-option>
+                          <mat-option value="string">STRING</mat-option>
+                          <mat-optgroup label="Operators">
+                            <mat-option value="and">AND</mat-option>
+                            <mat-option value="or">OR</mat-option>
+                            <mat-option value="round">ROUND</mat-option>
+                          </mat-optgroup>
+                          <mat-option value="if">IF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+      
+                         <!-- recursive for and operators right-->
+                         <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_right_expression.rights')?.value">
+                          <app-conditionform  [expression]="conditional_rights" ></app-conditionform>
+                        </ng-container>
+      
+                    <mat-form-field class="example-form-field m-1" >
+                      <mat-label> value</mat-label>
+                        <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="aggregates_right">
+                    </mat-form-field>
+                  </div>
+            
 
             </div>
 
