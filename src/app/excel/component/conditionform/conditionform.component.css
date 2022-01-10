@@ -92,6 +92,10 @@ legend{
   height: 2px;
   border-bottom: 2px dashed #009ada;
 }
-.bottom_show  .mat-icon{
-  line-height: 30px;
+.bottom_show i{
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
 }
