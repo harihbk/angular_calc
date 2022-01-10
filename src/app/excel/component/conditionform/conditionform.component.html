@@ -4,7 +4,7 @@
 
 
 
-    <div class="row formdot">
+    <div class="row formdot border_excel">
       <div class="col">
         <!-- <mat-icon aria-hidden="false" aria-label="Example home icon"  (click)="toggleShowDiv('divA')">add_circle</mat-icon> -->
         <div class="animate" >
@@ -16,8 +16,8 @@
             matTooltipClass="example-tooltip-red"
             aria-label="Button that shows a red tooltip"
             class="example-button if_legend"
-            ><span>IF</span></legend>
-            <div  [@slideInOut]="animationState"  [@dotedline]>
+            ><span class="if_span">IF <i class="fas fa-minus"></i></span></legend>
+            <div  [@slideInOut]="animationState" class="list_excel" [@dotedline]>
                       <ng-container  formGroupName="lefts" >
                   <div class="row">
                     
@@ -71,8 +71,12 @@
 
 
                   <!--conditional operator-->
-                <div class="row">
+                <div class="row m-0 align-items-center">
+                  <div class=" col-1 exce3l_condition">
+                    Condition
+                  </div>
                   <mat-form-field class="m-1 col-2">
+                   
                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="logical">
                       <mat-option value="">Choose Operator</mat-option>
                       <mat-option value="<"><</mat-option>
@@ -87,6 +91,7 @@
 
                  <!--Right Condition-->
                 <div class="row">
+                  
                     <ng-container   formGroupName="rights">
 
                       <mat-form-field class="m-1 col-2">
@@ -135,7 +140,10 @@
                 <!--then thenif-->
 
                   <ng-container formGroupName="condition_expression_then">
-                    <div class="row">
+                    <div class="row  m-0 align-items-center">
+                      <div class=" col-1 exce3l_condition">
+                        Then
+                      </div>
                     <mat-form-field class="m-1 col-2">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition"  #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
                         <mat-option value="">Statement</mat-option>
@@ -176,7 +184,10 @@
                 <!--else elseif-->
 
                   <ng-container formGroupName="condition_expression_else">
-                    <div class="row">
+                    <div class="row  m-0 align-items-center">
+                      <div class=" col-1 exce3l_condition">
+                        Then If
+                      </div>
                       <!-- <button class="btn btn-sucess">Then</button> -->
                     <mat-form-field class="m-1 col-2">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition"  #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
@@ -211,6 +222,7 @@
                 </div>
                   </ng-container>
                 </div>
+                <span class="bottom_show"><mat-icon>keyboard_arrow_down</mat-icon></span>
         </fieldset>
       </div>
     </div>

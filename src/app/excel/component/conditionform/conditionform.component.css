@@ -5,13 +5,11 @@
 
 fieldset.scheduler-border {
   cursor: pointer;
-  border-left: 0;
-  border-radius: 5px;
   padding-bottom: 0;
+  padding-left: 30px;
   margin: 0 0 1.5em 0;
   position : relative;
-  -webkit-box-shadow:  0px 0px 0px 0px #000;
-          box-shadow:  0px 0px 0px 0px #000;
+  border-left: 2px dashed #009ada;
 }
 
 .expd{
@@ -28,21 +26,72 @@ fieldset.scheduler-border {
 .formdot:before{
   content: '';
   position: absolute;
-  border: 1px dashed #808080;
   height: calc(100% - 52px);
   top: 10px;
   left: 0;
 }
-.if_legend span{
-  font-size: 13px;
+
+.border_excel{
+  padding:10px;
+}
+.if_span{
+  font-size: 12px;
+  color: white;
   background-color: #009ada;
-  display: inline-block;
+  display: block;
+  border-radius: 50%;
+  text-align: center;
+  width: 30px;
+  line-height: 30px;
+  position: absolute;
+  z-index: 99;
+  height: 30px;
+  left: -14px;
+  top: -10px;
+}
+
+legend{
+  width: unset;
+}
+.exce3l_condition{
+  font-size: 14px;
+  color: white;
+  background-color: #009ada;
+  border-radius: 5px;
+  height: 20px;
+  text-align: center;
+  padding: 0;
+  max-width: auto;
+}
+
+/* fieldset.scheduler-border:after{
+  content: '';
+  position: absolute;
+  width: 10%;
+  left: 0;
+  bottom:0;
+  height: 2px;
+  border-bottom: 2px dashed #009ada;
+} */
+.bottom_show{
   width: 30px;
   height: 30px;
-  line-height: 30px;
-  color: white;
   position: absolute;
-  text-align: center;
+  bottom: -10px;
+  background-color: #009ada;
   border-radius: 50%;
-  left: -30px;
+  left: -15px;
+  color:white;
+}
+.exce3l_condition:before{
+  content: '';
+  position: absolute;
+  width: 100%;
+  right: 29px;
+  bottom: 10px;
+  height: 2px;
+  border-bottom: 2px dashed #009ada;
+}
+.bottom_show  .mat-icon{
+  line-height: 30px;
 }
