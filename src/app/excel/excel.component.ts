@@ -321,30 +321,36 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
   formatformula(val){
     let obj = val._formarray;
-    console.log(obj.expression.condition_expression_then);
+
     let express = obj.expression
 
-   var formula =`=IF( ${express?.lefts?.left ?? '' } ${express?.logical ?? 'or'} ${express?.rights?.right ?? ''} , ${this._checkthen(obj.expression.condition_expression_then)} , ${this._checkthen(obj.expression.condition_expression_else) } )`
 
+   var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(obj.expression.condition_expression_then)} , ${this._checkthen(obj.expression.condition_expression_else) } )`
 
    this.myForm.patchValue({
      name : formula
    }, {emitEvent: false})
-  //  console.log(formula);
 
+
+  }
+
+  _checkconditons(val){
+    console.log(val);
+
+    if(val?.aggregate_type == 'if'){
+        return this.nestedformatformula(val.expression)
+    }
+
+    return val?.left ?? val?.right ?? ''
   }
 
   _checkthen(val){
    return `${val?.value ?? ''}`
   }
 
-  nestedformatformula(val){
-    let obj = val._formarray;
-    console.log(obj);
-    let express = obj.expression
-    var formula =`=IF( ${express.lefts.left } ${express.logical } ${express.rights.right } , ${this._checkthen(obj.condition_expression_then)} , `
-    console.log(formula);
-
+  nestedformatformula(exx){
+  console.log(exx);
+   return `IF( ${this._checkconditons(exx?.lefts)  }  ${exx?.logical ?? '_'} ${ this._checkconditons(exx?.rights ) } ,  ${this._checkthen(exx?.condition_expression_then)} , ${this._checkthen(exx?.condition_expression_else) })`
   }
 
   onSubmit123() {
