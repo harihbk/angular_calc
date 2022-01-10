@@ -321,36 +321,69 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
   formatformula(val){
     let obj = val._formarray;
-
     let express = obj.expression
-
-
-   var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(obj.expression.condition_expression_then)} , ${this._checkthen(obj.expression.condition_expression_else) } )`
-
-   this.myForm.patchValue({
-     name : formula
-   }, {emitEvent: false})
+    console.log(express);
+    var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(obj.expression.condition_expression_then)} , ${this._checkthen(obj.expression.condition_expression_else) } )`
+    this.myForm.patchValue({
+      name : formula
+    }, {emitEvent: false})
 
 
   }
 
   _checkconditons(val){
-    console.log(val);
 
     if(val?.aggregate_type == 'if'){
         return this.nestedformatformula(val.expression)
     }
+    if(val?.aggregate_type == 'and'){
+    return `AND( ${this.andcondition(val.aggregate)} )`;
+    }
 
-    return val?.left ?? val?.right ?? ''
+    if(val?.aggregate_type == 'or'){
+      return `OR( ${this.andcondition(val.aggregate)} )`;
+      }
+    return val?.left ?? val?.right ?? '_'
   }
 
   _checkthen(val){
-   return `${val?.value ?? ''}`
+   return `${val?.value ?? '_'}`
   }
 
   nestedformatformula(exx){
-  console.log(exx);
+
    return `IF( ${this._checkconditons(exx?.lefts)  }  ${exx?.logical ?? '_'} ${ this._checkconditons(exx?.rights ) } ,  ${this._checkthen(exx?.condition_expression_then)} , ${this._checkthen(exx?.condition_expression_else) })`
+  }
+
+  andcondition(val){
+      var generate_and = ''
+    val.forEach(ele => {
+      generate_and +=`${this.checkand(ele)} ,`
+    });
+    return generate_and.replace(/,\s*$/, ""); // remove last comma
+
+  }
+
+  checkand(val){
+    let   generate_and=''
+    if(val.aggregation_type_left == "string"){
+      generate_and += val.aggregates_left
+    }
+
+    if(val.aggregation_type_left == "if"){
+      generate_and += this.nestedformatformula(val.aggregate_left_expression)
+    }
+
+    generate_and +=val.aggregates_operator
+
+    if(val.aggregation_type_right == "string"){
+      generate_and += val.aggregates_right
+    }
+
+    if(val.aggregation_type_right == "if"){
+      generate_and += this.nestedformatformula(val.aggregate_right_expression)
+    }
+     return generate_and;
   }
 
   onSubmit123() {
@@ -367,8 +400,6 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
        let condition_then_if = data.condition_then_if;
        let condition_else_if = data.condition_else_if;
      formula = `=IF(${expression.left} ${expression.logical} ${expression.right} , ${this.checkthen(condition_then_if)}  , ${this.checkelse(condition_else_if)})`
-    console.log(formula);
-
 
      this.myForm.patchValue({
        name : formula

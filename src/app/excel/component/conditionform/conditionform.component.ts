@@ -91,6 +91,8 @@ export class ConditionformComponent implements OnInit {
   aggregate_left: boolean = false;
   conditionlegend: any;
   aggregate_left_instance: FormArray;
+  aggregate_right: boolean;
+  conditionlegend_right: any;
   constructor(
     public fb:FormBuilder
   ) {
@@ -271,6 +273,7 @@ this.expression.addControl('condition_expression_else',this.fb.group({
 
   conditional_rightdropdown(val){
     this.right_rec = false
+    this.conditionlegend_right = val.toUpperCase()
     if(val == 'if'){
 
       this.exxa = (this.exxx as FormGroup)
@@ -305,6 +308,15 @@ this.expression.addControl('condition_expression_else',this.fb.group({
       (<FormArray>(this.addressArray as FormGroup).get('aggregate')).clear();
     //  this.add_aggregate()
       this.show = true;
+    } else if(val == 'and' || val == 'or'){
+
+      this.aggregate_right = true;
+      this._aggregatefunc = (<FormArray>(this.expression.get('rights') as FormGroup).get('aggregate') as FormArray)
+
+
+
+    // this.left_operator_instance =
+
     }
 
   }
@@ -368,6 +380,10 @@ this.expression.addControl('condition_expression_else',this.fb.group({
 
   get _lefts(){
     return <FormGroup>(this.expression.get('lefts') as FormGroup);
+  }
+
+  get _rights(){
+    return <FormGroup>(this.expression.get('rights') as FormGroup);
   }
 
   remove_aggregate(){}
