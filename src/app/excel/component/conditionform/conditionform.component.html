@@ -10,18 +10,18 @@
         <div class="animate" >
                <!--left Condition-->
           <fieldset class="scheduler-border">
-            <legend class="scheduler-border" (click)="toggleShowDiv()"
+            <legend  (click)="toggleShowDiv()"
             mat-raised-button
             matTooltip="{{ animationState == 'in' ? 'hide' : 'show' }} "
             matTooltipClass="example-tooltip-red"
             aria-label="Button that shows a red tooltip"
-            class="example-button"
-            >IF</legend>
+            class="example-button if_legend"
+            ><span>IF</span></legend>
             <div  [@slideInOut]="animationState"  [@dotedline]>
                       <ng-container  formGroupName="lefts" >
                   <div class="row">
-
-                    <mat-form-field class="m-1">
+                    
+                    <mat-form-field class="m-1 col-2">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect (selectionChange)="conditional_dropdown(alarmSelect.value)">
                           <mat-option value="">Choose</mat-option>
                           <mat-option value="string">STRING</mat-option>
@@ -34,7 +34,7 @@
                       </mat-select>
                     </mat-form-field>
 
-                      <mat-form-field class="example-form-field m-1" >
+                      <mat-form-field class="example-form-field m-1 col-2" >
                         <mat-label>Left value</mat-label>
                       <input matInput  id="expression_left" type="text"  class="col-sm-3" formControlName="left">
                     </mat-form-field>
@@ -77,7 +77,7 @@
 
                   <!--conditional operator-->
                 <div class="row">
-                  <mat-form-field class="m-1">
+                  <mat-form-field class="m-1 col-2">
                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="logical">
                       <mat-option value="">Choose Operator</mat-option>
                       <mat-option value="<"><</mat-option>
@@ -92,9 +92,9 @@
 
                  <!--Right Condition-->
                 <div class="row">
-                    <ng-container  formGroupName="rights">
+                    <ng-container   formGroupName="rights">
 
-                      <mat-form-field class="m-1">
+                      <mat-form-field class="m-1 col-2">
                         <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
                           <mat-option value="">Choose</mat-option>
                           <mat-option value="string">STRING</mat-option>
@@ -123,7 +123,7 @@
 
                   <ng-container formGroupName="condition_expression_then">
                     <div class="row">
-                    <mat-form-field class="m-1">
+                    <mat-form-field class="m-1 col-2">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition"  #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
                         <mat-option value="">Statement</mat-option>
                         <mat-option value="then">THEN</mat-option>
@@ -165,7 +165,7 @@
                   <ng-container formGroupName="condition_expression_else">
                     <div class="row">
                       <!-- <button class="btn btn-sucess">Then</button> -->
-                    <mat-form-field class="m-1">
+                    <mat-form-field class="m-1 col-2">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition"  #alarmSelect1 (selectionChange)="conditional_rightdropdown(alarmSelect1.value)">
                         <mat-option value="">Statement</mat-option>
                         <mat-option value="else">ELSE</mat-option>

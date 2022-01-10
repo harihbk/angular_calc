@@ -5,10 +5,8 @@
 
 fieldset.scheduler-border {
   cursor: pointer;
-  border: 1px solid #ddd;
   border-left: 0;
   border-radius: 5px;
-  padding: 0 1.4em 1.4em 1.4em;
   padding-bottom: 0;
   margin: 0 0 1.5em 0;
   position : relative;
@@ -24,15 +22,6 @@ fieldset.scheduler-border {
   border: 1px solid #fb9696;
 }
 
-
-legend{
-  width:0px
-}
-
-.example-button {
-  background: #b71c1c;
-}
-
 .formdot{
   position: relative;
 }
@@ -43,4 +32,17 @@ legend{
   height: calc(100% - 52px);
   top: 10px;
   left: 0;
+}
+.if_legend span{
+  font-size: 13px;
+  background-color: #009ada;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: white;
+  position: absolute;
+  text-align: center;
+  border-radius: 50%;
+  left: -30px;
 }
