@@ -51,9 +51,7 @@
 
                    <!--operators fields-->
                    <div class="col p-0 pt-3" *ngIf="aggregate_left">
-
                         <!-- <ng-container formGroupName="aggregate"> -->
-
                               <div class="row">
                                 <div [ngSwitch]="conditionlegend">
                                     <div *ngSwitchCase="'AND'">
@@ -65,10 +63,7 @@
                                 </div>
 
                               </div>
-
                         <!-- </ng-container> -->
-
-
                   </div>
 
 
@@ -117,6 +112,24 @@
                 <!--recursive if-->
                 <div class="col p-0 pt-3" *ngIf="right_rec">
                     <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
+                </div>
+
+
+                     <!--operators fields-->
+                     <div class="col p-0 pt-3" *ngIf="aggregate_right">
+                      <!-- <ng-container formGroupName="aggregate"> -->
+                            <div class="row">
+                              <div [ngSwitch]="conditionlegend_right">
+                                  <div *ngSwitchCase="'AND'">
+                                    <app-and [left_operator] = "_rights" [conditionlegend]="conditionlegend_right"></app-and>
+                                  </div>
+                                  <div *ngSwitchCase="'OR'">
+                                    <app-and [left_operator] = "_rights" [conditionlegend]="conditionlegend_right"></app-and>
+                                  </div>
+                              </div>
+
+                            </div>
+                      <!-- </ng-container> -->
                 </div>
 
                 <!--then thenif-->
