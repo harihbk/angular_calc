@@ -129,6 +129,7 @@ export class AndComponent implements OnInit {
           condition : [''],
           value     : [''],
           aggregate_type : [''],
+          aggregate  : this.fb.array([]),
           expression : this.fb.group({})
         }));
 
@@ -171,6 +172,7 @@ export class AndComponent implements OnInit {
           condition : [''],
           value     : [''],
           aggregate_type : [''],
+          aggregate  : this.fb.array([]),
           expression : this.fb.group({})
         }));
 
