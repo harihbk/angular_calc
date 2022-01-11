@@ -20,7 +20,7 @@
             <div  [@slideInOut]="animationState" class="list_excel" [@dotedline]>
                       <ng-container  formGroupName="lefts" >
                   <div class="row">
-                    
+
                     <mat-form-field class="m-1 col-2">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect (selectionChange)="conditional_dropdown(alarmSelect.value)">
                           <mat-option value="">Choose</mat-option>
@@ -76,7 +76,7 @@
                     Condition
                   </div>
                   <mat-form-field class="m-1 col-2">
-                   
+
                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="logical">
                       <mat-option value="">Choose Operator</mat-option>
                       <mat-option value="<"><</mat-option>
@@ -91,7 +91,7 @@
 
                  <!--Right Condition-->
                 <div class="row">
-                  
+
                     <ng-container   formGroupName="rights">
 
                       <mat-form-field class="m-1 col-2">
@@ -177,6 +177,20 @@
                 <div class="col p-0 pt-3" *ngIf="thenshowhide">
                   <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
                 </div>
+
+                <div class="row">
+                  <div [ngSwitch]="expression?.get('condition_expression_then.aggregate_type')?.value">
+                      <div *ngSwitchCase="'and'">
+                        <app-and [left_operator] = "thencond" [conditionlegend]="conditional_then_label"></app-and>
+                      </div>
+                      <div *ngSwitchCase="'or'">
+                        <app-and [left_operator] = "thencond" [conditionlegend]="conditional_then_label"></app-and>
+                      </div>
+                  </div>
+
+                </div>
+
+
                   </ng-container>
 
 
@@ -225,265 +239,70 @@
 
                 <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
 
+                <!--Additionals operator-->
+
+                <ng-container formArrayName="operators">
+                  <p class="text-right">
+                    <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
+                  </p>
+                 <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
+                  <div [formGroupName]="i">
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator" #changeop (selectionChange)="chooseope(changeop.value)">
+                        <mat-option value="">Choose</mat-option>
+                        <mat-option value="+">Addition</mat-option>
+                        <mat-option value="-">Substraction</mat-option>
+                        <mat-option value="/">Division</mat-option>
+                        <mat-option value="*">Multiplication</mat-option>
+                        <mat-option value="%">Modulo</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="m-1" *ngIf="expression?.get('operators')?.controls[i]?.get('operator')?.value">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator_aggregate_type" #operator_controlss (selectionChange)="operator_controls(i,operator_controlss.value)">
+                        <mat-option value="">Choose</mat-option>
+                        <mat-option value="string">STRING</mat-option>
+                        <mat-optgroup label="Operators">
+                          <mat-option value="and">AND</mat-option>
+                          <mat-option value="or">OR</mat-option>
+                          <mat-option value="round">ROUND</mat-option>
+                        </mat-optgroup>
+                        <mat-option value="if">IF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+
+                   <div class="row">
+                      <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
+                          <div *ngSwitchCase="'and'">
+                            <app-and [left_operator] = "expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                          </div>
+                          <div *ngSwitchCase="'or'">
+                            <app-and [left_operator] = "expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                          </div>
+                          <div *ngSwitchCase="'if'">
+                            <app-conditionform  [expression]="expression.get('operators').controls[i].get('operator_controls')"  ></app-conditionform>
+                          </div>
+                      </div>
+                   </div>
+                  </div>
+                 </ng-container>
+
+
+
+                </ng-container>
+
+
+              <!--Additionals operator-->
+
+
+
+
         </fieldset>
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-<!--
-
-  <div class="row">
-    <div class="col-sm-5 bordercolor">
-      <ng-container  formGroupName="lefts">
-        <span class="p-1">=IF</span>
-            <div class="d-flex">
-              <input id="expression_left" type="text"  class="form-control" formControlName="left" placeholder="Enter Value">
-              <select name="conditional_dropdown" #cd class="form-control" (change)="conditional_dropdown(cd.value)">
-                <option value="string">STRING</option>
-                <option value="operator">OPERATOR</option>
-                <option value="if">IF</option>
-              </select>
-            </div> -->
-    <!--operator-->
-      <!-- <div class="m-1" formArrayName="aggregate" *ngIf="show">
-        <div  *ngFor="let step of _aggregate.controls; let i = index">
-            <div [formGroupName]="i"  class="row">
-
-                <div class="col">
-                  <select  id="aggregates" class="form-control " formControlName="opera" #t (change)="aggregate_invoke(t.value)">
-                    <option value="and">AND</option>
-                    <option value="or">OR</option>
-                    <option value="sum">SUM</option>
-                    <option value="average">AVERAGE</option>
-                  </select>
-                </div>
-
-                <div class="col">
-                  <div class="aggregates_left">
-                    <input id="aggregates_left" type="text"  class="form-control" formControlName="aggregates_left">
-                  </div>
-                </div>
-
-
-                <div class="col"  *ngIf="selectedAggregate == 'and' || selectedAggregate == 'or'">
-                  <div class="aggregates_operator">
-                    <select name="aggregates_operator" id="aggregates_operator" class="form-control" formControlName="aggregates_operator">
-                      <option value="<"><</option>
-                      <option value=">">></option>
-                      <option value="<="><=</option>
-                      <option value=">=">>=</option>
-                      <option value="=">=</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col"  *ngIf="selectedAggregate == 'sum' ||  selectedAggregate == 'average' ">
-                  <div class="aggregates_operator">
-                    <select name="aggregates_operator" id="aggregates_operator" class="form-control" formControlName="aggregates_operator">
-                      <option value="," >,</option>
-                    </select>
-                  </div>
-                </div>
-
-
-                <div class="col">
-                  <div class="aggregates_right">
-                    <input id="aggregates_right" type="text"  class="form-control" formControlName="aggregates_right">
-                  </div>
-                </div>
-
-                <div class="col">
-                  <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="remove_aggregate()">remove_circle</mat-icon>
-                </div>
-          </div>
-        </div>
-      </div> -->
-      <!--operator-->
-
-      <!--nested if-->
-<!--
-      <div class="col p-0 pt-3" *ngIf="hn">
-        <fieldset class="scheduler-border">
-          <legend class="scheduler-border">IF Right</legend>
-          <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
-        </fieldset>
-      </div> -->
-
-      <!--nestd if-->
-
-  <!-- </ng-container>
-    </div>
-
-    <div class="col-sm-2 ">
-      <span class="p-1">operator</span>
-      <select name="logicaloperator" id="logicaloperator" class="form-control " formControlName="logical">
-        <option value="">Choose Operator</option>
-        <option value="<"><</option>
-        <option value=">">></option>
-        <option value="<="><=</option>
-        <option value=">=">>=</option>
-        <option value="=">=</option>
-      </select>
-    </div>
-
-
-    <div class="col-sm-5 bordercolor">
-      <span class="p-1"></span>
-      <div class="d-flex">
-
-        <input id="expression_right" type="text"  class="form-control" formControlName="right" placeholder="Enter Value">
-        <select name="conditional_dropdown" #cd class="form-control" (change)="conditional_dropdown(cd.value)">
-          <option value="string">STRING</option>
-          <option value="operator">OPERATOR</option>
-          <option value="if">IF</option>
-        </select>
-      </div>
-
-    </div>
-
-
-
-
-
-
-  </div> -->
-
-
-
-<!--
-
-
-  <div class="row">
-    <div class="col">
-    <ng-container  formGroupName="lefts">
-        <span class="p-1">=IF</span>
-            <div class="col-sm-12 d-flex">
-              <input id="expression_left" type="text"  class="form-control m-1 col-sm-4" formControlName="left" placeholder="Enter Value">
-              <select name="conditional_dropdown" #cd class="form-control m-1 col-sm-4" (change)="conditional_dropdown(cd.value)">
-                <option value="string">STRING</option>
-                <option value="operator">OPERATOR</option>
-                <option value="if">IF</option>
-              </select>
-            </div>
-
-
-
-
-
-      <div class="m-1" formArrayName="aggregate" *ngIf="show">
-        <div  *ngFor="let step of _aggregate.controls; let i = index">
-            <div [formGroupName]="i"  class="row">
-
-                <div class="col-sm-2">
-                  <select  id="aggregates" class="form-control " formControlName="opera" #t (change)="aggregate_invoke(t.value)">
-                    <option value="and">AND</option>
-                    <option value="or">OR</option>
-                    <option value="sum">SUM</option>
-                    <option value="average">AVERAGE</option>
-                  </select>
-                </div>
-
-                <div class="col-sm-2">
-                  <div class="aggregates_left">
-                    <input id="aggregates_left" type="text"  class="form-control" formControlName="aggregates_left">
-                  </div>
-                </div>
-
-
-                <div class="col-sm-2"  *ngIf="selectedAggregate == 'and' || selectedAggregate == 'or'">
-                  <div class="aggregates_operator">
-                    <select name="aggregates_operator" id="aggregates_operator" class="form-control" formControlName="aggregates_operator">
-                      <option value="<"><</option>
-                      <option value=">">></option>
-                      <option value="<="><=</option>
-                      <option value=">=">>=</option>
-                      <option value="=">=</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-sm-2"  *ngIf="selectedAggregate == 'sum' ||  selectedAggregate == 'average' ">
-                  <div class="aggregates_operator">
-                    <select name="aggregates_operator" id="aggregates_operator" class="form-control" formControlName="aggregates_operator">
-                      <option value="," >,</option>
-                    </select>
-                  </div>
-                </div>
-
-
-                <div class="col-sm-2">
-                  <div class="aggregates_right">
-                    <input id="aggregates_right" type="text"  class="form-control" formControlName="aggregates_right">
-                  </div>
-                </div>
-
-                <div class="col-sm-2">
-                  <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="remove_aggregate()">remove_circle</mat-icon>
-                </div>
-
-          </div>
-
-        </div>
-      </div>
-
-
-  </ng-container>
-  </div>
-  </div>
-
-
-  <div class="row">
-    <div class="col" *ngIf="hn">
-      <fieldset class="scheduler-border">
-        <legend class="scheduler-border">IF Right</legend>
-        <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
-      </fieldset>
-    </div>
-  </div>
-
-
-
-
-
-<div class="row">
-    <div class="col d-flex">
-        <select name="logicaloperator" id="logicaloperator" class="form-control m-1 col-sm-3" formControlName="logical">
-          <option value="">Choose Operator</option>
-          <option value="<"><</option>
-          <option value=">">></option>
-          <option value="<="><=</option>
-          <option value=">=">>=</option>
-          <option value="=">=</option>
-        </select>
-
-
-        <input id="expression_right" type="text"  class="form-control m-1 col-sm-3" formControlName="right" placeholder="Enter Value">
-        <select name="conditional_dropdown" #cd class="form-control m-1 col-sm-3" (change)="conditional_dropdown(cd.value)">
-          <option value="string">STRING</option>
-          <option value="operator">OPERATOR</option>
-          <option value="if">IF</option>
-        </select>
-    </div>
-</div>
- -->
-
-    <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="add_aggregate()">add_circle</mat-icon> -->
-
-  <!-- </div> -->
-
-
-
-
-
 </div>
 
-
-<!-- <pre>{{ expression.value | json }}<pre> -->
 
 
