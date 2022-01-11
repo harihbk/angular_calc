@@ -1,0 +1,13 @@
+.header_excel{
+    position: fixed;
+    top: 0;
+    z-index: 2000;
+    width: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 0px 10px;
+}
+.container_excel{
+    padding-top: 80px;
+}

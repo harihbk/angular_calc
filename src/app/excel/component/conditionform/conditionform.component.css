@@ -8,10 +8,14 @@ fieldset.scheduler-border {
   padding-bottom: 0;
   padding-left: 30px;
   margin: 0 0 1.5em 0;
-  position : relative;
+  position: relative;
+  box-shadow: 2px 1px 10px rgb(201 201 201);
+  border-radius: 10px;
   border-left: 2px dashed #009ada;
 }
-
+fieldset.scheduler-border .row{
+  margin:0;
+}
 .expd{
   width : 100%;
 }
@@ -53,26 +57,26 @@ fieldset.scheduler-border {
 legend{
   width: unset;
 }
-.exce3l_condition{
-  font-size: 14px;
+.excel_condition{
+  font-size: 13px;
   color: white;
-  background-color: #009ada;
+  background-color: #cf2379;
   border-radius: 5px;
-  height: 20px;
-  text-align: center;
+  height: 25px;
+  line-height: 25px;
   padding: 0;
-  max-width: auto;
-}
+  text-align: center;
+  /* background-color: #009ada; */
 
-/* fieldset.scheduler-border:after{
-  content: '';
-  position: absolute;
-  width: 10%;
-  left: 0;
-  bottom:0;
-  height: 2px;
-  border-bottom: 2px dashed #009ada;
+}
+/* .then_conidtion{
+  background-color: #cf2379;
+}
+.theb_if{
+  background-color: #2A4564;
 } */
+
+
 .bottom_show{
   width: 30px;
   height: 30px;
@@ -82,16 +86,41 @@ legend{
   border-radius: 50%;
   left: -15px;
   color:white;
+  bottom: -29px;
 }
-.exce3l_condition:before{
+.excel_condition:before{
   content: '';
   position: absolute;
-  width: 100%;
-  right: 29px;
+  width: 30%;
+  right: 100%;
   bottom: 10px;
   height: 2px;
   border-bottom: 2px dashed #009ada;
 }
-.bottom_show  .mat-icon{
-  line-height: 30px;
+.bottom_show i{
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+/* ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper{
+  padding-bottom: 10px;
+} */
+.and_lsittable {
+  margin-left:25px;
+}
+::ng-deep .mat-option{
+  height: 30px  !important;
+  padding:10px;
+}
+::ng-deep app-conditionform{
+  flex:auto;
+}
+::ng-deep .mat-form-field-infix{
+  border-top: none !important;
+}
+::ng-deep  .mat-form-field{
+  margin-top:0 !important;
+  margin-bottom:0 !important;
 }

@@ -16,7 +16,7 @@
             matTooltipClass="example-tooltip-red"
             aria-label="Button that shows a red tooltip"
             class="example-button if_legend"
-            ><span class="if_span">IF <i class="fas fa-minus"></i></span></legend>
+            ><span class="if_span">IF </span></legend>
             <div  [@slideInOut]="animationState" class="list_excel" [@dotedline]>
                       <ng-container  formGroupName="lefts" >
                   <div class="row">
@@ -54,7 +54,7 @@
                         <!-- <ng-container formGroupName="aggregate"> -->
                               <div class="row">
                                 <div [ngSwitch]="conditionlegend">
-                                    <div *ngSwitchCase="'AND'">
+                                    <div *ngSwitchCase="'AND'" class="and_lsittable">
                                       <app-and [left_operator] = "_lefts" [conditionlegend]="conditionlegend"></app-and>
                                     </div>
                                     <div *ngSwitchCase="'OR'">
@@ -72,7 +72,7 @@
 
                   <!--conditional operator-->
                 <div class="row m-0 align-items-center">
-                  <div class=" col-1 exce3l_condition">
+                  <div class=" col-1 excel_condition">
                     Condition
                   </div>
                   <mat-form-field class="m-1 col-2">
@@ -141,7 +141,7 @@
 
                   <ng-container formGroupName="condition_expression_then">
                     <div class="row  m-0 align-items-center">
-                      <div class=" col-1 exce3l_condition">
+                      <div class=" col-1 excel_condition then_conidtion">
                         Then
                       </div>
                     <mat-form-field class="m-1 col-2">
@@ -199,7 +199,7 @@
 
                   <ng-container formGroupName="condition_expression_else">
                     <div class="row  m-0 align-items-center">
-                      <div class=" col-1 exce3l_condition">
+                      <div class=" col-1 theb_if excel_condition">
                         Then If
                       </div>
                       <!-- <button class="btn btn-sucess">Then</button> -->
@@ -231,32 +231,78 @@
 
 
                 </div>
-
-
-                <div class="col p-0 pt-3" *ngIf=" expression?.get('condition_expression_else.aggregate_type')?.value == 'if'">
+                <div class="col p-0 pt-3" *ngIf="elsehide">
                   <app-conditionform [events]="events" [expression]="_expression" ></app-conditionform>
                 </div>
-
-                <div class="row">
-                  <div [ngSwitch]="expression?.get('condition_expression_else.aggregate_type')?.value">
-                      <div *ngSwitchCase="'and'">
-                        <app-and [left_operator] = "elsecond" [conditionlegend]="conditional_else_label"></app-and>
-                      </div>
-                      <div *ngSwitchCase="'or'">
-                        <app-and [left_operator] = "elsecond" [conditionlegend]="conditional_else_label"></app-and>
-                      </div>
-                  </div>
-
-                </div>
-
-
-
                   </ng-container>
                 </div>
+
+                <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
+
+                <!--Additionals operator-->
+
+                <ng-container formArrayName="operators">
+                  <p class="text-right">
+                    <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
+                  </p>
+                 <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
+                  <div [formGroupName]="i">
+                    <mat-form-field class="m-1">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator" #changeop (selectionChange)="chooseope(changeop.value)">
+                        <mat-option value="">Choose</mat-option>
+                        <mat-option value="+">Addition</mat-option>
+                        <mat-option value="-">Substraction</mat-option>
+                        <mat-option value="/">Division</mat-option>
+                        <mat-option value="*">Multiplication</mat-option>
+                        <mat-option value="%">Modulo</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="m-1" *ngIf="expression?.get('operators')?.controls[i]?.get('operator')?.value">
+                      <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator_aggregate_type" #operator_controlss (selectionChange)="operator_controls(i,operator_controlss.value)">
+                        <mat-option value="">Choose</mat-option>
+                        <mat-option value="string">STRING</mat-option>
+                        <mat-optgroup label="Operators">
+                          <mat-option value="and">AND</mat-option>
+                          <mat-option value="or">OR</mat-option>
+                          <mat-option value="round">ROUND</mat-option>
+                        </mat-optgroup>
+                        <mat-option value="if">IF</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+
+                   <div class="row">
+                      <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
+                          <div *ngSwitchCase="'and'">
+                            <app-and [left_operator] = "expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                          </div>
+                          <div *ngSwitchCase="'or'">
+                            <app-and [left_operator] = "expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                          </div>
+                          <div *ngSwitchCase="'if'">
+                            <app-conditionform  [expression]="expression.get('operators').controls[i].get('operator_controls')"  ></app-conditionform>
+                          </div>
+                      </div>
+                   </div>
+                  </div>
+                 </ng-container>
+
+
+
+                </ng-container>
+
+
+              <!--Additionals operator-->
+
+
+
+
         </fieldset>
       </div>
     </div>
   </div>
-
 </div>
+
+
 
