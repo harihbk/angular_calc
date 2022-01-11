@@ -246,6 +246,9 @@
                     <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
                   </p>
                  <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
+                  <div class="text-right mius_excel">
+                    <mat-icon class="text-right remove_circle" color="warn" (click)="removeoperator(i)">remove_circle</mat-icon>
+                  </div>
                   <div [formGroupName]="i">
                     <mat-form-field class="m-1">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator" #changeop (selectionChange)="chooseope(changeop.value)">
