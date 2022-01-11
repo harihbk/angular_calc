@@ -226,11 +226,9 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
   validation(){
   return  this.fb.group({
-
       expression : this.fb.group({}),
       condition_then_if : this.fb.group({}),
       condition_else_if : this.fb.group({})
-
 		});
   }
 
@@ -246,32 +244,10 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
 
 
-
     this._Formarray = this.myForm.get('_formarray') as FormGroup;
     this.exx =  this._Formarray.get('expression')  as FormGroup;
     this.thenif =  this._Formarray.get('condition_then_if')  as FormGroup;
     this.elseif =  this._Formarray.get('condition_else_if')  as FormGroup;
-
-
-
-
-    // let obj =
-    // {
-    //  statement   : "=IF",
-    //  fnopen      : '(',
-    //  expression : {
-    //    left : 1,
-    //    logical : ">",
-    //    right : 1,
-    //  },
-    //  then : {
-    //    value : 1
-    //  },
-    //  else : {
-    //    value : 2
-    //  },
-    //  fnclose : ')'
-    // }
 
   }
 
@@ -299,13 +275,6 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
   fncondition_then_if(ev){
     console.log(ev);
-
-
-
-    // (this.myForm.get('_formarray')['controls'][0].get('condition_then_if') as FormGroup).addControl('expression',this.validation())
-    // console.log(this.myForm.get('_formarray')['controls'][0].get('condition_then_if'));
-
-  //  this.condition_then_if.addControl('expression',this.validation())
     }
 
   fncondition_else_if(ev){
@@ -324,11 +293,42 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
     let express = obj.expression
     console.log(express);
     var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(express.condition_expression_then)} , ${this._checkthen(express.condition_expression_else) } )`
+
+    if(express?.operators.length > 0){
+      formula += this.operators(express.operators)
+
+
+    }
+
     this.myForm.patchValue({
       name : formula
     }, {emitEvent: false})
 
 
+  }
+
+  operators(val){
+    var frm = ''
+     console.log(val?.operator_controls);
+
+    val?.forEach(ele => {
+      switch(ele?.operator_aggregate_type){
+        case 'and':
+          frm +=`${ele.operator}`
+          frm +=`AND( ${this.andcondition(ele?.operator_controls?.aggregate)} )`;
+        break;
+        case 'or':
+          frm +=`${ele.operator}`
+          frm +=`OR( ${this.andcondition(ele?.operator_controls?.aggregate)} )`;
+        break;
+        case 'if':
+          frm +=`${ele.operator}`
+          frm +=`${this.nestedformatformula(ele?.operator_controls)} `;
+        break;
+      }
+    });
+
+return frm
   }
 
   _checkconditons(val){
@@ -353,7 +353,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
         return `AND( ${this.andcondition(val?.aggregate)} )`;
        break;
        case 'or':
-        return `AND( ${this.andcondition(val?.aggregate)} )`;
+        return `OR( ${this.andcondition(val?.aggregate)} )`;
        break;
        case 'string':
         return `${val?.value ?? '_'}`
@@ -371,7 +371,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
   andcondition(val){
       var generate_and = ''
-    val.forEach(ele => {
+    val?.forEach(ele => {
       generate_and +=`${this.checkand(ele)} ,`
     });
     return generate_and.replace(/,\s*$/, ""); // remove last comma

@@ -95,6 +95,7 @@ export class ConditionformComponent implements OnInit {
   conditionlegend_right: any;
   conditional_else_label: any;
   conditional_then_label: any;
+  operator_label: any;
   constructor(
     public fb:FormBuilder
   ) {
@@ -150,6 +151,9 @@ export class ConditionformComponent implements OnInit {
     expression : this.fb.group({})
   }));
 
+  this.expression.addControl('operators',this.fb.array([
+     this.opearatoevalidator
+  ]))
 
 
     // this.subscription = this.events.subscribe((res :any)=>{
@@ -161,10 +165,18 @@ export class ConditionformComponent implements OnInit {
     //   })
     // })
     this._Formarray = this.expression.get('lefts') as FormGroup;
+  console.log(this.expression);
 
   }
 
+  get opearatoevalidator(){
+  return  this.fb.group({
+        operator : [''],
+        operator_aggregate_type : [''],
+       // operator_controls : this.fb.group({})
 
+    })
+  }
 
 
   get addressArray()  {
@@ -239,6 +251,87 @@ this.expression.addControl('condition_expression_else',this.fb.group({
   get condition_expression_else(){
     return <FormGroup>(this.expression.get('condition_expression_else'))
   }
+
+
+  get validation_rights_lefts(){
+    return this.fb.group({
+      left : [''],
+      expression : this.fb.group({}),
+      aggregate  : this.fb.array([]),
+      aggregate_type : [''],
+    })
+  }
+
+
+  get _lefts_validator(){
+    return this.fb.group({
+      left : [''],
+      expression : this.fb.group({}),
+      aggregate  : this.fb.array([]),
+      aggregate_type : [''],
+    })
+  }
+  get _rights_validator(){
+    return this.fb.group({
+      right : [''],
+      expression : this.fb.group({}),
+      aggregate  : this.fb.array([]),
+      aggregate_type : [''],
+    })
+  }
+
+  get _condition_expression_validator(){
+   return this.fb.group({
+      condition : [''],
+      value     : [''],
+      aggregate_type : [''],
+      aggregate  : this.fb.array([]),
+      expression : this.fb.group({})
+    })
+  }
+
+
+
+
+  operatorsaddformarray(){
+    (<FormArray>this.expression.get('operators') as FormArray).push(this.opearatoevalidator)
+  }
+
+  operator_controls(i,val){
+
+    if(val == 'if'){
+      (<FormGroup>(this.expression.get('operators').controls[i] as FormGroup)).addControl('operator_controls',
+       this.fb.group({
+         'lefts': this._lefts_validator,
+         'rights' : this._rights_validator,
+         'logical' : [''],
+         'condition_expression_then':this._condition_expression_validator,
+         'condition_expression_else' : this._condition_expression_validator
+       })
+      )
+
+    } else if(val == 'and' || val == 'or'){
+      (<FormGroup>(this.expression.get('operators').controls[i] as FormGroup)).addControl('operator_controls',this.validation())
+    }
+
+   console.log(this.expression);
+
+
+  }
+
+  // _operators(){
+  //   return
+  // }
+
+  validation(){
+    return  this.fb.group({
+      condition : [''],
+      value     : [''],
+      aggregate_type : [''],
+      aggregate  : this.fb.array([]),
+      expression : this.fb.group({})
+      });
+    }
 
 
   conditional_then(val){
@@ -396,7 +489,11 @@ this.expression.addControl('condition_expression_else',this.fb.group({
 
   get thencond(){
     return <FormGroup>(this.expression.get('condition_expression_then') as FormGroup);
+  }
 
+
+  chooseope(val){
+    this.operator_label = val.toUpperCase();
   }
 
   remove_aggregate(){}
