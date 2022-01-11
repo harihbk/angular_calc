@@ -37,10 +37,7 @@
                             </div>
                             <!--recursive if-->
                             <div class="col p-0 pt-3" *ngIf="left_rec">
-                                <!-- <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">IF Left</legend> -->
-                                <app-conditionform [events]="events" [expression]="_expression"></app-conditionform>
-                                <!-- </fieldset> -->
+                                <app-conditionform [events]="events" [expression]="expression.get('lefts').get('expression')"></app-conditionform>
                             </div>
 
                             <!--operators fields-->
@@ -157,9 +154,9 @@
                                         <div *ngSwitchCase="'and'">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
                                         </div>
-                                        <!-- <div *ngSwitchCase="'or'">
+                                        <div *ngSwitchCase="'or'">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
-                                        </div> -->
+                                        </div>
                                         <div *ngSwitchCase="'if'">
                                         <app-conditionform  [expression]="expression?.get('condition_expression_then.expression')"  ></app-conditionform>
                                         </div>
