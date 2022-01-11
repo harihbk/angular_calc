@@ -6,7 +6,7 @@
 fieldset.scheduler-border {
   cursor: pointer;
   padding-bottom: 0;
-  padding-left: 30px;
+  padding-left: 10px;
   margin: 0 0 1.5em 0;
   position: relative;
   box-shadow: 2px 1px 10px rgb(201 201 201);
@@ -66,6 +66,9 @@ legend{
   line-height: 25px;
   padding: 0;
   text-align: center;
+  max-width: unset;
+  flex: unset;
+  width: 80px;
   /* background-color: #009ada; */
 
 }
@@ -86,12 +89,12 @@ legend{
   border-radius: 50%;
   left: -15px;
   color:white;
-  bottom: -29px;
+  bottom: -24px;
 }
 .excel_condition:before{
   content: '';
   position: absolute;
-  width: 30%;
+  width: 13%;
   right: 100%;
   bottom: 10px;
   height: 2px;
