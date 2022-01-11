@@ -297,6 +297,11 @@ this.expression.addControl('condition_expression_else',this.fb.group({
     (<FormArray>this.expression.get('operators') as FormArray).push(this.opearatoevalidator)
   }
 
+  removeoperator(i)
+  {
+    (<FormArray>this.expression.get('operators') as FormArray).removeAt(i)
+  }
+
   operator_controls(i,val){
 
     if(val == 'if'){

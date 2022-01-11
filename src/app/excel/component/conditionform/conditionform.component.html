@@ -158,6 +158,7 @@
                               <app-conditionform [events]="events" [expression]="_expression"></app-conditionform>
                           </div>
 
+
                           <div class="row">
                               <div [ngSwitch]="expression?.get('condition_expression_then.aggregate_type')?.value">
                                   <div *ngSwitchCase="'and'">
