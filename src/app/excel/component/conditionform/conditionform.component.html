@@ -29,7 +29,7 @@
                                         <mat-option value="if">IF</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-  
+
                                 <mat-form-field class="example-form-field m-1 col-2">
                                     <mat-label>Left value</mat-label>
                                     <input matInput id="expression_left" type="text" class="col-sm-3" formControlName="left" />
@@ -42,7 +42,7 @@
                                 <app-conditionform [events]="events" [expression]="_expression"></app-conditionform>
                                 <!-- </fieldset> -->
                             </div>
-  
+
                             <!--operators fields-->
                             <div class="col p-0 pt-3" *ngIf="aggregate_left">
                                 <!-- <ng-container formGroupName="aggregate"> -->
@@ -59,7 +59,7 @@
                                 <!-- </ng-container> -->
                             </div>
                         </ng-container>
-  
+
                         <!--conditional operator-->
                         <div class="row m-0 align-items-center">
                             <div class="col-1 excel_condition">
@@ -76,7 +76,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-  
+
                         <!--Right Condition-->
                         <div class="row">
                             <ng-container formGroupName="rights">
@@ -92,7 +92,7 @@
                                         <mat-option value="if">IF</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-  
+
                                 <mat-form-field class="example-form-field m-1">
                                     <mat-label>Right value</mat-label>
                                     <input matInput id="expression_right" type="text" class="col-sm-3" formControlName="right" />
@@ -103,7 +103,7 @@
                         <div class="col p-0 pt-3" *ngIf="right_rec">
                             <app-conditionform [events]="events" [expression]="_expression"></app-conditionform>
                         </div>
-  
+
                         <!--operators fields-->
                         <div class="col p-0 pt-3" *ngIf="aggregate_right">
                             <div class="row">
@@ -119,7 +119,7 @@
                             <!-- </ng-container> -->
                         </div>
                         <!--then thenif-->
-  
+
                         <ng-container formGroupName="condition_expression_then">
                             <div class="row m-0 align-items-center">
                                 <div class="col-1 excel_condition then_conidtion">
@@ -132,7 +132,7 @@
                                         <mat-option value="thenif">THENIF</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-  
+
                                 <mat-form-field class="m-1">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect3 (selectionChange)="conditional_then(alarmSelect3.value)">
                                         <mat-option value="">Choose</mat-option>
@@ -145,7 +145,7 @@
                                         <mat-option value="if">IF</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-  
+
                                 <mat-form-field class="example-form-field m-1">
                                     <mat-label>Expression</mat-label>
                                     <input matInput id="value" type="text" class="col-sm-3" formControlName="value" />
@@ -157,9 +157,9 @@
                                         <div *ngSwitchCase="'and'">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
                                         </div>
-                                        <div *ngSwitchCase="'or'">
+                                        <!-- <div *ngSwitchCase="'or'">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
-                                        </div>
+                                        </div> -->
                                         <div *ngSwitchCase="'if'">
                                         <app-conditionform  [expression]="expression?.get('condition_expression_then.expression')"  ></app-conditionform>
                                         </div>
@@ -167,9 +167,9 @@
                                 </div>
                             <!--then recursive-->
                         </ng-container>
-  
+
                         <!--else elseif-->
-  
+
                         <ng-container formGroupName="condition_expression_else">
                             <div class="row m-0 align-items-center">
                                 <div class="col-1 theb_if excel_condition">
@@ -183,7 +183,7 @@
                                         <mat-option value="elseif">ELSEIF</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-  
+
                                 <mat-form-field class="m-1">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect5 (selectionChange)="conditional_else(alarmSelect5.value)">
                                         <mat-option value="">Choose</mat-option>
@@ -196,16 +196,17 @@
                                         <mat-option value="if">IF</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-  
+
                                 <mat-form-field class="example-form-field m-1">
                                     <mat-label>Expression</mat-label>
                                     <input matInput id="value" type="text" class="col-sm-3" formControlName="value" />
                                 </mat-form-field>
                             </div>
-                       
+
 
 
                             <!--else recusrsive-->
+
                             <div class="row">
                                 <div [ngSwitch]="expression?.get('condition_expression_else.aggregate_type')?.value">
                                     <div *ngSwitchCase="'and'">
@@ -222,23 +223,23 @@
                             <!--else recusrsive-->
                         </ng-container>
                     </div>
-  
+
                     <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
-  
+
                     <!--Additionals operator-->
-  
+
                     <ng-container formArrayName="operators">
                             <div class="data_opeartor">
                                 <p class="text-right">
                                 <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
                             </p>
-                            
+
                                     <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
-                                    
-                                        <div [formGroupName]="i" class="last_and_excel">                 
+
+                                        <div [formGroupName]="i" class="last_and_excel">
                                                 <span class="math_opeartor"><i class="fas fa-calculator"></i></span>
-                                                <div class="d_condition_flex"> 
-                                                
+                                                <div class="d_condition_flex">
+
                                                         <mat-form-field class="m-1">
                                                             <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator" #changeop (selectionChange)="chooseope(changeop.value)">
                                                                 <mat-option value="">Choose</mat-option>
@@ -249,7 +250,7 @@
                                                                 <mat-option value="%">Modulo</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-                        
+
                                                         <mat-form-field class="m-1" *ngIf="expression?.get('operators')?.controls[i]?.get('operator')?.value">
                                                             <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator_aggregate_type" #operator_controlss (selectionChange)="operator_controls(i,operator_controlss.value)">
                                                                 <mat-option value="">Choose</mat-option>
@@ -262,9 +263,9 @@
                                                                 <mat-option value="if">IF</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-                        
-                                            
-                        
+
+
+
                                                         <div class="row">
                                                             <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
                                                                 <div *ngSwitchCase="'and'" class="lisst_con_opeartor">
