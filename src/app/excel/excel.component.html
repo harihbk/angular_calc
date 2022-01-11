@@ -1,12 +1,12 @@
 
 
 
-<div class="row m-3">
+<div class="">
   <div class="container-fluid">
     <form [formGroup]="myForm" (ngSubmit)="onSubmit()" >
-      <button type="submit" >Save</button>
+      <!-- <button type="submit" >Save</button> -->
 
-      <div>
+      <div class="header_excel">
         <label for="name">
           Formula
         </label>
@@ -17,7 +17,7 @@
             <!-- <div *ngFor="let _items of _Formarray.controls; index as i">
                   <ng-container [formGroupName]="i"> -->
 
-                       <div class="p-3 row">
+                       <div class="container_excel">
                         <app-conditionform [events]="events_expression_Subject.asObservable()" [expression]="exx" [dataset]="expression_dataset" style="width:100%"></app-conditionform>
                       </div>
 

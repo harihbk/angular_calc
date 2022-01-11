@@ -16,7 +16,7 @@
             matTooltipClass="example-tooltip-red"
             aria-label="Button that shows a red tooltip"
             class="example-button if_legend"
-            ><span class="if_span">IF <i class="fas fa-minus"></i></span></legend>
+            ><span class="if_span">IF </span></legend>
             <div  [@slideInOut]="animationState" class="list_excel" [@dotedline]>
                       <ng-container  formGroupName="lefts" >
                   <div class="row">
@@ -54,7 +54,7 @@
                         <!-- <ng-container formGroupName="aggregate"> -->
                               <div class="row">
                                 <div [ngSwitch]="conditionlegend">
-                                    <div *ngSwitchCase="'AND'">
+                                    <div *ngSwitchCase="'AND'" class="and_lsittable">
                                       <app-and [left_operator] = "_lefts" [conditionlegend]="conditionlegend"></app-and>
                                     </div>
                                     <div *ngSwitchCase="'OR'">
@@ -72,7 +72,7 @@
 
                   <!--conditional operator-->
                 <div class="row m-0 align-items-center">
-                  <div class=" col-1 exce3l_condition">
+                  <div class=" col-1 excel_condition">
                     Condition
                   </div>
                   <mat-form-field class="m-1 col-2">
@@ -141,7 +141,7 @@
 
                   <ng-container formGroupName="condition_expression_then">
                     <div class="row  m-0 align-items-center">
-                      <div class=" col-1 exce3l_condition">
+                      <div class=" col-1 excel_condition then_conidtion">
                         Then
                       </div>
                     <mat-form-field class="m-1 col-2">
@@ -199,7 +199,7 @@
 
                   <ng-container formGroupName="condition_expression_else">
                     <div class="row  m-0 align-items-center">
-                      <div class=" col-1 exce3l_condition">
+                      <div class=" col-1 theb_if excel_condition">
                         Then If
                       </div>
                       <!-- <button class="btn btn-sucess">Then</button> -->
