@@ -1,5 +1,7 @@
 <div [formGroup]="expression" class="expd">
+
     <div class="row formdot border_excel">
+
         <div class="col">
             <div class="animate">
                 <!--left Condition-->
@@ -15,6 +17,7 @@
                         <span class="if_span">IF </span>
                     </legend>
                     <div [@slideInOut]="animationState" class="list_excel" [@dotedline]>
+                      <span>{{ _recformula }}</span>
                         <ng-container formGroupName="lefts">
                             <div class="row">
                                 <mat-form-field class="m-1 col-2">
@@ -127,13 +130,13 @@
                                 <div class="col-1 excel_condition then_conidtion">
                                     Then
                                 </div>
-                                <mat-form-field class="m-1 col-2">
+                                <!-- <mat-form-field class="m-1 col-2">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition" #alarmSelect1 (selectionChange)="conditional_dropdown(alarmSelect1.value)">
                                         <mat-option value="">Statement</mat-option>
                                         <mat-option value="then">THEN</mat-option>
                                         <mat-option value="thenif">THENIF</mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <mat-form-field class="m-1">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect3 (selectionChange)="conditional_then(alarmSelect3.value)">
@@ -179,13 +182,13 @@
                                     Then If
                                 </div>
                                 <!-- <button class="btn btn-sucess">Then</button> -->
-                                <mat-form-field class="m-1 col-2">
+                                <!-- <mat-form-field class="m-1 col-2">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="condition" #alarmSelect1 (selectionChange)="conditional_dropdown(alarmSelect1.value)">
                                         <mat-option value="">Statement</mat-option>
                                         <mat-option value="else">ELSE</mat-option>
                                         <mat-option value="elseif">ELSEIF</mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <mat-form-field class="m-1">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect5 (selectionChange)="conditional_else(alarmSelect5.value)">

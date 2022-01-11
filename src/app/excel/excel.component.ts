@@ -291,9 +291,8 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
   formatformula(val){
     let obj = val._formarray;
     let express = obj.expression
-    console.log(obj);
+    // console.log(obj);
     var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(express.condition_expression_then)} , ${this._checkthen(express.condition_expression_else) } )`
-
     if(express?.operators.length > 0){
       formula += this.operators(express.operators)
 
@@ -309,8 +308,6 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
   operators(val){
     var frm = ''
-     //console.log(val?.operator_controls);
-
     val?.forEach(ele => {
       switch(ele?.operator_aggregate_type){
         case 'and':
@@ -400,16 +397,18 @@ return frm
      return generate_and;
   }
 
+
+
+
+
+
+
   onSubmit123() {
-
-
 
     let rawdata = this.myForm.getRawValue();
     //console.log(this.myForm.value)
     var formula;
     let data = this.myForm.value._formarray
-
-
        let expression = data.expression;
        let condition_then_if = data.condition_then_if;
        let condition_else_if = data.condition_else_if;
@@ -418,9 +417,6 @@ return frm
      this.myForm.patchValue({
        name : formula
      })
-
-
-
   }
 
   checkthen(params){
