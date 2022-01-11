@@ -165,7 +165,7 @@ export class ConditionformComponent implements OnInit {
     //   })
     // })
     this._Formarray = this.expression.get('lefts') as FormGroup;
-  console.log(this.expression);
+  //console.log(this.expression);
 
   }
 
@@ -360,12 +360,14 @@ this.expression.addControl('condition_expression_else',this.fb.group({
       aggregate  : this.fb.array([]),
       aggregate_type : [''],
 
+
     }));
     this._then.addControl('logical',this.fb.control(''));
    this._then.addControl('condition_expression_then',this.fb.group({
     condition : [''],
     value     : [''],
     aggregate_type : [''],
+    aggregate  :this.fb.array([]),
     expression : this.fb.group({})
   }));
 
@@ -375,6 +377,7 @@ this.expression.addControl('condition_expression_else',this.fb.group({
     condition : [''],
     value     : [''],
     aggregate_type : [''],
+    aggregate  :this.fb.array([]),
     expression : this.fb.group({})
   }));
     }

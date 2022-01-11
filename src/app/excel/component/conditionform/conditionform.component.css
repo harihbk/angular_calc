@@ -2,11 +2,26 @@
   cursor: pointer;
 }
 
+.data_opeartor{
+  cursor: pointer;
+  padding-bottom: 0;
+  padding-left: 10px;
+  box-shadow: 2px 1px 10px rgb(201 201 201);
+  margin: 20px;
+  position: relative;
+  border-left: 2px dashed #009ada;
+  border-radius: 10px;
+}
 
+.d_condition_flex{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+}
 fieldset.scheduler-border {
   cursor: pointer;
   padding-bottom: 0;
-  padding-left: 30px;
+  padding-left: 10px;
   margin: 0 0 1.5em 0;
   position: relative;
   box-shadow: 2px 1px 10px rgb(201 201 201);
@@ -16,10 +31,27 @@ fieldset.scheduler-border {
 fieldset.scheduler-border .row{
   margin:0;
 }
+.lisst_con_opeartor {
+  margin-left:20px;
+  box-shadow: 2px 1px 10px rgb(201 201 201);
+  border-radius: 10px;
+}
 .expd{
   width : 100%;
 }
-
+.math_opeartor{
+  display: block;
+  position: absolute;
+  left: -17px;
+  top: -20px;
+  background-color: #009ada;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  line-height: 30px;
+  text-align: center;
+  color: white;
+}
 .bordercolor{
   border: 1px solid #fb9696;
 }
@@ -57,26 +89,40 @@ fieldset.scheduler-border .row{
 legend{
   width: unset;
 }
+/* .data_opeartor  .excel_condition{
+  float: left;
+  position: absolute;
+  top: 50%;
+  left: 4%;
+  transform: translate(-50%,-50%);
+} */
+.then_if_andor {
+  padding-left: 20px;
+  margin: 20px;
+}
+::ng-deep .then_if_andor .and_span:before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  right: 14px;
+  bottom: 22px;
+  height: 93%;
+  border-right: 2px dashed #009ada;
+}
 .excel_condition{
   font-size: 13px;
   color: white;
+  position:relative;
   background-color: #cf2379;
   border-radius: 5px;
   height: 25px;
   line-height: 25px;
   padding: 0;
   text-align: center;
-  /* background-color: #009ada; */
-
+  max-width: unset;
+  flex: unset;
+  width: 80px;
 }
-/* .then_conidtion{
-  background-color: #cf2379;
-}
-.theb_if{
-  background-color: #2A4564;
-} */
-
-
 .bottom_show{
   width: 30px;
   height: 30px;
@@ -86,12 +132,12 @@ legend{
   border-radius: 50%;
   left: -15px;
   color:white;
-  bottom: -29px;
+  bottom: -24px;
 }
 .excel_condition:before{
   content: '';
   position: absolute;
-  width: 30%;
+  width: 13%;
   right: 100%;
   bottom: 10px;
   height: 2px;
@@ -104,9 +150,7 @@ legend{
   top: 50%;
   transform: translate(-50%,-50%);
 }
-/* ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper{
-  padding-bottom: 10px;
-} */
+
 .and_lsittable {
   margin-left:25px;
 }
@@ -123,4 +167,14 @@ legend{
 ::ng-deep  .mat-form-field{
   margin-top:0 !important;
   margin-bottom:0 !important;
+}
+::ng-deep  .border_excel  .border_excel .if_span:before{
+  content: '';
+  position: absolute;
+  display: inline-block;
+  right: 24px;
+  top: 15px;
+  height: 2px;
+  width: 100%;
+  background: #009ada;
 }
