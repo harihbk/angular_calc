@@ -108,10 +108,10 @@
                         <div class="col p-0 pt-3" *ngIf="aggregate_right">
                             <div class="row">
                                 <div [ngSwitch]="conditionlegend_right">
-                                    <div *ngSwitchCase="'AND'" >
+                                    <div *ngSwitchCase="'AND'" class="then_if_andor">
                                         <app-and [left_operator]="_rights" [conditionlegend]="conditionlegend_right"></app-and>
                                     </div>
-                                    <div *ngSwitchCase="'OR'">
+                                    <div *ngSwitchCase="'OR'" class="then_if_andor">
                                         <app-and [left_operator]="_rights" [conditionlegend]="conditionlegend_right"></app-and>
                                     </div>
                                 </div>
@@ -154,13 +154,13 @@
                             <!--then recursive-->
                                 <div class="row">
                                     <div [ngSwitch]="expression?.get('condition_expression_then.aggregate_type')?.value">
-                                        <div *ngSwitchCase="'and'">
+                                        <div *ngSwitchCase="'and'" class="then_recursive">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
                                         </div>
-                                        <div *ngSwitchCase="'or'">
+                                        <div *ngSwitchCase="'or'"  class="then_recursive">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
                                         </div>
-                                        <div *ngSwitchCase="'if'">
+                                        <div *ngSwitchCase="'if'" >
                                         <app-conditionform  [expression]="expression?.get('condition_expression_then.expression')"  ></app-conditionform>
                                         </div>
                                     </div>
@@ -208,10 +208,10 @@
                             <!--else recusrsive-->
                             <div class="row">
                                 <div [ngSwitch]="expression?.get('condition_expression_else.aggregate_type')?.value">
-                                    <div *ngSwitchCase="'and'">
+                                    <div *ngSwitchCase="'and'" class="else_recursive">
                                     <app-and [left_operator] = "expression?.get('condition_expression_else')" [conditionlegend]="operator_label"></app-and>
                                     </div>
-                                    <div *ngSwitchCase="'or'">
+                                    <div *ngSwitchCase="'or'" class="else_recursive">
                                     <app-and [left_operator] = "expression?.get('condition_expression_else')" [conditionlegend]="operator_label"></app-and>
                                     </div>
                                     <div *ngSwitchCase="'if'">

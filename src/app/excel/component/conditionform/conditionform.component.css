@@ -1,3 +1,4 @@
+
 .mat-icon:hover{
   cursor: pointer;
 }
@@ -6,7 +7,8 @@
   cursor: pointer;
   padding-bottom: 0;
   padding-left: 10px;
-  box-shadow: 2px 1px 10px rgb(201 201 201);
+  -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
+          box-shadow: 2px 1px 10px rgb(201 201 201);
   margin: 20px;
   position: relative;
   border-left: 2px dashed #009ada;
@@ -14,9 +16,14 @@
 }
 
 .d_condition_flex{
+  display:-webkit-box;
+  display:-ms-flexbox;
   display:flex;
-  align-items:center;
-  flex-wrap:wrap;
+  -webkit-box-align:center;
+      -ms-flex-align:center;
+          align-items:center;
+  -ms-flex-wrap:wrap;
+      flex-wrap:wrap;
 }
 fieldset.scheduler-border {
   cursor: pointer;
@@ -24,7 +31,8 @@ fieldset.scheduler-border {
   padding-left: 10px;
   margin: 0 0 1.5em 0;
   position: relative;
-  box-shadow: 2px 1px 10px rgb(201 201 201);
+  -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
+          box-shadow: 2px 1px 10px rgb(201 201 201);
   border-radius: 10px;
   border-left: 2px dashed #009ada;
 }
@@ -33,7 +41,8 @@ fieldset.scheduler-border .row{
 }
 .lisst_con_opeartor {
   margin-left:20px;
-  box-shadow: 2px 1px 10px rgb(201 201 201);
+  -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
+          box-shadow: 2px 1px 10px rgb(201 201 201);
   border-radius: 10px;
 }
 .expd{
@@ -98,7 +107,51 @@ legend{
 } */
 .then_if_andor {
   padding-left: 20px;
-  margin: 20px;
+  margin:20px;
+}
+.then_recursive{
+  padding-left: 20px;
+  margin:20px;
+}
+.else_recursive{
+  padding-left: 20px;
+  margin:20px;
+}
+::ng-deep .lisst_con_opeartor  .and_span:before{
+  content: '';
+  position: absolute;
+  width: 59%;
+  right: 30px;
+  bottom: 14px;
+  height: 2px;
+  border-bottom: 2px dashed #009ada;
+}
+::ng-deep .else_recursive .and_span:before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  right: 14px;
+  bottom: 22px;
+  height: 93%;
+  border-right: 2px dashed #009ada;
+}
+.lisst_con_opeartor .and_span:before{
+  content: '';
+  position: absolute;
+  width: 2px;
+  right: 14px;
+  bottom: 22px;
+  height: 93%;
+  border-right: 2px dashed #009ada;
+}
+::ng-deep .then_recursive .and_span:before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  right: 14px;
+  bottom: 22px;
+  height: 93%;
+  border-right: 2px dashed #009ada;
 }
 ::ng-deep .then_if_andor .and_span:before {
   content: '';
@@ -120,7 +173,9 @@ legend{
   padding: 0;
   text-align: center;
   max-width: unset;
-  flex: unset;
+  -webkit-box-flex: unset;
+      -ms-flex: unset;
+          flex: unset;
   width: 80px;
 }
 .bottom_show{
@@ -148,7 +203,9 @@ legend{
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
 }
 
 .and_lsittable {
@@ -159,7 +216,9 @@ legend{
   padding:10px;
 }
 ::ng-deep app-conditionform{
-  flex:auto;
+  -webkit-box-flex:1;
+      -ms-flex:auto;
+          flex:auto;
 }
 ::ng-deep .mat-form-field-infix{
   border-top: none !important;
