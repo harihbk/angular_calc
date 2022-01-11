@@ -2,19 +2,17 @@
     <div class="row formdot border_excel">
         <div class="col">
             <div class="animate">
-                <!--left Condition-->
+
+                <!-- fieldset Start here -->
+
                 <fieldset class="scheduler-border">
-                    <legend
-                        (click)="toggleShowDiv()"
-                        mat-raised-button
-                        matTooltip="{{ animationState == 'in' ? 'hide' : 'show' }} "
-                        matTooltipClass="example-tooltip-red"
-                        aria-label="Button that shows a red tooltip"
-                        class="example-button if_legend"
-                    >
+
+                    <legend (click)="toggleShowDiv()" mat-raised-button matTooltip="{{ animationState == 'in' ? 'hide' : 'show' }} " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip" class="example-button if_legend" >
                         <span class="if_span">IF </span>
                     </legend>
+
                     <div [@slideInOut]="animationState" class="list_excel" [@dotedline]>
+
                         <ng-container formGroupName="lefts">
                             <div class="row">
                                 <mat-form-field class="m-1 col-2">
@@ -37,10 +35,7 @@
                             </div>
                             <!--recursive if-->
                             <div class="col p-0 pt-3" *ngIf="left_rec">
-                                <!-- <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">IF Left</legend> -->
-                                <app-conditionform [events]="events" [expression]="_expression"></app-conditionform>
-                                <!-- </fieldset> -->
+                                <app-conditionform [events]="events" [expression]="expression.get('lefts').get('expression')"></app-conditionform>
                             </div>
 
                             <!--operators fields-->
@@ -108,10 +103,10 @@
                         <div class="col p-0 pt-3" *ngIf="aggregate_right">
                             <div class="row">
                                 <div [ngSwitch]="conditionlegend_right">
-                                    <div *ngSwitchCase="'AND'" class="then_if_andor">
+                                    <div *ngSwitchCase="'AND'" class="then_if_andor and_lsittable">
                                         <app-and [left_operator]="_rights" [conditionlegend]="conditionlegend_right"></app-and>
                                     </div>
-                                    <div *ngSwitchCase="'OR'" class="then_if_andor">
+                                    <div *ngSwitchCase="'OR'" class="then_if_andor and_lsittable">
                                         <app-and [left_operator]="_rights" [conditionlegend]="conditionlegend_right"></app-and>
                                     </div>
                                 </div>
@@ -157,7 +152,7 @@
                                         <div *ngSwitchCase="'and'" class="then_recursive">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
                                         </div>
-                                        <div *ngSwitchCase="'or'"  class="then_recursive">
+                                        <div *ngSwitchCase="'or'" class="then_recursive">
                                         <app-and [left_operator] = "expression?.get('condition_expression_then')" [conditionlegend]="conditional_then_label"></app-and>
                                         </div>
                                         <div *ngSwitchCase="'if'">
@@ -226,13 +221,11 @@
 
                     <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
 
-                    <!--Additionals operator-->
+                    <!--Additionals Start here operator-->
 
                     <ng-container formArrayName="operators">
                             <div class="data_opeartor">
-                                <p class="text-right">
-                                <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
-                            </p>
+                               
 
                                     <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
 
@@ -263,35 +256,40 @@
                                                                 <mat-option value="if">IF</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-
-
-
-                                                        <div class="row">
-                                                            <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
-                                                                <div *ngSwitchCase="'and'" class="lisst_con_opeartor">
-                                                                    <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
-                                                                </div>
-                                                                <div *ngSwitchCase="'or'" class="lisst_con_opeartor">
-                                                                    <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
-                                                                </div>
-                                                                <div *ngSwitchCase="'if'"  class="lisst_con_opeartor">
-                                                                    <app-conditionform [expression]="expression.get('operators').controls[i].get('operator_controls')"></app-conditionform>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
                                                     <div class="mius_excel">
                                                         <mat-icon class="remove_circle" color="warn" (click)="removeoperator(i)">remove_circle</mat-icon>
                                                     </div>
+
+                                                    <div class="row last_if_con">
+                                                        <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
+                                                            <div *ngSwitchCase="'and'" class="lisst_con_opeartor">
+                                                                <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                                                            </div>
+                                                            <div *ngSwitchCase="'or'" class="lisst_con_opeartor">
+                                                                <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                                                            </div>
+                                                            <div *ngSwitchCase="'if'">
+                                                                <app-conditionform [expression]="expression.get('operators').controls[i].get('operator_controls')"></app-conditionform>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
                                                 </div>
                                                 <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
                                         </div>
                                     </ng-container>
+                                    <span>
+                                        <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
+                                    </span>
                             </div>
                     </ng-container>
 
-                    <!--Additionals operator-->
+                    <!--Additionals End Here operator-->
+
                 </fieldset>
+
+                <!-- fieldset End here -->
             </div>
         </div>
     </div>

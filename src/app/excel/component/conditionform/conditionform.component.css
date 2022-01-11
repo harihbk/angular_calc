@@ -14,7 +14,21 @@
   border-left: 2px dashed #009ada;
   border-radius: 10px;
 }
+.last_if_con{
+  flex: none;
+  display: block;
+  width: 100%;
+}
+.border_excel  .border_excel  .col{
+  padding:0;
+}
 
+.border_excel .border_excel{
+  padding:0;
+}
+.data_opeartor p{
+  margin:0;
+}
 .d_condition_flex{
   display:-webkit-box;
   display:-ms-flexbox;
@@ -30,7 +44,8 @@ fieldset.scheduler-border {
   cursor: pointer;
   padding-bottom: 0;
   padding-left: 10px;
-  margin: 0 0 1.5em 0;
+  margin: 0px 25px;
+  margin-bottom: 20px;
   position: relative;
   -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
           box-shadow: 2px 1px 10px rgb(201 201 201);
@@ -40,12 +55,10 @@ fieldset.scheduler-border {
 fieldset.scheduler-border .row{
   margin:0;
 }
-.lisst_con_opeartor {
+.data_opeartor  .lisst_con_opeartor {
   margin-left:20px;
-  -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
-          box-shadow: 2px 1px 10px rgb(201 201 201);
-  border-radius: 10px;
 }
+.last_and_excel
 .expd{
   width : 100%;
 }
@@ -99,20 +112,13 @@ fieldset.scheduler-border .row{
 legend{
   width: unset;
 }
-/* .data_opeartor  .excel_condition{
-  float: left;
-  position: absolute;
-  top: 50%;
-  left: 4%;
-  transform: translate(-50%,-50%);
-} */
 .then_if_andor {
   padding-left: 20px;
   margin:20px;
 }
 .then_recursive{
   padding-left: 20px;
-  margin:20px;
+  margin:20px 0px;
 }
 .else_recursive{
   padding-left: 20px;
@@ -211,6 +217,7 @@ legend{
 
 .and_lsittable {
   margin-left:25px;
+  padding:0;
 }
 ::ng-deep .mat-option{
   height: 30px  !important;

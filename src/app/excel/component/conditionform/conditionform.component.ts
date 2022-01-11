@@ -406,12 +406,14 @@ this.expression.addControl('condition_expression_else',this.fb.group({
       this.exxa.addControl('condition_expression_then',this.fb.group({
         condition : [''],
         value     : [''],
-        aggregate_type : ['']
+        aggregate_type : [''],
+        aggregate  : this.fb.array([]),
       }));
       this.exxa.addControl('condition_expression_else',this.fb.group({
         condition : [''],
         value     : [''],
-        aggregate_type : ['']
+        aggregate_type : [''],
+        aggregate  : this.fb.array([]),
       }));
 
 
@@ -463,12 +465,14 @@ this.expression.addControl('condition_expression_else',this.fb.group({
       this.exxa.addControl('condition_expression_then',this.fb.group({
         condition : [''],
         value     : [''],
-        aggregate_type : ['']
+        aggregate_type : [''],
+        aggregate  : this.fb.array([]),
       }));
       this.exxa.addControl('condition_expression_else',this.fb.group({
         condition : [''],
         value     : [''],
-        aggregate_type : ['']
+        aggregate_type : [''],
+        aggregate  : this.fb.array([]),
       }));
 
       this.left_rec = true
@@ -491,13 +495,13 @@ this.expression.addControl('condition_expression_else',this.fb.group({
     return <FormGroup>(this.expression.get('rights') as FormGroup);
   }
 
-  get elsecond(){
-    return <FormGroup>(this.expression.get('condition_expression_else') as FormGroup);
-  }
+  // get elsecond(){
+  //   return <FormGroup>(this.expression.get('condition_expression_else') as FormGroup);
+  // }
 
-  get thencond(){
-    return <FormGroup>(this.expression.get('condition_expression_then') as FormGroup);
-  }
+  // get thencond(){
+  //   return <FormGroup>(this.expression.get('condition_expression_then') as FormGroup);
+  // }
 
 
   chooseope(val){
