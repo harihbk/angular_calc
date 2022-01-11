@@ -88,3 +88,13 @@ fieldset.scheduler-border:before{
   align-items: center;
   flex-wrap: wrap;
 }
+ .and_lsittable  .scheduler-border .and_span:before{
+  content: '';
+  position: absolute;
+  display: inline-block;
+  right: 29px;
+  top: 15px;
+  height: 2px;
+  width: 86%;
+  background: #009ada;
+}

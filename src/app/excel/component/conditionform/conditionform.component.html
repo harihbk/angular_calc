@@ -52,7 +52,7 @@
                                       <div *ngSwitchCase="'AND'" class="and_lsittable">
                                           <app-and [left_operator]="_lefts" [conditionlegend]="conditionlegend"></app-and>
                                       </div>
-                                      <div *ngSwitchCase="'OR'">
+                                      <div *ngSwitchCase="'OR'"  class="and_lsittable">
                                           <app-and [left_operator]="_lefts" [conditionlegend]="conditionlegend"></app-and>
                                       </div>
                                   </div>
@@ -110,7 +110,7 @@
                           <!-- <ng-container formGroupName="aggregate"> -->
                           <div class="row">
                               <div [ngSwitch]="conditionlegend_right">
-                                  <div *ngSwitchCase="'AND'">
+                                  <div *ngSwitchCase="'AND'" >
                                       <app-and [left_operator]="_rights" [conditionlegend]="conditionlegend_right"></app-and>
                                   </div>
                                   <div *ngSwitchCase="'OR'">
@@ -161,10 +161,10 @@
 
                           <div class="row">
                               <div [ngSwitch]="expression?.get('condition_expression_then.aggregate_type')?.value">
-                                  <div *ngSwitchCase="'and'">
+                                  <div *ngSwitchCase="'and'" class="then_if_andor">
                                       <app-and [left_operator]="thencond" [conditionlegend]="conditional_then_label"></app-and>
                                   </div>
-                                  <div *ngSwitchCase="'or'">
+                                  <div *ngSwitchCase="'or'"  class="then_if_andor">
                                       <app-and [left_operator]="thencond" [conditionlegend]="conditional_then_label"></app-and>
                                   </div>
                               </div>
@@ -224,9 +224,11 @@
                       operator
                     </div> -->
                     <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
+                  
                       <div [formGroupName]="i" class="last_and_excel">
+                     
                           <span class="math_opeartor"><i class="fas fa-calculator"></i></span>
-                          <div>
+                          <div class="d_condition_flex"> 
                          
                             <mat-form-field class="m-1">
                               <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator" #changeop (selectionChange)="chooseope(changeop.value)">
@@ -251,25 +253,27 @@
                                 <mat-option value="if">IF</mat-option>
                             </mat-select>
                         </mat-form-field>
+
+                   
+
                         <div class="row">
                           <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
-                              <div *ngSwitchCase="'and'">
+                              <div *ngSwitchCase="'and'" class="lisst_con_opeartor">
                                   <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
                               </div>
-                              <div *ngSwitchCase="'or'">
+                              <div *ngSwitchCase="'or'" class="lisst_con_opeartor">
                                   <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
                               </div>
-                              <div *ngSwitchCase="'if'">
+                              <div *ngSwitchCase="'if'"  class="lisst_con_opeartor">
                                   <app-conditionform [expression]="expression.get('operators').controls[i].get('operator_controls')"></app-conditionform>
                               </div>
                           </div>
                       </div>
+                      <div class="mius_excel">
+                        <mat-icon class="remove_circle" color="warn" (click)="removeoperator(i)">remove_circle</mat-icon>
+                      </div>
                           </div>
-                         
-                         
-
-                          
-
+                        
                          
                           <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
                       </div>
