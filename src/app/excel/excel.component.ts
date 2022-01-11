@@ -32,9 +32,9 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
     let l_index = formula.lastIndexOf(')');
     var res = formula.substring(f_index + 1, l_index);
 
-     console.log([f_index,l_index , res]);
+     //console.log([f_index,l_index , res]);
      var _iterate = _functions.psplit(res);
-     console.log(_iterate);
+     //console.log(_iterate);
 
 
      var obj = {
@@ -75,7 +75,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
              let elseif = _iterate[2].toLowerCase().split(" ").join("");
              let ei = elseif.substring(0,3);
              let eii = 'if(';
-            console.log(elseif);
+            //console.log(elseif);
 
              if( ei == eii ){
                let _elseif = {};
@@ -94,7 +94,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
       }
 
 
-  //  console.log(obj);
+  //  //console.log(obj);
 
 
 
@@ -104,9 +104,9 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
       let l_index = elseif.lastIndexOf(')');
       let res = elseif.substring(f_index + 1, l_index);
 
-       console.log([f_index,l_index , res]);
+       //console.log([f_index,l_index , res]);
        var _iterate = _functions.psplit(res);
-        console.log(_iterate);
+        //console.log(_iterate);
 
 
 
@@ -144,7 +144,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
         if(i == 2){
           let elseif = _iterate[2].toLowerCase().split(" ").join("");
-          console.log(elseif);
+          //console.log(elseif);
 
           let ei = elseif.substring(0,3);
           let eii = 'if(';
@@ -171,7 +171,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
     }
 
-     console.log(obj.expression);
+     //console.log(obj.expression);
    let exp = {}
    exp['expression'] = obj.expression
    exp['condition_then_if'] = obj.condition_then_if
@@ -274,15 +274,15 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
 
   fncondition_then_if(ev){
-    console.log(ev);
+    //console.log(ev);
     }
 
   fncondition_else_if(ev){
-    console.log(ev);
+    //console.log(ev);
   }
 
   onSubmit() {
-    console.log(this.myForm.value)
+    //console.log(this.myForm.value)
     let obj = this.myForm.value.expression
     var formula = `${obj}`
 
@@ -291,7 +291,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
   formatformula(val){
     let obj = val._formarray;
     let express = obj.expression
-    console.log(express);
+    console.log(obj);
     var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(express.condition_expression_then)} , ${this._checkthen(express.condition_expression_else) } )`
 
     if(express?.operators.length > 0){
@@ -309,7 +309,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
 
   operators(val){
     var frm = ''
-     console.log(val?.operator_controls);
+     //console.log(val?.operator_controls);
 
     val?.forEach(ele => {
       switch(ele?.operator_aggregate_type){
@@ -347,7 +347,7 @@ return frm
   }
 
   _checkthen(val){
-    console.log(val?.aggregate_type);
+    //console.log(val?.aggregate_type);
      switch(val?.aggregate_type){
        case 'and':
         return `AND( ${this.andcondition(val?.aggregate)} )`;
@@ -405,7 +405,7 @@ return frm
 
 
     let rawdata = this.myForm.getRawValue();
-    console.log(this.myForm.value)
+    //console.log(this.myForm.value)
     var formula;
     let data = this.myForm.value._formarray
 
@@ -437,7 +437,7 @@ return frm
    let f ;
 
   return `IF(${expression.expression.left} ${expression.expression.logical} ${expression.expression.right} , ${this.checkthen(expression.condition_then_if)}  ,  ${this.checkelse(expression.condition_else_if)})`
-    console.log(expression);
+    //console.log(expression);
   }
 
 

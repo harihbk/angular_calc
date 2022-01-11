@@ -74,6 +74,8 @@ export class AndComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('%c'+ (this.left_operator.get('aggregate') as FormArray), 'background: #222; color: #bada55');
+
     this.formarray = <FormArray>(this.left_operator.get('aggregate') as FormArray)
      this.formarray.clear();
      this.formarray.push(this.newaggregate)

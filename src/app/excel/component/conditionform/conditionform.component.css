@@ -25,6 +25,7 @@
   -ms-flex-wrap:wrap;
       flex-wrap:wrap;
 }
+
 fieldset.scheduler-border {
   cursor: pointer;
   padding-bottom: 0;
