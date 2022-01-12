@@ -214,7 +214,18 @@ legend{
       -ms-transform: translate(-50%,-50%);
           transform: translate(-50%,-50%);
 }
-
+.data_opeartor  .d_condition_flex .row.d-block{
+  flex: auto;
+  width: 100%;
+}
+.inner_forumala{
+  background-color: white;
+  border: 1px solid gray;
+  padding: 5px;
+  margin-left: 20px;
+  border-radius: 5px;
+  font-size: 12px;
+}
 .and_lsittable {
   margin-left:25px;
   padding:0;
@@ -244,4 +255,17 @@ legend{
   height: 2px;
   width: 100%;
   background: #009ada;
+}
+::ng-deep .border_excel  .then_listcondition  .if_span:before{
+  content: '';
+  width: 2px;
+  height: 100%;
+  right: 16px;
+  top: -10px;
+}
+.border_excel .border_excel .if_listcondition .if_span:before{
+  width: 100%;
+  height: 2px;
+  top: 14px;
+  right: 30px;
 }

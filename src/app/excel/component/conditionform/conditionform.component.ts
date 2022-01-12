@@ -96,6 +96,7 @@ export class ConditionformComponent implements OnInit {
   conditional_else_label: any;
   conditional_then_label: any;
   operator_label: any;
+  _recformula: string;
   constructor(
     public fb:FormBuilder
   ) {
@@ -106,9 +107,17 @@ export class ConditionformComponent implements OnInit {
 
 
 
-  toggleShowDiv() {
-    this.animationState = this.animationState === 'out' ? 'in' : 'out';
-}
+    toggleShowDiv() {
+      this.animationState = this.animationState === 'out' ? 'in' : 'out';
+  }
+
+  ngAfterViewInit(): void {
+
+    this.expression.get('lefts')!.valueChanges.subscribe(data => {
+      this.formatformula(data);
+  })
+
+  }
 
 
   ngOnInit() {
@@ -345,6 +354,117 @@ export class ConditionformComponent implements OnInit {
  }
 
   ngOnDestroy() {}
+
+
+  formatformula(val){
+    let express = val
+
+
+    if(express?.aggregate_type == 'if'){
+      var formula =`=IF( ${ this._checkconditons(express.expression?.lefts ) } ${express.expression?.logical ?? '_'} ${ this._checkconditons(express.expression?.rights ) } , ${this._checkthen(express.expression.condition_expression_then)} , ${this._checkthen(express.expression.condition_expression_else) } )`
+    }
+
+    if(express?.expression?.operators?.length > 0){
+      formula += this.operators(express?.expression?.operators)
+    }
+    this._recformula = formula
+
+  }
+
+  operators(val){
+    console.log(val);
+
+    var frm = ''
+    val?.forEach(ele => {
+      switch(ele?.operator_aggregate_type){
+        case 'and':
+          frm +=`${ele.operator}`
+          frm +=`AND( ${this.andcondition(ele?.operator_controls?.aggregate?.operator_controls)} )`;
+        break;
+        case 'or':
+          frm +=`${ele.operator}`
+          frm +=`OR( ${this.andcondition(ele?.operator_controls?.aggregate?.operator_controls)} )`;
+        break;
+        case 'if':
+          frm +=`${ele.operator}`
+          frm +=`${this.nestedformatformula(ele?.operator_controls)} `;
+        break;
+      }
+    });
+
+return frm
+  }
+
+  _checkconditons(val){
+
+    if(val?.aggregate_type == 'if'){
+        return this.nestedformatformula(val.expression)
+    }
+    if(val?.aggregate_type == 'and'){
+    return `AND( ${this.andcondition(val.aggregate)} )`;
+    }
+
+    if(val?.aggregate_type == 'or'){
+      return `OR( ${this.andcondition(val.aggregate)} )`;
+      }
+    return val?.left ?? val?.right ?? '_'
+  }
+
+  _checkthen(val){
+    //console.log(val?.aggregate_type);
+     switch(val?.aggregate_type){
+       case 'and':
+        return `AND( ${this.andcondition(val?.aggregate)} )`;
+       break;
+       case 'or':
+        return `OR( ${this.andcondition(val?.aggregate)} )`;
+       break;
+       case 'string':
+        return `${val?.value ?? '_'}`
+       break;
+       default :
+       return `_`
+     }
+ //return "_";
+  }
+
+  nestedformatformula(exx){
+
+   return `IF( ${this._checkconditons(exx?.lefts)  }  ${exx?.logical ?? '_'} ${ this._checkconditons(exx?.rights ) } ,  ${this._checkthen(exx?.condition_expression_then)} , ${this._checkthen(exx?.condition_expression_else) })`
+  }
+
+  andcondition(val){
+      var generate_and = ''
+    val?.forEach(ele => {
+      generate_and +=`${this.checkand(ele)} ,`
+    });
+    return generate_and.replace(/,\s*$/, ""); // remove last comma
+
+  }
+
+  checkand(val){
+    let   generate_and=''
+    if(val.aggregation_type_left == "string"){
+      generate_and += val.aggregates_left
+    }
+
+    if(val.aggregation_type_left == "if"){
+      generate_and += this.nestedformatformula(val.aggregate_left_expression)
+    }
+
+    generate_and +=val.aggregates_operator
+
+    if(val.aggregation_type_right == "string"){
+      generate_and += val.aggregates_right
+    }
+
+    if(val.aggregation_type_right == "if"){
+      generate_and += this.nestedformatformula(val.aggregate_right_expression)
+    }
+     return generate_and;
+  }
+
+
 
 
 }
