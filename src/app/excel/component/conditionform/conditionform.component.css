@@ -10,6 +10,8 @@
   -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
           box-shadow: 2px 1px 10px rgb(201 201 201);
   margin: 20px;
+  margin-top: 50px;
+  margin-left: 26px;
   position: relative;
   border-left: 2px dashed #009ada;
   border-radius: 10px;
@@ -193,8 +195,11 @@ legend{
   background-color: #009ada;
   border-radius: 50%;
   left: -15px;
-  color:white;
+  color: white;
   bottom: -24px;
+  line-height: 30px;
+  font-size: 12px;
+  text-align: center;
 }
 .excel_condition:before{
   content: '';
@@ -218,14 +223,21 @@ legend{
   flex: auto;
   width: 100%;
 }
+.list_excel {
+  margin-top: 20px;
+}
 .inner_forumala{
   background-color: white;
-  border: 1px solid gray;
-  padding: 5px;
   margin-left: 20px;
-  border-radius: 5px;
   font-size: 12px;
+  position: absolute;
+  top: -18px;
 }
+.inner_forumala input{
+  border: 1px solid #cf2379;
+  border-radius: 4px;
+}
+
 .and_lsittable {
   margin-left:25px;
   padding:0;

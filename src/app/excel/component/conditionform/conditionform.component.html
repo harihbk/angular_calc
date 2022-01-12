@@ -14,7 +14,7 @@
                     </legend>
 
                     <div [@slideInOut]="animationState" class="list_excel" [@dotedline]>
-                      <span class="inner_forumala">{{ _recformula }}</span>
+                      <span class="inner_forumala"><input type="text" readonly value="{{ _recformula }}"/></span>
                         <ng-container formGroupName="lefts">
                             <div class="row">
                                 <mat-form-field class="m-1 col-2">
@@ -229,84 +229,88 @@
                         </ng-container>
                     </div>
 
-                    <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
+                    <span class="bottom_show">
+                        <!-- <i class="fas fa-chevron-down"></i> -->
+                        End
+                    </span>
 
-                    <!--Additionals Start here operator-->
-
-                    <ng-container formArrayName="operators">
-                            <div class="data_opeartor">
-                               
-
-                                    <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
-
-                                        <div [formGroupName]="i" class="last_and_excel">
-                                                <span class="math_opeartor"><i class="fas fa-calculator"></i></span>
-                                                <div class="d_condition_flex">
-
-                                                        <mat-form-field class="m-1">
-                                                            <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator" #changeop (selectionChange)="chooseope(changeop.value)">
-                                                                <mat-option value="">Choose</mat-option>
-                                                                <mat-option value="+">Addition</mat-option>
-                                                                <mat-option value="-">Substraction</mat-option>
-                                                                <mat-option value="/">Division</mat-option>
-                                                                <mat-option value="*">Multiplication</mat-option>
-                                                                <mat-option value="%">Modulo</mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-
-                                                        <mat-form-field class="m-1" *ngIf="expression?.get('operators')?.controls[i]?.get('operator')?.value">
-                                                            <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator_aggregate_type" #operator_controlss (selectionChange)="operator_controls(i,operator_controlss.value)">
-                                                                <mat-option value="">Choose</mat-option>
-                                                                <mat-option value="string">STRING</mat-option>
-                                                                <mat-optgroup label="Operators">
-                                                                    <mat-option value="and">AND</mat-option>
-                                                                    <mat-option value="or">OR</mat-option>
-                                                                    <mat-option value="round">ROUND</mat-option>
-                                                                </mat-optgroup>
-                                                                <mat-option value="if">IF</mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                   
-
-                                                        <div class="mius_excel">
-            
-                                                            <mat-icon class="remove_circle" color="warn" (click)="removeoperator(i)">remove_circle</mat-icon>
-                                                        </div>
-                                                                <!--switch case-->
-                                                        <div class="row d-block">
-                                                            <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
-                                                                <div *ngSwitchCase="'and'" class="lisst_con_opeartor">
-                                                                    <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
-                                                                </div>
-                                                                <div *ngSwitchCase="'or'" class="lisst_con_opeartor">
-                                                                    <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
-                                                                </div>
-                                                                <div *ngSwitchCase="'if'"  class="lisst_con_opeartor">
-                                                                    <app-conditionform [expression]="expression.get('operators').controls[i].get('operator_controls')"></app-conditionform>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                  
-
-
-                                                </div>
-                                                <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
-                                        </div>
-                                    </ng-container>
-                                    <span>
-                                        <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
-                                    </span>
-                            </div>
-                    </ng-container>
-
-                    <!--Additionals End Here operator-->
+                   
 
                 </fieldset>
 
                 <!-- fieldset End here -->
             </div>
+             <!--Additionals Start here operator-->
+
+             <ng-container formArrayName="operators">
+                <div class="data_opeartor">
+                   
+
+                        <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
+
+                            <div [formGroupName]="i" class="last_and_excel">
+                                    <span class="math_opeartor"><i class="fas fa-calculator"></i></span>
+                                    <div class="d_condition_flex">
+
+                                            <mat-form-field class="m-1">
+                                                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator" #changeop (selectionChange)="chooseope(changeop.value)">
+                                                    <mat-option value="">Choose</mat-option>
+                                                    <mat-option value="+">Addition</mat-option>
+                                                    <mat-option value="-">Substraction</mat-option>
+                                                    <mat-option value="/">Division</mat-option>
+                                                    <mat-option value="*">Multiplication</mat-option>
+                                                    <mat-option value="%">Modulo</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                            <mat-form-field class="m-1" *ngIf="expression?.get('operators')?.controls[i]?.get('operator')?.value">
+                                                <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="operator_aggregate_type" #operator_controlss (selectionChange)="operator_controls(i,operator_controlss.value)">
+                                                    <mat-option value="">Choose</mat-option>
+                                                    <mat-option value="string">STRING</mat-option>
+                                                    <mat-optgroup label="Operators">
+                                                        <mat-option value="and">AND</mat-option>
+                                                        <mat-option value="or">OR</mat-option>
+                                                        <mat-option value="round">ROUND</mat-option>
+                                                    </mat-optgroup>
+                                                    <mat-option value="if">IF</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                       
+
+                                            <div class="mius_excel">
+
+                                                <mat-icon class="remove_circle" color="warn" (click)="removeoperator(i)">remove_circle</mat-icon>
+                                            </div>
+                                                    <!--switch case-->
+                                            <div class="row d-block">
+                                                <div [ngSwitch]="expression?.get('operators')?.controls[i]?.get('operator_aggregate_type')?.value">
+                                                    <div *ngSwitchCase="'and'" class="lisst_con_opeartor">
+                                                        <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                                                    </div>
+                                                    <div *ngSwitchCase="'or'" class="lisst_con_opeartor">
+                                                        <app-and [left_operator]="expression.get('operators').controls[i].get('operator_controls')" [conditionlegend]="operator_label"></app-and>
+                                                    </div>
+                                                    <div *ngSwitchCase="'if'"  class="lisst_con_opeartor">
+                                                        <app-conditionform [expression]="expression.get('operators').controls[i].get('operator_controls')"></app-conditionform>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                      
+
+
+                                    </div>
+                                    <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                        </ng-container>
+                        <span>
+                            <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
+                        </span>
+                </div>
+        </ng-container>
+
+        <!--Additionals End Here operator-->
         </div>
     </div>
   </div>
