@@ -9,9 +9,8 @@
       aria-label="Button that shows a red tooltip"
       class="example-button"
       ><span class="and_span">{{ conditionlegend }}</span> </legend>
-      <p class="text-right m-0">
-        <mat-icon color="primary" class="add_circle" (click)="addformarray()">add_circle</mat-icon>
-      </p>
+      
+   
         <div [formGroup]="left_operator"  class=" inner_and"[@slideInOut]="animationState" >
         <ng-container formArrayName="aggregate" >
          
@@ -22,6 +21,9 @@
                   <div class="list_flex_Excel">
                    
                 <div class="moha">
+                  <div class="and_condition">
+
+                  </div>
                       <mat-form-field class="m-1">
                         <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregation_type_left" #alarmSelect (selectionChange)="conditional_left(i,alarmSelect.value)">
                             <mat-option value="">Choose</mat-option>
@@ -48,7 +50,10 @@
                 </div>  
 
 
-                <div class="mohaa">   
+                <div class="listand_opeartion">   
+                  <div class="and_condition">
+                    
+                  </div>
                     <mat-form-field class="m-1">
                       <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregates_operator">
                         <mat-option value="">Choose Operator</mat-option>
@@ -82,18 +87,14 @@
                        <ng-container *ngIf="_formarray?.controls[i]?.get('aggregate_right_expression.rights')?.value">
                         <app-conditionform  [expression]="conditional_rights" ></app-conditionform>
                       </ng-container>
-              </div>  
-
-
-
+                      <div class="text-right mius_excel" >
                       
-      
-                   
-
-
-                    <div class="text-right mius_excel">
-                      <mat-icon class="text-right remove_circle" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
-                    </div>
+                        <mat-icon class="text-right remove_circle" color="warn" (click)="removeformarray(i)">remove_circle</mat-icon>
+                        <span *ngIf="(_formarray?.controls?.length-1) == i">
+                          <mat-icon color="primary" class="" (click)="addformarray()">add_circle</mat-icon>
+                      </span>
+                      </div>
+              </div>  
 
 
                 

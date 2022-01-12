@@ -149,6 +149,7 @@ export class ConditionformComponent implements OnInit {
   return  this.fb.group({
         operator : [''],
         operator_aggregate_type : [''],
+        field : ['']
        // operator_controls : this.fb.group({})
 
     })
@@ -358,6 +359,7 @@ export class ConditionformComponent implements OnInit {
 
   formatformula(val){
     let express = val
+
 
 
     if(express?.aggregate_type == 'if'){

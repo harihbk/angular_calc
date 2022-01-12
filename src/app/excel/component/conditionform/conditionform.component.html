@@ -17,6 +17,9 @@
                       <span class="inner_forumala"><input type="text" readonly value="{{ _recformula }}"/></span>
                         <ng-container formGroupName="lefts">
                             <div class="row">
+                                <div class="col-1 excel_condition then_conidtion">
+                                    Expression
+                                </div>
                                 <mat-form-field class="m-1 col-2">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect (selectionChange)="conditional_dropdown(alarmSelect.value)">
                                         <mat-option value="">Choose</mat-option>
@@ -41,19 +44,18 @@
 
                             <!--operators fields-->
                               <!--switch case-->
-                            <div class="col p-0 pt-3" *ngIf="expression.get('lefts')?.get('aggregate_type')?.value">
+                            <div class="col p-0" *ngIf="expression.get('lefts')?.get('aggregate_type')?.value">
                                 <div class="row d-block">
                                     <div [ngSwitch]="expression.get('lefts').get('aggregate_type')?.value">
                                         <div *ngSwitchCase="'and'" class="and_lsittable ">
-                                            <app-and [left_operator]="expression.get('lefts')" [conditionlegend]="conditionlegend"></app-and>
+                                            <app-and [left_operator]="expression.get('lefts')" [conditionlegend]="conditionlegend_right"></app-and>
                                         </div>
                                         <div *ngSwitchCase="'or'"  class="and_lsittable">
-                                            <app-and [left_operator]="expression.get('lefts')" [conditionlegend]="conditionlegend"></app-and>
+                                            <app-and [left_operator]="expression.get('lefts')" [conditionlegend]="conditionlegend_right"></app-and>
                                         </div>
                                         <div *ngSwitchCase="'if'"  class="">
                                           <app-conditionform [events]="events" [expression]="expression.get('lefts').get('expression')"></app-conditionform>
                                         </div>
-
                                     </div>
                                 </div>
                                 <!-- </ng-container> -->
@@ -79,6 +81,9 @@
 
                         <!--Right Condition-->
                         <div class="row">
+                            <div class="col-1 excel_condition then_conidtion">
+                                Expression
+                            </div>
                             <ng-container formGroupName="rights">
                                 <mat-form-field class="m-1 col-2">
                                     <mat-select class="alarm-dropdown" trigger="alarmTrigger" formControlName="aggregate_type" #alarmSelect1 (selectionChange)="conditional_dropdown(alarmSelect1.value)">
@@ -104,7 +109,7 @@
 
                         <!--operators fields-->
                         <!--switch case-->
-                        <div class="col p-0 pt-3" *ngIf="expression.get('rights')?.get('aggregate_type')?.value">
+                        <div class="col p-0" *ngIf="expression.get('rights')?.get('aggregate_type')?.value">
                             <div class="row d-block">
                                 <div [ngSwitch]="expression.get('rights').get('aggregate_type')?.value">
                                     <div *ngSwitchCase="'and'" class="and_lsittable">
@@ -278,8 +283,12 @@
                                        
 
                                             <div class="mius_excel">
-
                                                 <mat-icon class="remove_circle" color="warn" (click)="removeoperator(i)">remove_circle</mat-icon>
+                                               
+                                                
+                                                <span *ngIf="(expression.get('operators')?.length-1) == i">
+                                                    <mat-icon color="primary" class="addlistcircle" (click)="operatorsaddformarray()">add_circle</mat-icon>
+                                                </span>
                                             </div>
                                                     <!--switch case-->
                                             <div class="row d-block">
@@ -293,20 +302,20 @@
                                                     <div *ngSwitchCase="'if'"  class="lisst_con_opeartor">
                                                         <app-conditionform [expression]="expression.get('operators').controls[i].get('operator_controls')"></app-conditionform>
                                                     </div>
+                                                    <div *ngSwitchCase="'string'" >
+                                                        <mat-form-field >
+                                                          <mat-label>String</mat-label>
+                                                          <input matInput id="expression_field" type="text" class="col-sm-3" formControlName="field" />
+                                                        </mat-form-field>
+                                                      </div>
                                                 </div>
                                             </div>
-
-
-                                      
-
-
                                     </div>
                                     <span class="bottom_show"><i class="fas fa-chevron-down"></i></span>
                             </div>
                         </ng-container>
-                        <span>
-                            <mat-icon color="primary" class="add_circle" (click)="operatorsaddformarray()">add_circle</mat-icon>
-                        </span>
+
+                     
                 </div>
         </ng-container>
 

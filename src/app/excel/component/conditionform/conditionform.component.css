@@ -1,4 +1,5 @@
 
+
 .mat-icon:hover{
   cursor: pointer;
 }
@@ -7,17 +8,18 @@
   cursor: pointer;
   padding-bottom: 0;
   padding-left: 10px;
+  margin:26px;
+  margin-top: 55px;
   -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
           box-shadow: 2px 1px 10px rgb(201 201 201);
-  margin: 20px;
-  margin-top: 50px;
-  margin-left: 26px;
   position: relative;
   border-left: 2px dashed #009ada;
   border-radius: 10px;
 }
 .last_if_con{
-  flex: none;
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
   display: block;
   width: 100%;
 }
@@ -26,11 +28,12 @@
 }
 
 .border_excel .border_excel{
-  padding:0;
+  padding:0 !important;
 }
 .data_opeartor p{
   margin:0;
 }
+
 .d_condition_flex{
   display:-webkit-box;
   display:-ms-flexbox;
@@ -46,19 +49,33 @@ fieldset.scheduler-border {
   cursor: pointer;
   padding-bottom: 0;
   padding-left: 10px;
-  margin: 0px 25px;
   margin-bottom: 20px;
+  margin:20px 25px;
   position: relative;
   -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
           box-shadow: 2px 1px 10px rgb(201 201 201);
   border-radius: 10px;
   border-left: 2px dashed #009ada;
 }
+.scheduler-border .scheduler-border{
+  margin:19px 25px;
+}
+.scheduler-border .scheduler-border .if_span:before{
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  left: 41%;
+  top: -30px;
+}
+::ng-deep .and_lsittable .scheduler-border .list_flex_Excel .listand_opeartion{
+  flex-wrap: wrap;
+}
 fieldset.scheduler-border .row{
   margin:0;
 }
 .data_opeartor  .lisst_con_opeartor {
-  margin-left:20px;
+  margin-left:35px;
 }
 .last_and_excel
 .expd{
@@ -172,9 +189,10 @@ legend{
   border-right: 2px dashed #009ada;
 }
 .excel_condition{
-  font-size: 13px;
+  font-size: 12px;
+  z-index: 999;
   color: white;
-  position:relative;
+  position: relative;
   background-color: #cf2379;
   border-radius: 5px;
   height: 25px;
@@ -182,10 +200,11 @@ legend{
   padding: 0;
   text-align: center;
   max-width: unset;
-  -webkit-box-flex: unset;
-      -ms-flex: unset;
-          flex: unset;
-  width: 80px;
+  flex: unset;
+  width: 68px;
+}
+::ng-deep .mat-form-field{
+  padding: 0px 15px;
 }
 .bottom_show{
   width: 30px;
@@ -220,7 +239,9 @@ legend{
           transform: translate(-50%,-50%);
 }
 .data_opeartor  .d_condition_flex .row.d-block{
-  flex: auto;
+  -webkit-box-flex: 1;
+      -ms-flex: auto;
+          flex: auto;
   width: 100%;
 }
 .list_excel {
@@ -241,6 +262,7 @@ legend{
 .and_lsittable {
   margin-left:25px;
   padding:0;
+  margin-top: 8px;
 }
 ::ng-deep .mat-option{
   height: 30px  !important;

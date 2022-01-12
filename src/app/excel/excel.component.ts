@@ -291,7 +291,7 @@ export class ExcelComponent implements OnInit , AfterViewInit  {
   formatformula(val){
     let obj = val._formarray;
     let express = obj.expression
-    // console.log(obj);
+    console.log(obj);
     var formula =`=IF( ${ this._checkconditons(express?.lefts ) } ${express?.logical ?? '_'} ${ this._checkconditons(express?.rights ) } , ${this._checkthen(express.condition_expression_then)} , ${this._checkthen(express.condition_expression_else) } )`
     if(express?.operators.length > 0){
       formula += this.operators(express.operators)
