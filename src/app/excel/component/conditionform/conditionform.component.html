@@ -285,6 +285,12 @@
                                                                 <div *ngSwitchCase="'if'"  class="lisst_con_opeartor">
                                                                     <app-conditionform [expression]="expression.get('operators').controls[i].get('operator_controls')"></app-conditionform>
                                                                 </div>
+                                                                <div *ngSwitchCase="'string'" >
+                                                                  <mat-form-field >
+                                                                    <mat-label>String</mat-label>
+                                                                    <input matInput id="expression_field" type="text" class="col-sm-3" formControlName="field" />
+                                                                  </mat-form-field>
+                                                                </div>
                                                             </div>
                                                         </div>
 
