@@ -98,3 +98,7 @@ fieldset.scheduler-border:before{
   width: 86%;
   background: #009ada;
 }
+.list_flex_Excel{
+  flex-direction: column;
+  align-items: unset !important;
+}
