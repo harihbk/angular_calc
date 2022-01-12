@@ -8,7 +8,7 @@ import { _functions } from '../excel/_function'
   styleUrls: ['./excel.component.css']
 })
 export class ExcelComponent implements OnInit , AfterViewInit  {
-
+  showFiller = false;
   myForm      : FormGroup
   _Formarray  : FormGroup;
   exx: FormGroup;

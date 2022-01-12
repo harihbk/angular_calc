@@ -104,11 +104,9 @@ export class ConditionformComponent implements OnInit {
 
   }
 
-
-
-
     toggleShowDiv() {
       this.animationState = this.animationState === 'out' ? 'in' : 'out';
+     
   }
 
   ngAfterViewInit(): void {
@@ -118,8 +116,6 @@ export class ConditionformComponent implements OnInit {
   })
 
   }
-
-
   ngOnInit() {
 
     this.expression.addControl('lefts',this._lefts_validator);
