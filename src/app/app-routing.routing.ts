@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path : 'excel',
     loadChildren:()=>import('./excel/excel.module').then(m=>m.ExcelModule)
+  },
+  {
+    path : 'mail',
+    loadChildren:()=>import('./mail/mail.module').then(m=>m.MailModule)
   }
 
 

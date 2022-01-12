@@ -47,8 +47,7 @@ let gapiClientConfig: NgGapiClientConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    Formula_sectionComponent,
-
+    Formula_sectionComponent
 
    ],
   imports: [

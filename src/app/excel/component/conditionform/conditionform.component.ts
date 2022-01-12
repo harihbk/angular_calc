@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Form, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { trigger, state, style, transition,
@@ -98,7 +98,8 @@ export class ConditionformComponent implements OnInit {
   operator_label: any;
   _recformula: string;
   constructor(
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    public cdr: ChangeDetectorRef
   ) {
 
 
@@ -360,15 +361,24 @@ export class ConditionformComponent implements OnInit {
   formatformula(val){
     let express = val
 
-
-
-    if(express?.aggregate_type == 'if'){
+    switch (express?.aggregate_type){
+     case 'if' :
       var formula =`=IF( ${ this._checkconditons(express.expression?.lefts ) } ${express.expression?.logical ?? '_'} ${ this._checkconditons(express.expression?.rights ) } , ${this._checkthen(express.expression.condition_expression_then)} , ${this._checkthen(express.expression.condition_expression_else) } )`
+     break;
+     case '':
+
+     break;
     }
 
-    if(express?.expression?.operators?.length > 0){
-      formula += this.operators(express?.expression?.operators)
-    }
+
+
+    // if(express?.aggregate_type == 'and'){
+    //   var formula =`=IF( ${ this._checkconditons(express.expression?.lefts ) } ${express.expression?.logical ?? '_'} ${ this._checkconditons(express.expression?.rights ) } , ${this._checkthen(express.expression.condition_expression_then)} , ${this._checkthen(express.expression.condition_expression_else) } )`
+    // }
+
+    // if(express?.expression?.operators?.length > 0){
+    //   formula += this.operators(express?.expression?.operators)
+    // }
     this._recformula = formula
 
   }
@@ -403,6 +413,9 @@ return frm
         return this.nestedformatformula(val.expression)
     }
     if(val?.aggregate_type == 'and'){
+
+      console.log(val.aggregate);
+
     return `AND( ${this.andcondition(val.aggregate)} )`;
     }
 
@@ -431,17 +444,18 @@ return frm
   }
 
   nestedformatformula(exx){
-
    return `IF( ${this._checkconditons(exx?.lefts)  }  ${exx?.logical ?? '_'} ${ this._checkconditons(exx?.rights ) } ,  ${this._checkthen(exx?.condition_expression_then)} , ${this._checkthen(exx?.condition_expression_else) })`
   }
 
   andcondition(val){
-      var generate_and = ''
+    console.log(val);
+    var generate_and = ''
     val?.forEach(ele => {
       generate_and +=`${this.checkand(ele)} ,`
+      this.cdr.detectChanges();
     });
-    return generate_and.replace(/,\s*$/, ""); // remove last comma
 
+    return generate_and.replace(/,\s*$/, ""); // remove last comma
   }
 
   checkand(val){
