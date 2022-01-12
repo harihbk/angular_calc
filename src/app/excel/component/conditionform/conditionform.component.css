@@ -1,3 +1,4 @@
+
 .mat-icon:hover{
   cursor: pointer;
 }
@@ -6,36 +7,58 @@
   cursor: pointer;
   padding-bottom: 0;
   padding-left: 10px;
-  box-shadow: 2px 1px 10px rgb(201 201 201);
+  -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
+          box-shadow: 2px 1px 10px rgb(201 201 201);
   margin: 20px;
   position: relative;
   border-left: 2px dashed #009ada;
   border-radius: 10px;
 }
-
-.d_condition_flex{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
+.last_if_con{
+  flex: none;
+  display: block;
+  width: 100%;
 }
+.border_excel  .border_excel  .col{
+  padding:0;
+}
+
+.border_excel .border_excel{
+  padding:0;
+}
+.data_opeartor p{
+  margin:0;
+}
+.d_condition_flex{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-align:center;
+      -ms-flex-align:center;
+          align-items:center;
+  -ms-flex-wrap:wrap;
+      flex-wrap:wrap;
+}
+
 fieldset.scheduler-border {
   cursor: pointer;
   padding-bottom: 0;
   padding-left: 10px;
-  margin: 0 0 1.5em 0;
+  margin: 0px 25px;
+  margin-bottom: 20px;
   position: relative;
-  box-shadow: 2px 1px 10px rgb(201 201 201);
+  -webkit-box-shadow: 2px 1px 10px rgb(201 201 201);
+          box-shadow: 2px 1px 10px rgb(201 201 201);
   border-radius: 10px;
   border-left: 2px dashed #009ada;
 }
 fieldset.scheduler-border .row{
   margin:0;
 }
-.lisst_con_opeartor {
+.data_opeartor  .lisst_con_opeartor {
   margin-left:20px;
-  box-shadow: 2px 1px 10px rgb(201 201 201);
-  border-radius: 10px;
 }
+.last_and_excel
 .expd{
   width : 100%;
 }
@@ -89,16 +112,53 @@ fieldset.scheduler-border .row{
 legend{
   width: unset;
 }
-/* .data_opeartor  .excel_condition{
-  float: left;
-  position: absolute;
-  top: 50%;
-  left: 4%;
-  transform: translate(-50%,-50%);
-} */
 .then_if_andor {
   padding-left: 20px;
-  margin: 20px;
+  margin:20px;
+}
+.then_recursive{
+  padding-left: 20px;
+  margin:20px 0px;
+}
+.else_recursive{
+  padding-left: 20px;
+  margin:20px;
+}
+::ng-deep .lisst_con_opeartor  .and_span:before{
+  content: '';
+  position: absolute;
+  width: 59%;
+  right: 30px;
+  bottom: 14px;
+  height: 2px;
+  border-bottom: 2px dashed #009ada;
+}
+::ng-deep .else_recursive .and_span:before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  right: 14px;
+  bottom: 22px;
+  height: 93%;
+  border-right: 2px dashed #009ada;
+}
+.lisst_con_opeartor .and_span:before{
+  content: '';
+  position: absolute;
+  width: 2px;
+  right: 14px;
+  bottom: 22px;
+  height: 93%;
+  border-right: 2px dashed #009ada;
+}
+::ng-deep .then_recursive .and_span:before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  right: 14px;
+  bottom: 22px;
+  height: 93%;
+  border-right: 2px dashed #009ada;
 }
 ::ng-deep .then_if_andor .and_span:before {
   content: '';
@@ -120,7 +180,9 @@ legend{
   padding: 0;
   text-align: center;
   max-width: unset;
-  flex: unset;
+  -webkit-box-flex: unset;
+      -ms-flex: unset;
+          flex: unset;
   width: 80px;
 }
 .bottom_show{
@@ -148,18 +210,34 @@ legend{
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
 }
-
+.data_opeartor  .d_condition_flex .row.d-block{
+  flex: auto;
+  width: 100%;
+}
+.inner_forumala{
+  background-color: white;
+  border: 1px solid gray;
+  padding: 5px;
+  margin-left: 20px;
+  border-radius: 5px;
+  font-size: 12px;
+}
 .and_lsittable {
   margin-left:25px;
+  padding:0;
 }
 ::ng-deep .mat-option{
   height: 30px  !important;
   padding:10px;
 }
 ::ng-deep app-conditionform{
-  flex:auto;
+  -webkit-box-flex:1;
+      -ms-flex:auto;
+          flex:auto;
 }
 ::ng-deep .mat-form-field-infix{
   border-top: none !important;
@@ -177,4 +255,17 @@ legend{
   height: 2px;
   width: 100%;
   background: #009ada;
+}
+::ng-deep .border_excel  .then_listcondition  .if_span:before{
+  content: '';
+  width: 2px;
+  height: 100%;
+  right: 16px;
+  top: -10px;
+}
+.border_excel .border_excel .if_listcondition .if_span:before{
+  width: 100%;
+  height: 2px;
+  top: 14px;
+  right: 30px;
 }
