@@ -114,9 +114,9 @@ export class ConditionformComponent implements OnInit {
 
   ngAfterViewInit(): void {
 
-    this.expression.get('lefts')!.valueChanges.subscribe(data => {
-      this.formatformula(data);
-  })
+  //   this.expression.get('lefts')!.valueChanges.subscribe(data => {
+  //     this.formatformula(data);
+  // })
 
   }
 
