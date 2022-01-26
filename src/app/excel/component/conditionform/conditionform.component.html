@@ -1,4 +1,4 @@
-<div [formGroup]="expression" class="expd">
+<div [formGroup]="expression" class="expd" >
 
     <div class="row formdot border_excel">
 
@@ -235,7 +235,7 @@
 
                     <ng-container formArrayName="operators">
                             <div class="data_opeartor">
-                               
+
 
                                     <ng-container *ngFor="let d of expression.get('operators').controls;let i = index">
 
@@ -266,10 +266,10 @@
                                                                 <mat-option value="if">IF</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-                                                   
+
 
                                                         <div class="mius_excel">
-            
+
                                                             <mat-icon class="remove_circle" color="warn" (click)="removeoperator(i)">remove_circle</mat-icon>
                                                         </div>
                                                                 <!--switch case-->
@@ -294,7 +294,7 @@
                                                         </div>
 
 
-                                                  
+
 
 
                                                 </div>

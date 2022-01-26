@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { each } from 'jquery';
 import { MailService } from './mail.service';
 
 @Component({
@@ -10,10 +11,14 @@ import { MailService } from './mail.service';
 export class MailComponent implements OnInit {
   profileForm : FormGroup
   submitted = false;
+  datas: Object;
   constructor(
     private formBuilder: FormBuilder,
     private service     : MailService
-    ) { }
+    ) {
+
+
+    }
 
   get validation(){
     return this.formBuilder.group({
@@ -26,8 +31,37 @@ export class MailComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
    this.profileForm = this.validation
+
+   async function* streamAsyncIterable(stream) {
+
+
+    return this.service.getuser(stream.id)
+  }
+
+
+  //   this.service.getusers().subscribe(async (res:any)=>{
+
+  //     (async function() {
+  //       for await (let num of  streamAsyncIterable(res)) {
+  //         console.log(num);
+
+  //       }
+  //    })();
+  //   //   res.map( async elm=>{
+  //   //     console.log(elm.id);
+  //   //     (await this.service.getuser(elm.id)).subscribe(res=>{
+  //   //      console.log(res);
+
+  //   //    })
+  //   //  })
+  // })
+   //console.log(users);
+  }
+
+   async getuserb(id){
+    return  await this.service.getuser(id)
   }
 
   get f() { return this.profileForm.controls; }
@@ -43,10 +77,30 @@ export class MailComponent implements OnInit {
   console.log(res);
   },err=>{
     console.log(err);
-
   })
 
     console.log(this.profileForm.value);
 
   }
+
+  checkmail(){
+    let data = {username:'hari95nn@outlook.com'}
+    this.service.postmethod("testmail",data).subscribe(res=>{
+      console.log(res);
+      },err=>{
+        console.log(err);
+
+      })
+  }
+
+  GetImap(){
+    let data = {username:'hari95nn@outlook.com'}
+    this.service.postmethod("GetImap",data).subscribe(res=>{
+      console.log(res);
+      },err=>{
+        console.log(err);
+      })
+  }
+
+
 }
