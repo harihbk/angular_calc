@@ -112,6 +112,7 @@ this.apical(data_data)
       })
     })
      _data.then((obj:any)=>{
+      this.cx = ""
       const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
       this.cx = canvasEl.getContext('2d');
       let used = obj.used;
@@ -203,7 +204,7 @@ this.apical(data_data)
     })
   }
 
-  private cx: CanvasRenderingContext2D;
+  private cx: any;
 
   public used :  {
     "panel": any,
