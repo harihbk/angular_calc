@@ -355,6 +355,9 @@ return frm
        case 'string':
         return `${val?.value ?? '_'}`
        break;
+       case 'if':
+        return this.nestedformatformula(val.expression)
+       break;
        default :
        return `_`
      }

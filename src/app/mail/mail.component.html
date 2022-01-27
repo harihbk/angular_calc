@@ -1,0 +1,83 @@
+
+<form [formGroup]="profileForm" (ngSubmit)="submit()">
+
+  <div class="container">
+    <mat-card>
+      <div class="row center">
+        <mat-form-field class="example-form-field m-1" >
+            <mat-label>Driver</mat-label>
+            <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="driver">
+
+        </mat-form-field>
+
+    </div>
+      <div class="row center">
+          <mat-form-field class="example-form-field m-1" >
+              <mat-label>Host Name</mat-label>
+              <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="hostname">
+              <mat-error *ngIf="submitted && f.hostname?.errors?.required">
+                Host Name is required
+            </mat-error>
+          </mat-form-field>
+
+      </div>
+      <div class="row center">
+        <mat-form-field class="example-form-field m-1" >
+          <mat-label>Port (587 or 465)</mat-label>
+          <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="port">
+          <mat-error *ngIf="submitted && f.port?.errors?.required">
+            Port is required
+           </mat-error>
+           <mat-error *ngIf="submitted && f.port?.errors?.pattern">
+            Either 587 or 465
+           </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div class="row center">
+        <mat-form-field class="example-form-field m-1" >
+          <mat-label>Encryption Type (ssl or tls)</mat-label>
+          <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="encryption">
+          <mat-error *ngIf="submitted && f.encryption?.errors?.required">
+            Encryption is required
+           </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div class="row center">
+        <mat-form-field class="example-form-field m-1" >
+          <mat-label>Username</mat-label>
+          <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="username">
+          <mat-error *ngIf="submitted && f.username?.errors?.required">
+            Username is required
+           </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div class="row center">
+        <mat-form-field class="example-form-field m-1" >
+          <mat-label>Password</mat-label>
+          <input matInput  id="aggregates_right" type="text"  class="col-sm-3" formControlName="password">
+          <mat-error *ngIf="submitted && f.password?.errors?.required">
+            Password is required
+           </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div class="row center">
+        <button mat-raised-button color="primary">Save</button>
+      </div>
+    </mat-card>
+  </div>
+</form>
+
+<span>
+  <button (click)="checkmail()">checkmail</button>
+</span>
+
+
+<span>
+  <button (click)="GetImap()">GetImap</button>
+</span>
+
+

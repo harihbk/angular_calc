@@ -1,0 +1,87 @@
+<!-- <canvas id="pong" width="600" height="400"></canvas> -->
+<div>
+  <div class="row m-0 datacanvas">
+    <div class="col-6">
+      <form [formGroup]="form" (ngSubmit) = "onClickSubmit()">
+        <div class="row m-0">
+          <span class="panels col-3">Cutting Width</span>
+          <mat-form-field class="example-form-field mb-3 col-3">
+            <mat-label>Cut Width</mat-label>
+            <input matInput id="cut_width" type="text" formControlName="cut_width" />
+          </mat-form-field>
+        </div>
+      
+          <ng-container >
+            <div  formArrayName="panels" class="mb-3">
+              <div  formArrayName="Panel1" class=" m-0 row">
+                <span class="panels col-3">Panel</span>
+                <mat-form-field class="example-form-field mr-1 col-3">
+                  <mat-label>Width</mat-label>
+                  <input matInput id="cut_width" type="text"  formControlName="width" />
+                </mat-form-field>
+                <mat-form-field class="example-form-field col-3">
+                  <mat-label>Height</mat-label>
+                  <input matInput id="cut_width" type="text"  formControlName="height" />
+                </mat-form-field>
+              </div>
+          </div>
+        </ng-container>
+        <ng-container>
+          <div class="row m-0">
+           
+            <div class="scroll_canmvas col-12"> 
+              <div>
+                <span class="panels col-3 p-0" >Description</span>
+                <div  class="pb-2 mt-1" formArrayName="items" *ngFor="let data of form.get('items')['controls'];let i=index" >
+                  <div [formGroupName]="i">
+                        <div class="row m-0 align-items-center justify-content-between">
+                          <mat-form-field class="example-form-field  ml-1 p-0 col-2">
+                            <mat-label>Item Name</mat-label>
+                            <input matInput id="cut_width" type="text" formControlName="itemname" />
+                          </mat-form-field>
+                          <mat-form-field class="example-form-field  ml-1 p-0 col-2">
+                            <mat-label>Quantity</mat-label>
+                            <input matInput id="cut_width" type="text"  formControlName="quantity" />
+                          </mat-form-field>
+    
+                          <mat-form-field class="example-form-field  ml-1 p-0 col-2">
+                            <mat-label>Height</mat-label>
+                            <input matInput id="cut_width" type="text" formControlName="height" />
+                          </mat-form-field>
+                          <mat-form-field class="example-form-field p-0  ml-1 col-2">
+                            <mat-label>Width</mat-label>
+                            <input matInput id="cut_width" type="text" formControlName="width" />
+                          </mat-form-field>
+                          <i class="material-icons removeicons" (click)="removeitem(i)">close</i>
+                        </div>
+                  </div>
+              </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          
+        </ng-container>
+        <div class="bottomcanvas">
+          <span class="addcanvas"  (click)="additems()">
+            <i class="material-icons">add</i>Add item
+          </span>
+      
+    <button class="savecanvas">Calculate</button>
+        </div>
+  
+ </form>
+    </div>
+    <div class="col-6">
+      <div class="canvas">
+        <h3 class="fabirtile">Fabric Cutting</h3>
+        <canvas #canvas id="pong" width="600" height="600"></canvas>
+      </div>
+   
+    </div>
+  </div>
+</div>
+  
+ 
+

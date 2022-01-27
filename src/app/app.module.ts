@@ -28,6 +28,8 @@ import { TokenInterceptorService } from './calcmodule/token-interceptor.service'
 
 import {NgxFsModule} from 'ngx-fs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { LayoutModule } from './layout/layout/layout.module';
 
 
 
@@ -47,11 +49,11 @@ let gapiClientConfig: NgGapiClientConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    Formula_sectionComponent,
-
+    Formula_sectionComponent
 
    ],
   imports: [
+    LayoutModule,
     BrowserModule,
     AppRoutingRoutes,
     BrowserAnimationsModule,
@@ -78,11 +80,11 @@ let gapiClientConfig: NgGapiClientConfig = {
 
 
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true
-  }
+  //   {
+  //     provide: HTTP_INTERCEPTORS,
+  //     useClass: TokenInterceptorService,
+  //     multi: true
+  // }
   ],
   entryComponents: [Formula_sectionComponent],
   bootstrap: [AppComponent]

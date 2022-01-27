@@ -1,0 +1,138 @@
+.canvas {
+  -webkit-box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%), 0 2px 6px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%), 0 2px 6px 0 rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  padding: 0px 10px;
+}
+.canvas canvas{
+  border: 1px solid #cf2379;
+  border-radius: 10px;
+}
+.datacanvas .col-6 form{
+  -webkit-box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%), 0 2px 6px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%), 0 2px 6px 0 rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  padding: 10px;
+  height: 100%;
+}
+::ng-deep mat-form-field{
+  margin: 0;
+}
+::ng-deep .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label{
+  -webkit-transform: translateY(-0.28125em)  perspective(100px) translateZ(0.001px);
+  transform: translateY(-0.28125em) perspective(100px) translateZ(0.001px);
+  -ms-transform: translateY(-0.28125em) ;
+  width: 133.3333333333%;
+  color: #cf2379;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-size: 11px;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple{
+  background-color: #cf2379;
+}
+.scroll_canmvas > div > div{
+  background: white;
+  border-radius: 5px;
+  padding: 10px 5px ;
+  box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%), 0 2px 6px 0 rgb(0 0 0 / 10%);
+}
+.scroll_canmvas > div{
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%), 0 2px 6px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%), 0 2px 6px 0 rgb(0 0 0 / 10%);
+  /* margin: 10px 0px; */
+}
+::ng-deep input.mat-input-element{
+  font-size: 12px;
+}
+.scroll_canmvas{
+  min-height: 73vh;
+  max-height: 73vh;
+  overflow: auto;
+  border-radius: 10px;
+}
+.fabirtile{
+  color: black;
+  padding: 0px 0px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 13px;
+}
+.panels{
+  display: block;
+  font-size: 14px;
+  color: black;
+  font-weight: 500;
+}
+.datacanvas{
+  min-height: 100vh;
+  background: white;
+  padding: 10px 15px;
+}
+.removeicons{
+  height: 25px;
+  width: 25px;
+  background: red;
+  color: white;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 16px;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper{
+  padding:0;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline{
+  bottom: 0;
+}
+::ng-deep .mat-form-field-label-wrapper{
+  padding: 0;
+  top: -11px;
+  font-size: 12px;
+  overflow: unset !important;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix{
+  padding:0;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label{
+  top:0;
+}
+.addcanvas{
+  background: #cf2379;
+  font-size: 13px;
+  color: #fff;
+  padding: 9px 10px;
+  padding-left: 25px;
+  position: relative;
+  border-radius: 4px;
+  height: 28px;
+  cursor: pointer;
+  margin: 0 5px;
+  text-transform: capitalize;
+}
+.savecanvas{
+  background: #cf2379;
+  font-size: 13px;
+  color: #fff;
+  position: relative;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  height: 33px;
+  padding: 0px 20px;
+}
+.addcanvas i{
+  position: absolute;
+  left: 2px;
+  top: 6px;
+  font-size: 20px;
+}
+.bottomcanvas{
+  position: absolute;
+  bottom: 10px;
+  left: 30px;
+}
