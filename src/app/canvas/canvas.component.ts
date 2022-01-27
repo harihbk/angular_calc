@@ -183,7 +183,7 @@ this.apical(data_data)
             height = used[key]['height'] * _panelheight
           }
         this.cx.font="10px Georgia";
-        this.cx.fillStyle = "red";
+        this.cx.fillStyle = "white";
         var rectHeight = height;
         var rectWidth = width;
         let rectX = x;
