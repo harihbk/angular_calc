@@ -65,12 +65,18 @@
     <i class="material-icons" (click)="additems()">add</i>
 
   <button >text</button>
- </form>
 
+ </form>
+ <button (click)="clearcanvas()">sdf</button>
     </div>
     <div class="col">
 
-      <canvas #canvas id="pong" width="600" height="600"></canvas>
+      <!-- <span #render>
+        <canvas #canvas id="pong" width="600" height="600"></canvas>
+
+      </span> -->
+
+      <div #svgContainer></div>
 
     </div>
   </div>

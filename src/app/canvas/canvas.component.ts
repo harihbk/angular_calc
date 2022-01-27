@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-
+import * as d3 from 'd3'
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
@@ -12,20 +12,32 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CanvasComponent implements AfterViewInit  {
   @ViewChild('canvas') public canvas: ElementRef;
+  @ViewChild('render') public render: ElementRef;
+  @ViewChild('svgContainer', {read: ElementRef, static: true}) svgContainerRef!: ElementRef<HTMLDivElement>;
+
+
    params:any;
    form = new FormGroup({});
+   cx:any
+   svg: any;
 
   constructor(
     private _httpClient : HttpClient,
     private fb : FormBuilder
-  ) { }
+  ) {
+
+
+
+
+   }
 
   get panel(){
+
     let panels = (this.form.get('panels') as FormGroup)
     panels.addControl("Panel1",this.fb.group({
 
-      width : [],
-      height:[]
+      width : [100],
+      height:[100]
      }))
 
 
@@ -34,17 +46,17 @@ export class CanvasComponent implements AfterViewInit  {
 
  get items(){
    return this.fb.group({
-     itemname : [''],
-     quantity : [''],
-     height : [''],
-     width : [''],
+     itemname : ['item1'],
+     quantity : ['2'],
+     height : ['49'],
+     width : ['49'],
 
    })
  }
 
   ngOnInit() {
     this.form = this.fb.group({
-      cut_width : ['',],
+      cut_width : [0.3],
       min_initial_usage : [true],
       panels    : this.fb.group({}),
       items     : this.fb.array([this.items])
@@ -52,6 +64,15 @@ export class CanvasComponent implements AfterViewInit  {
     this.panel
 
     console.log(this.form.get('items'));
+
+
+
+    this.svg = d3.select(this.svgContainerRef.nativeElement)
+    .append("svg").classed('testclass', true).
+    attr("width", 600).
+    attr("height", 600)
+    .style("border", "1px solid black");
+
 
   }
 
@@ -65,6 +86,9 @@ export class CanvasComponent implements AfterViewInit  {
 
 
   async onClickSubmit(){
+
+
+
 
     let data = this.form.value.items
      let obj = {};
@@ -96,10 +120,13 @@ export class CanvasComponent implements AfterViewInit  {
 this.apical(data_data)
 
 
+
   }
 
+
+
   apical(data_data){
-    console.log(data_data);
+
 
     data_data = JSON.stringify(data_data)
 
@@ -112,9 +139,14 @@ this.apical(data_data)
       })
     })
      _data.then((obj:any)=>{
-      this.cx = ""
-      const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-      this.cx = canvasEl.getContext('2d');
+
+      this.svg.selectAll(".rect").remove()
+
+      // const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
+      // this.cx = canvasEl.getContext('2d');
+
+
+
       let used = obj.used;
       let items = obj.params.items;
       for (let key in used){
@@ -137,8 +169,8 @@ this.apical(data_data)
 
          let _w = obj.params.panels.Panel1.width;
          let _h = obj.params.panels.Panel1.height;
-         var _panelwidth =  500 / _w;
-         var _panelheight =  500 / _h;
+         var _panelwidth =  600 / _w;
+         var _panelheight =  600 / _h;
 
 
           for (let key in used){
@@ -159,42 +191,43 @@ this.apical(data_data)
 
           }
 
-        this.cx.fillStyle = "white";
-        this.cx.textAlign="center";
-        // this.cx.lineWidth = 2;
-
-        this.cx.fillStyle = "black";
-        this.cx.rect(x, y, width, height);
-        this.cx.fill()
-    }
-
-
-
-    for (let key in used){
-          var x = used[key].xx * _panelwidth
-          var y = used[key].yy * _panelheight
-          var text = used[key].item
-          var width,height;
-          if(used[key].rotate){
-            height = used[key]['width'] * _panelwidth
-            width = used[key]['height'] * _panelheight
-          }else {
-            width = used[key]['width'] * _panelwidth
-            height = used[key]['height'] * _panelheight
-          }
-        this.cx.font="10px Georgia";
-        this.cx.fillStyle = "red";
         var rectHeight = height;
         var rectWidth = width;
         let rectX = x;
         let rectY =y;
-        this.cx.fillText(text,rectX+(rectWidth/2),rectY+(rectHeight/2));
+
+
+          this.svg.append("rect")
+          .attr("x", x)
+          .attr("y", y)
+          .attr("class","rect")
+          .attr("height", height)
+          .attr("width", width)
+          .transition().duration(5000).ease(d3.easeLinear).style("opacity", 1)
+          .style("fill", '#000');
+
+          // this.svg.append("image")
+          // .attr("xlink:href", "assets/fabric.jpeg")
+          // .attr("class","rect")
+          // .attr('x', x)
+          // .attr('y', y)
+          // .attr('width', height)
+          // .attr('height', width);
+
+
+          this.svg.append("text")
+          .attr("class","rect")
+          .style("fill", 'red')
+          .attr("x", rectX+(rectWidth/2)/2)
+          .attr("y", rectY+(rectHeight/2))
+          .attr("dy", ".35em")
+          .style("font-size", function(d) {
+            return `${parseInt(rectWidth+rectHeight/ 60)}%`
+
+          }).style("text-align","center")
+          .text(text);
 
     }
-
-
-
-
 
 
 
@@ -204,133 +237,18 @@ this.apical(data_data)
     })
   }
 
-  private cx: any;
 
-  public used :  {
-    "panel": any,
-    "item": any,
-    "x": any,
-    "y": any,
-    "xx":any,
-    "yy":any,
-    "rotate": false
-}
+ clearcanvas(){
 
-generatecanvas(){
 
-}
+  // this.cx.fillStyle = "red";
+  // this.cx.clearRect(0,0,this.cx.width,this.cx.height)
+  // this.cx.width  = 600;
+  // this.cx.height = 600;
+ }
+
 
   async ngAfterViewInit() {
-
-  //   const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-  //   this.cx = canvasEl.getContext('2d');
-
-  //      let data = '{"cut_width":0.3,"min_initial_usage":true,"panels":{"Panel1":{"width":100,"height":100}},"items":{"Item1 1":{"width":20,"height":10,"can_rotate":true},"Item1 2":{"width":20,"height":10,"can_rotate":true},"Item1 3":{"width":20,"height":10,"can_rotate":true},"Item1 4":{"width":20,"height":10,"can_rotate":true},"Item1 5":{"width":20,"height":10,"can_rotate":true},"Item2 1":{"width":10,"height":30,"can_rotate":true},"Item2 2":{"width":10,"height":30,"can_rotate":true},"Item2 3":{"width":10,"height":30,"can_rotate":true},"Item3 1":{"width":20,"height":10,"can_rotate":true},"Item3 2":{"width":20,"height":10,"can_rotate":true},"Item4 1":{"width":10,"height":40,"can_rotate":true},"Item4 2":{"width":10,"height":40,"can_rotate":true}}}';
-
-  //     let _data = new Promise((resolve,reject)=>{
-  //       this._httpClient
-  //       .post("https://opcut.herokuapp.com/calculate?method=forward_greedy&native=false",data,{}).subscribe((res:any)=>{
-  //         resolve(res)
-  //       },err=>{
-  //         reject(err)
-  //       })
-  //     })
-
-  //     await _data.then((obj:any)=>{
-  //             let used = obj.used;
-  //             let items = obj.params.items;
-  //             for (let key in used){
-  //               let item = used[key].item;
-  //               let _width = items[item].width;
-  //               let _height = items[item].height;
-
-  //               let obj2 = {
-  //                 'width' : _width,
-  //                 'height': _height
-  //               }
-  //               used[key]['xx'] = Number(used[key].x.toFixed(2));
-  //               used[key]['yy'] = Number(used[key].y.toFixed(2));
-  //               used[key]['width']=obj2.width;
-  //               used[key]['height']=obj2.height;
-  //               used[key]['width1']=obj2.width;
-  //               used[key]['height1']=obj2.height;
-
-  //             }
-
-  //                let _w = obj.params.panels.Panel1.width;
-  //                let _h = obj.params.panels.Panel1.height;
-  //                var _panelwidth =  500 / _w;
-  //                var _panelheight =  500 / _h;
-
-
-  //                 for (let key in used){
-
-  //                 var x = used[key].xx * _panelwidth
-  //                 var y = used[key].yy * _panelheight
-  //                 var text = used[key].item
-  //                 var width,height;
-
-
-  //                 if(used[key].rotate){
-  //                   height = used[key]['width'] * _panelwidth
-  //                   width = used[key]['height'] * _panelheight
-
-  //                 }else {
-  //                   width = used[key]['width'] * _panelwidth
-  //                   height = used[key]['height'] * _panelheight
-
-  //                 }
-
-  //               this.cx.fillStyle = "white";
-  //               this.cx.textAlign="center";
-  //               // this.cx.lineWidth = 2;
-
-  //               this.cx.fillStyle = "black";
-  //               this.cx.rect(x, y, width, height);
-  //               this.cx.fill()
-  //           }
-
-
-
-  //           for (let key in used){
-  //                 var x = used[key].xx * _panelwidth
-  //                 var y = used[key].yy * _panelheight
-  //                 var text = used[key].item
-  //                 var width,height;
-  //                 if(used[key].rotate){
-  //                   height = used[key]['width'] * _panelwidth
-  //                   width = used[key]['height'] * _panelheight
-  //                 }else {
-  //                   width = used[key]['width'] * _panelwidth
-  //                   height = used[key]['height'] * _panelheight
-  //                 }
-  //               this.cx.font="10px Georgia";
-  //               this.cx.fillStyle = "red";
-  //               var rectHeight = height;
-  //               var rectWidth = width;
-  //               let rectX = x;
-  //               let rectY =y;
-  //               this.cx.fillText(text,rectX+(rectWidth/2),rectY+(rectHeight/2));
-
-  //           }
-
-
-
-  //            // this.cx.fill()
-
-  //     }).catch(err=>{
-  //       console.log(err);
-
-  //     })
-
-
-
-
-  //    function random_rgba() {
-  //     var o = Math.round, r = Math.random, s = 255;
-  //     return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
-  // }
-
 
 }
 
